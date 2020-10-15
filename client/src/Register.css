@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+    height: 100vh; 
+}
+
+.register_header {
+    color: #00849c;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 48px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.textInputSet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; 
+}
+
+.inputType {
+    color: #81a1b7;
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 18px; 
+    font-weight: 700; 
+    margin-bottom: 0px;
+}
+
+.accountButton {
+    width: 360px;
+    height: 56px;
+    background-color: #00849c;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    outline: none;
+}
+
+.inputBox {
+    border-color: #81A1B7;
+    border-radius: 9px;
+    border-width: 1px;
+    border-style: solid;
+    width: 360px;
+    height: 56px;
+    margin-top: 5px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.termsText {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    color: #81A1B7;
+    margin-top: 50px;
+}
