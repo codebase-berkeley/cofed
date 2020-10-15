@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+.tagShape {
+  background-color: #f8f9fb;
+  /* background-color: #1949aa; */
+  color: #81a1b7;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 5px 26px 5px 26px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 12px;
+}
