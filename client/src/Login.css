@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
+.photo {
+    width: 270px
+}
+
+
+.Logo {
+    display: flex;
+    justify-content: center;
+    padding-top: 3cm;
+}
+
+.inputTitle {
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    color: #81A1B7;
+    font-size: 14pt;
+    font-weight: 700;
+    margin: 5px;
+}
+
+.orText {
+    display: flex;
+    justify-content: center;
+    color: rgb(0, 132, 156);
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.forgetPass {
+    display: flex;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.forgetPass a:link, a:visited {
+    color: rgb(0, 132, 156);
+    font-weight: 400;
+    padding-top: 20px;
+    font-size: 16pt;
+}
+
+/* need to make the width(?) of the input boxes responsive*/
+input {
+    border-radius: 9px;
+    border: #81A1B7 solid 1pt;
+    height: 35px;
+    overflow: scroll;
+    width: 350px;
+    padding: 10px;
+    margin: 5px;
+    font-size: 12pt;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.inputPwBox, .inputEmailBox {
+    display: grid;
+    justify-content: center;
+    padding-top: 0.5cm;
+}
+
+.buttons {
+    padding-top: 1cm;
+    display: flex;
+    justify-content: center;
+}
+
+.googleButton {
+    padding-top: 0.5cm;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.googleButton button {
+    width: 370px;
+    background-color: white;
+}
+
+.googleButton img {
+    width: 20px;
+    align-content: left;
+    left: 0px;
+    margin-right: 10px;
+}
+
+button {
+    text-align: center;
+    font-size: 14pt;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    border-radius: 10px;
+    border: #00849C solid;
+    color:  #00849C;
+    width: 175;
+    height: 56px;
+    margin: 10px;
+}
+
+.buttons button {
+    width: 175px;
+    background-color: white;
+}
+
+
+.loginButton button {
+    background-color: #00849C;
+    color: white;
+}
