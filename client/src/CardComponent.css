@@ -1,0 +1,40 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #74c6ff;
+  /* max-width: 400px; */
+}
+
+.profile-pic {
+  border-radius: 1000px;
+  width: 100px;
+  height: 100px;
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  max-width: 400px;
+}
+
+/* function App() {
+    return (
+      <div className="App">
+        <CardComponent
+          name="Greg's Market"
+          location="Berkeley, CA"
+          profile="https://cdn.glitch.com/53abe631-4bd4-47de-9625-31dde7c3b0fd%2Fpuppy.jpg?v=1602738037043"
+          tags={["Montserrat", "Montserrat", "Montserrat", "Montserrat"]}
+        />
+      </div>
+    );
+  }
+  
+  export default App; */
