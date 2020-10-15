@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+.Login {
+  justify-content: center;
+}
+
+.Logo {
+  display: flex;
+  justify-content: center;
+  padding-top: 4cm;
+}
 
 .App {
   text-align: center;
