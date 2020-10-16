@@ -1,27 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+body{
+  background-color: #EFEFEF;
+}
+
 .cardContainer {
   display: flex;
   flex-direction: column;
-  background-color: #74c6ff;
-  /* max-width: 400px; */
+  background-color: white;
+  border-radius: 10px;
+  max-width: 495px;
+  padding-left: 10px;
+  border-left: 10px solid #00849c;
+
+  margin-left: 300px;
+  margin-bottom: 3px;
+}
+.pic-text-container {
+  display: flex;
+  flex-direction: row;
+  padding-left: 35px;
+  padding-top: 20px;
 }
 
 .profile-pic {
   border-radius: 1000px;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
 }
 
 .nameContainer {
   display: flex;
   flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  padding-left: 12px;
+  padding-top: 8px;
 }
 
 .tagsContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 10px;
+  margin-left: 20px;
   max-width: 400px;
+  margin-bottom: 22px;
+  margin-top: 12px;
+}
+
+#CoOp-Name {
+  font-size: 23px;
+}
+
+#CoOp-Location {
+  font-size: 17px;
 }
 
 /* function App() {
