@@ -25,4 +25,4 @@ jobs:
         with:
           node-version: '12'
           check-latest: true
-      - run: cd client && npm ci && npm run lint-check
+      - run: cd client && yarn install --frozen-lockfile && yarn run lint-check
