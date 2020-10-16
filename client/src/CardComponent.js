@@ -12,16 +12,20 @@ import Tag from "./Tag.js";
 
 function CardComponent(props) {
   return (
-    <div className="cardContainer">
-      <img className="profile-pic " alt="Image" src={props.profile} />
-      <div className="nameContainer">
-        {props.name}
-        {props.location}
-      </div>
-      <div className="tagsContainer">
-        {props.tags.map((text) => (
-          <Tag text={text} />
-        ))}
+    <div>
+      <div className="cardContainer">
+        <div className="pic-text-container">
+          <img className="profile-pic" alt="Image" src={props.profile} />
+          <div className="nameContainer">
+            <b id="CoOp-Name">{props.name}</b>
+            <div id="CoOp-Location">{props.location}</div>
+          </div>
+        </div>
+        <div className="tagsContainer">
+          {props.tags.map((text) => (
+            <Tag text={text} />
+          ))}
+        </div>
       </div>
     </div>
   );
