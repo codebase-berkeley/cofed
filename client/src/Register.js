@@ -1,11 +1,25 @@
 import React from 'react';
 import "./Register.css";
+import search_icon from './assets/search.svg'
 
 export default function Register() {
     const [nameInput, setNameInput] = React.useState("");
     const [passwordInput, setPasswordInput] = React.useState("");
     const [emailInput, setEmailInput] = React.useState("");
     const [locationInput, setLocationInput] = React.useState("");
+
+    if (nameInput){
+        console.log(nameInput)
+    }
+    if (passwordInput){
+        console.log(passwordInput)
+    }
+    if (emailInput){
+        console.log(emailInput)
+    }
+    if (locationInput){
+        console.log(locationInput)
+    }
 
     return (
         <div className = "register">
@@ -23,7 +37,7 @@ export default function Register() {
                 <p className = "inputType">Password</p> 
                 <input 
                     className="inputBox" 
-                    type="text"
+                    type="password"
                     value={passwordInput}
                     onChange={(e) => setPasswordInput(e.target.value)}
                 />
@@ -35,6 +49,7 @@ export default function Register() {
                     type="text"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
+                    
                 />
             </div>
             <div className = "textInputSet">
@@ -48,7 +63,9 @@ export default function Register() {
             </div>
             <p className="termsText">By creating an account, you agree to the <a><b>Terms and Conditions</b></a></p>
             <button className="accountButton" type="button">Create Account</button>
+            
         </div>
         
     )
+    
 }
