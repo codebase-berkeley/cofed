@@ -4,12 +4,6 @@
   justify-content: center;
 }
 
-.Logo {
-  display: flex;
-  justify-content: center;
-  padding-top: 4cm;
-}
-
 .App {
   text-align: center;
 }
