@@ -1,10 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import Register from './Register.js';
 import './App.css';
+import Login from './Login';
+import React from 'react';
 
 function App() {
-  return <Register></Register>;
+  return <Login />;
 }
 
 export default App;
