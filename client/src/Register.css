@@ -1,0 +1,62 @@
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register_header {
+  color: #00849c;
+  font: 48px 'Montserrat', sans-serif;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.textInputSet {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.inputType {
+  color: #81a1b7;
+  font: 18px 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+.accountButton {
+  width: 360px;
+  height: 56px;
+  background-color: #00849c;
+  font-size: 18px;
+  font: bold 18px 'Montserrat', sans-serif;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  outline: none;
+  cursor: pointer;
+}
+
+.accountButton:hover {
+  background-color: #0790a9;
+}
+
+.inputBox {
+  border-radius: 9px;
+  border: 1px solid #81a1b7;
+  height: 56px;
+  margin-top: 5px;
+  outline: none;
+  font: 25px 'Montserrat', sans-serif;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.termsText {
+  font: 10px 'Montserrat', sans-serif;
+  color: #81a1b7;
+  margin-top: 50px;
+}
