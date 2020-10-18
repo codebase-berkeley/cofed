@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
 .register {
     display: flex;
     flex-direction: column;
@@ -11,8 +8,7 @@
 
 .register_header {
     color: #00849c;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 48px;
+    font: 48px 'Montserrat', sans-serif;
     margin-bottom: 20px;
     margin-top: 10px;
 }
@@ -26,8 +22,7 @@
 
 .inputType {
     color: #81a1b7;
-    font-family: 'Montserrat', sans-serif; 
-    font-size: 18px; 
+    font: 18px 'Montserrat', sans-serif; 
     font-weight: 700; 
     margin-bottom: 0px;
 }
@@ -37,33 +32,32 @@
     height: 56px;
     background-color: #00849c;
     font-size: 18px;
-    font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
+    font: bold 18px 'Montserrat', sans-serif;
     color: white;
     border: none;
     border-radius: 9px;
     outline: none;
+    cursor: pointer;
+}
+
+.accountButton:hover {
+    background-color: #0790a9;
 }
 
 .inputBox {
-    border-color: #81A1B7;
     border-radius: 9px;
-    border-width: 1px;
-    border-style: solid;
-    width: 360px;
+    border: 1px solid #81a1b7;
     height: 56px;
     margin-top: 5px;
     outline: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 25px;
+    font: 25px 'Montserrat', sans-serif;
     padding-right: 15px;
     padding-left: 15px;
     
 }
 
 .termsText {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
+    font: 10px 'Montserrat', sans-serif;
     color: #81A1B7;
     margin-top: 50px;
 }
