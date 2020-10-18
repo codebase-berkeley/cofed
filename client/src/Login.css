@@ -42,7 +42,6 @@ a:visited {
   font-weight: 400;
 }
 
-/* need to make the width(?) of the input boxes responsive*/
 input {
   border-radius: 9px;
   border: #81a1b7 solid 1pt;
@@ -54,8 +53,6 @@ input {
   font-size: 12pt;
   font-family: 'Montserrat', sans-serif;
 }
-
-  
 
 .inputPwBox,
 .inputEmailBox {
@@ -99,7 +96,12 @@ input {
   margin-right: 10px;
 }
 
-/* button {
+button:focus {
+  outline: 0;
+}
+
+.loginButtons button {
+  width: 175px;
   text-align: center;
   font-size: 14pt;
   font-family: 'Montserrat', sans-serif;
@@ -107,39 +109,22 @@ input {
   border-radius: 10px;
   border: #00849c solid;
   color: #00849c;
-  width: 175;
   height: 56px;
   margin: 10px;
+  background-color: white;
 }
-*/ 
-button:focus {
-    outline:0;
-} 
 
-.loginButtons button {
-    width: 175px;
-    text-align: center;
-    font-size: 14pt;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    border-radius: 10px;
-    border: #00849c solid;
-    color: #00849c;
-    height: 56px;
-    margin: 10px;
-    background-color: white;
-  }
-
-button:hover, .loginButtons button:hover {
-    background-color:rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+button:hover,
+.loginButtons button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .login button {
-    background-color: #00849c;
-    color: white;
-  }
-  
+  background-color: #00849c;
+  color: white;
+}
+
 .login button:hover {
-    background-color:rgb(0, 97, 114);
+  background-color: rgb(0, 97, 114);
 }
