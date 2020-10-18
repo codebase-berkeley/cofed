@@ -1,6 +1,5 @@
 import React from 'react';
 import './Register.css';
-import search_icon from './assets/search.svg';
 
 export default function Register() {
   const [nameInput, setNameInput] = React.useState('');
