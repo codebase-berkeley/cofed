@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import React from 'react';
+>>>>>>> 2b39a64... typecheckig in CardComponent and Tag
 import './App.css';
 import Login from './Login';
 import React from 'react';
