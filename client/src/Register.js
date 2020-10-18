@@ -8,19 +8,13 @@ export default function Register() {
     const [emailInput, setEmailInput] = React.useState("");
     const [locationInput, setLocationInput] = React.useState("");
 
-    if (nameInput){
+    function createAccount() {
         console.log(nameInput)
-    }
-    if (passwordInput){
         console.log(passwordInput)
-    }
-    if (emailInput){
         console.log(emailInput)
-    }
-    if (locationInput){
         console.log(locationInput)
-    }
-
+    }    
+    
     return (
         <div className = "register">
             <p className="register_header">Register</p>
@@ -62,7 +56,7 @@ export default function Register() {
                 />
             </div>
             <p className="termsText">By creating an account, you agree to the <a><b>Terms and Conditions</b></a></p>
-            <button className="accountButton" type="button">Create Account</button>
+            <button className="accountButton" type="button" onClick={createAccount}>Create Account</button>
             
         </div>
         
