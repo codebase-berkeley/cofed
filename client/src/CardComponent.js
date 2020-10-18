@@ -1,14 +1,6 @@
-import React from "react";
-import "./CardComponent.css";
-import Tag from "./Tag.js";
-
-/*Large container: holds two parts*/
-/*Top part: text + image area*/
-/*Top part: text + image area*/
-/*Bottom part: flexbox left justified container*/
-/*Flexbox left justified containers: holds a map of tag parts*/
-
-/* calcuate the width of the page and make things look good accordingly*/
+import React from 'react';
+import './CardComponent.css';
+import Tag from './Tag.js';
 
 function CardComponent(props) {
   return (
@@ -17,12 +9,12 @@ function CardComponent(props) {
         <div className="pic-text-container">
           <img className="profile-pic" alt="Image" src={props.profile} />
           <div className="nameContainer">
-            <b id="CoOp-Name">{props.name}</b>
-            <div id="CoOp-Location">{props.location}</div>
+            <b class="CoOp-Name">{props.name}</b>
+            <div class="CoOp-Location">{props.location}</div>
           </div>
         </div>
         <div className="tagsContainer">
-          {props.tags.map((text) => (
+          {props.tags?.map(text => (
             <Tag text={text} />
           ))}
         </div>
@@ -31,21 +23,3 @@ function CardComponent(props) {
   );
 }
 export default CardComponent;
-
-// function SpecificContact(props) {
-//   return (
-//     <div className="contact-item">
-//       <a
-//         className="contact-link"
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         href={props.link}
-//       >
-//         <div className="contact-info">
-//           <img className="contact-img" alt="Contact Image" src={props.src} />
-//           <h5 className="contact-caption">{props.caption}</h5>
-//           <h5 className="contact-text">{props.text}</h5>
-//         </div>
-//       </a>
-//     </div>
-//   );

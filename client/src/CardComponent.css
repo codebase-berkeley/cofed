@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-body{
-  background-color: #EFEFEF;
+body {
+  background-color: #efefef;
 }
 
 .cardContainer {
@@ -12,8 +12,6 @@ body{
   max-width: 495px;
   padding-left: 10px;
   border-left: 10px solid #00849c;
-
-  margin-left: 300px;
   margin-bottom: 3px;
 }
 .pic-text-container {
@@ -32,41 +30,25 @@ body{
 .nameContainer {
   display: flex;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   text-align: left;
   padding-left: 12px;
   padding-top: 8px;
+  margin-right: 20px;
 }
 
 .tagsContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 20px;
+  margin: 12px 20px 22px 20px;
   max-width: 400px;
-  margin-bottom: 22px;
-  margin-top: 12px;
 }
 
-#CoOp-Name {
+.nameContainer {
   font-size: 23px;
 }
 
-#CoOp-Location {
+.CoOp-Location {
   font-size: 17px;
 }
-
-/* function App() {
-    return (
-      <div className="App">
-        <CardComponent
-          name="Greg's Market"
-          location="Berkeley, CA"
-          profile="https://cdn.glitch.com/53abe631-4bd4-47de-9625-31dde7c3b0fd%2Fpuppy.jpg?v=1602738037043"
-          tags={["Montserrat", "Montserrat", "Montserrat", "Montserrat"]}
-        />
-      </div>
-    );
-  }
-  
-  export default App; */
