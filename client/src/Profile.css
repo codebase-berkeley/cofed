@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+.blueBorder {
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  max-width: 630px;
+  padding-left: 10px;
+  border-left: 15px solid #00849c;
+  margin-bottom: 3px;
+  margin-left: 200px;
+}
+
+hr {
+  display: block;
+  height: 2px;
+  border: 0;
+  border-top: 1px solid #81a1b7;
+  margin: 1em 0;
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 530px;
+}
+
+.descriptions {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  color: #81a1b7;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  margin-left: 60px;
+}
+
+.profileinfo {
+  color: black;
+  font-family: 'Montserrat', sans-serif;
+  margin-left: 75px;
+  font-size: 12px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-right: 75px;
+  font-weight: 400;
+}
+
+/*Everything below here is for the ProfileTextTags Section*/
+.ProfileTextTagsContainer {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  max-width: 600px;
+  padding-left: 10px;
+  margin-bottom: 3px;
+}
+.picTextContainer {
+  display: flex;
+  flex-direction: row;
+  padding-left: 35px;
+  padding-top: 20px;
+}
+
+.profilePic {
+  border-radius: 1000px;
+  width: 123px;
+  height: 120px;
+  margin: 10px;
+  margin-top: 0px;
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  text-align: left;
+  padding-left: 12px;
+  padding-top: 8px;
+  margin-right: 20px;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 12px 20px 22px 20px;
+  max-width: 500px;
+}
+
+.profileTextContainer {
+  font: 25px 'Montserrat', sans-serif;
+  color: #00849c;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  margin-right: 20px;
+}
+
+.CoOpLocation {
+  font: 15px 'Montserrat', sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  color: black;
+  padding: 5px;
+}
+
+.CoOpContact {
+  font: 12px 'Montserrat', sans-serif;
+  color: black;
+  font-weight: 500;
+  line-height: 15px;
+  padding-left: 5px;
+  margin-top: 3px;
+}
+
+/*Note: I am changing all link colors to red*/
+a:visited {
+  background-color: transparent;
+  color: #c21d49;
+}
+/*Everything above here is for the ProfileTextTags Section*/
+
+.topDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.logoDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 50%;
+  padding-left: 10px;
+}
+
+.editDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 50%;
+  padding-right: 20px;
+}
+
+.logo {
+  width: 112px;
+  height: 40px;
+  padding-top: 10px;
+}
+
+.editButton {
+  width: 49px;
+  height: 20px;
+  border-radius: 28px;
+  background-color: #f8f9fb;
+  font: bold 10px 'Montserrat', sans-serif;
+  color: #81a1b7;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.socialsDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 50px;
+  padding-bottom: 50px;
+}
+.socialButton {
+  width: 25px;
+  height: 25px;
+  margin: 4px;
+}
+
+body {
+  background-color: lime;
+}
