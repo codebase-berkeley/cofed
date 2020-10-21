@@ -42,3 +42,50 @@
     transform: rotate(360deg);
   }
 }
+
+.viewMode button {
+  padding: 2px;
+  margin: 4px;
+  width: 120px;
+  color: #00849c;
+  background-color: white;
+  font-size: 14pt;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  border-radius: 5px;
+  border: #00849c solid 2pt;
+}
+
+.button:hover {
+  background-color: #0790a9;
+  color: white;
+}
+
+.viewMode button:active,
+.viewMode button:focus,
+.viewMode button:target {
+  background-color: #00849c;
+  color: white;
+}
+
+.container {
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.content + .content {
+  margin-left: 2%;
+}
+
+.left-content {
+  width: 33%;
+}
+
+.right-content {
+  background-color: #0790a9;
+  width: 66%;
+}
