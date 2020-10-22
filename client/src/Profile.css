@@ -125,13 +125,13 @@ hr {
   display: none;
 }
 
-.profilePicContainer:hover + .editPic {
+/* .profilePicContainer:hover + .editPic {
   display: inline;
   position: absolute;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-}
+} */
 
 .nameContainer {
   display: flex;
