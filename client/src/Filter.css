@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-.title {
+.select-title {
   font-family: 'Montserrat';
   margin-top: 1px 0px 1px 0px;
   color: #81a1b7;
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 14pt;
+  font-weight: 600;
+  text-align: left;
 }

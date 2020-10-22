@@ -43,12 +43,20 @@
   }
 }
 
-.viewMode button {
+.filter-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  color: #00849c;
+  font-size: 20pt;
+  margin: 0;
+}
+
+.activeButton {
+  background-color: #00849c;
+  color: white;
   padding: 2px;
   margin: 4px;
-  width: 120px;
-  color: #00849c;
-  background-color: white;
+  width: 110px;
   font-size: 14pt;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
@@ -56,36 +64,92 @@
   border: #00849c solid 2pt;
 }
 
-.button:hover {
-  background-color: #0790a9;
+.activeButton:hover {
+  background-color: #00849c;
   color: white;
 }
 
-.viewMode button:active,
-.viewMode button:focus,
-.viewMode button:target {
+.inactiveButton {
+  background-color: white;
+  color: #00849c;
+  padding: 2px;
+  margin: 4px;
+  width: 110px;
+  font-size: 14pt;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  border-radius: 5px;
+  border: #00849c solid 2pt;
+}
+
+.inactiveButton:hover {
   background-color: #00849c;
   color: white;
 }
 
 .container {
   display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  height: 90vh;
 }
 
 .content {
   flex-grow: 1;
-  height: 100%;
 }
 
-.content + .content {
+/* .content + .content {
   margin-left: 2%;
-}
+} */
 
 .left-content {
-  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25vw;
+  height: 90vh;
+  border-right: 1px solid #e4e4e4;
 }
 
 .right-content {
-  background-color: #0790a9;
-  width: 66%;
+  display: flex;
+  width: 75vw;
+  background-color: white;
+}
+
+.Filters {
+  margin: 10px;
+}
+
+.filterContainer {
+  border-radius: 10px;
+  border: 1px solid #e4e4e4;
+}
+
+.viewMode {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+  margin: 10px;
+  margin-right: 40px;
+}
+
+.filterReset {
+  display: flex;
+  width: fill;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 10px;
+  margin-left: 40px;
+}
+
+.reset {
+  font-size: 12pt;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  color: #c21d49;
+  margin: 10px;
+  background: white;
+  border: none;
 }

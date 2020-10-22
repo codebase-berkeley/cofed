@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 12vh;
+  height: 10vh;
   border-bottom: 1px solid #e4e4e4;
 }
 
@@ -25,6 +25,7 @@
 .hello {
   margin: 40px;
   font: 18px 'Montserrat', sans-serif;
+  font-weight: 300;
 }
 
 .logoutButton,
@@ -34,10 +35,10 @@
   margin-right: 40px;
   background-color: white;
   font-size: 10px;
+  font-weight: 300;
   font: 18px 'Montserrat', sans-serif;
   color: black;
   border: none;
-  border-radius: 9px;
   outline: none;
   cursor: pointer;
 }

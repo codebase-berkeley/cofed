@@ -11,121 +11,128 @@
 // div box with scroll
 // -
 
+import './Filter.css';
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Tag from './Tag.js'
-import "./Filter.css"
+import Tag from './Tag.js';
 
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 350,
-    maxWidth: 300,
-    border:'2px solid #81A1B7',
+import Select, { components } from 'react-select';
 
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-    // co
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
-}));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const tags = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
+function arrayMove(array, from, to) {
+  array = array.slice();
+  array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
+  return array;
 }
 
-export default function MultipleSelect(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+const colourOptions = [
+  { value: 'purple', label: 'Purple' },
+  { value: 'orange', label: 'Orange' },
+  { value: 'yellow', label: 'Yellow' },
+  { value: 'green', label: 'Green' },
+  { value: 'forest', label: 'Forest' },
+  { value: 'slate', label: 'Slate' },
+  { value: 'silver', label: 'Silver' },
+];
 
-  const handleChange = event => {
-    setPersonName(event.target.value);
+const TagStyle = {
+  control: styles => ({
+    ...styles,
+    backgroundColor: 'white',
+    borderColor: '#81A1B7',
+    borderRadius: '10px',
+    width: '20vw',
+    margin: '10px',
+
+    ':focused, :active': {
+      ...styles[':focus'],
+      border: '1px solid #81A1B7',
+      boxShadow: 'none',
+    },
+  }),
+  placeholder: styles => ({
+    ...styles,
+    color: '#ffffff',
+    fontFamily: 'Montserrat',
+    color: '#81A1B7',
+  }),
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    return {
+      ...styles,
+      backgroundColor: isDisabled,
+      color: isDisabled,
+      // cursor: isDisabled ? 'not-allowed' : 'default',
+
+      ':active': {
+        ...styles[':active'],
+        backgroundColor: 'grey',
+        borderColor: '#81A1B7',
+      },
+    };
+  },
+  multiValue: (styles, { data }) => {
+    return {
+      ...styles,
+      backgroundColor: '#f8f9fb',
+      borderRadius: '20px',
+      border: '1px solid #00849C',
+      color: '#81A1B7',
+      fontFamily: 'Montserrat',
+      fontWeight: 'bold',
+      padding: '4px 22px',
+      // marginTop: '10px',
+      // marginLeft: '7px',
+      fontSize: '13px',
+    };
+  },
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: '#81A1B7',
+    fontSize: '12pt',
+  }),
+  // multiValueRemove: (styles, { data }) => ({
+  //   ...styles,
+  //   color: data.color,
+  //   ':hover': {
+  //     backgroundColor: data.color,
+  //     color: 'white',
+  //   },
+  // }),
+};
+
+export default function MultiSelectSort() {
+  const [selected, setSelected] = React.useState([]);
+
+  const onChange = selectedOptions => setSelected(selectedOptions);
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const newValue = arrayMove(selected, oldIndex, newIndex);
+    setSelected(newValue);
+    console.log(
+      'Values sorted:',
+      newValue.map(i => i.value)
+    );
   };
 
-  const handleChangeMultiple = event => {
-    const { options } = event.target;
-    const value = [];
-      for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
-  };
+  function resetAll() {
+    console.log('delete all');
+    setSelected(null);
+  }
 
   return (
-    <div>
-      <div className = "title">{props.title}</div>
-      <FormControl className={classes.formControl}>
-        {/* < */}
-        <InputLabel id="demo-mutiple-chip-label">{"Select " + props.title}</InputLabel>
-        <Select
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<Input id="select-multiple-chip" />}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-             {selected.map(text => <Tag text={text} key={selected.name + text} />)}
-            </div>
-          )}
-          MenuProps={MenuProps}
-        >
-          {tags.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-  
+    <div className="Filters">
+      <div className="select-title">Title</div>
+      <Select
+        // react-sortable-hoc props:
+        axis="xy"
+        onSortEnd={onSortEnd}
+        distance={4}
+        // small fix for https://github.com/clauderic/react-sortable-hoc/pull/352:
+        getHelperDimensions={({ node }) => node.getBoundingClientRect()}
+        // react-select props:
+        isMulti
+        styles={TagStyle}
+        options={colourOptions}
+        value={selected}
+        onChange={onChange}
+      ></Select>
     </div>
   );
 }
