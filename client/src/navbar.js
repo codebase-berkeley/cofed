@@ -6,15 +6,15 @@ function logout() {
   console.log('Logged Out');
 }
 
-export default function NavBar() {
+export default function NavBar(props) {
   return (
     <div className="navbar">
       <img className="logo" src={logo} alt="cofed logo" />
       <div className="rightside">
         <p className="hello">
           Hello,{' '}
-          <a>
-            <b>Rad Radishes</b>
+          <a href="#" target="_blank">
+            <b>{props.username}</b>
           </a>
         </p>
         <button className="logoutButton" type="button" onClick={logout}>

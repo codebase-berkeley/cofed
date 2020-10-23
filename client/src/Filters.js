@@ -13,7 +13,6 @@
 
 import './Filter.css';
 import React from 'react';
-import Tag from './Tag.js';
 
 import Select, { components } from 'react-select';
 
@@ -24,42 +23,58 @@ function arrayMove(array, from, to) {
 }
 
 const colourOptions = [
-  { value: 'purple', label: 'Purple' },
-  { value: 'orange', label: 'Orange' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'green', label: 'Green' },
-  { value: 'forest', label: 'Forest' },
-  { value: 'slate', label: 'Slate' },
-  { value: 'silver', label: 'Silver' },
+  { value: 'richard', label: 'Richard' },
+  { value: 'bianca', label: 'Bianca' },
+  { value: 'claire', label: 'Claire' },
+  { value: 'ranon', label: 'Ranon' },
+  { value: 'eric', label: 'Eric' },
+  { value: 'isabel', label: 'Isabel' },
+  { value: 'jane', label: 'Jane' },
+  { value: 'zaid', label: 'Zaid' },
 ];
 
 const TagStyle = {
-  control: styles => ({
+  control: (styles, { isFocused }) => ({
     ...styles,
     backgroundColor: 'white',
-    borderColor: '#81A1B7',
+    border: isFocused ? '2px solid #00849c' : '1px solid #81A1B7',
     borderRadius: '10px',
     width: '20vw',
     margin: '10px',
+    boxShadow: isFocused ? 'pink' : 'none',
 
-    ':focused, :active': {
+    ':hover': {
+      border: isFocused ? '2px solid #00849c' : '1px solid #81A1B7',
+    },
+
+    ':focused, :active, :hover': {
       ...styles[':focus'],
-      border: '1px solid #81A1B7',
+      border: '1px solid blue',
       boxShadow: 'none',
     },
   }),
   placeholder: styles => ({
     ...styles,
-    color: '#ffffff',
     fontFamily: 'Montserrat',
     color: '#81A1B7',
+    fontWeight: '300',
+    paddingLeft: '10px',
   }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     return {
       ...styles,
       backgroundColor: isDisabled,
       color: isDisabled,
+      fontFamily: 'Montserrat',
+      fontWeight: '300',
+      textAlign: 'left',
       // cursor: isDisabled ? 'not-allowed' : 'default',
+
+      ':hover': {
+        ...styles[':hover'],
+        backgroundColor: '#d9e3ea',
+        borderColor: '#81A1B7',
+      },
 
       ':active': {
         ...styles[':active'],
@@ -86,39 +101,36 @@ const TagStyle = {
   multiValueLabel: (styles, { data }) => ({
     ...styles,
     color: '#81A1B7',
-    fontSize: '12pt',
+    fontSize: 'pt',
   }),
-  // multiValueRemove: (styles, { data }) => ({
-  //   ...styles,
-  //   color: data.color,
-  //   ':hover': {
-  //     backgroundColor: data.color,
-  //     color: 'white',
-  //   },
-  // }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: data.color,
+    ':hover': {
+      backgroundColor: '#DCDCDC',
+      borderRadius: '20px',
+      color: 'white',
+    },
+  }),
 };
 
-export default function MultiSelectSort() {
-  const [selected, setSelected] = React.useState([]);
-
-  const onChange = selectedOptions => setSelected(selectedOptions);
+export default function MultiSelectSort(props) {
+  //const [selected, setSelected] = React.useState([]);
+  const onChange = selectedOptions => {
+    props.onChange(selectedOptions);
+  };
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    const newValue = arrayMove(selected, oldIndex, newIndex);
-    setSelected(newValue);
+    const newValue = arrayMove(props.values, oldIndex, newIndex);
+    props.onChange(newValue);
     console.log(
       'Values sorted:',
       newValue.map(i => i.value)
     );
   };
 
-  function resetAll() {
-    console.log('delete all');
-    setSelected(null);
-  }
-
   return (
     <div className="Filters">
-      <div className="select-title">Title</div>
+      <div className="select-title">{props.title}</div>
       <Select
         // react-sortable-hoc props:
         axis="xy"
@@ -130,8 +142,9 @@ export default function MultiSelectSort() {
         isMulti
         styles={TagStyle}
         options={colourOptions}
-        value={selected}
+        value={props.values}
         onChange={onChange}
+        placeholder={'Select ' + props.title + '...'}
       ></Select>
     </div>
   );

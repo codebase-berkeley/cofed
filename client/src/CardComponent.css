@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-body {
+.CardComponent body {
   background-color: #efefef;
 }
 
@@ -9,11 +9,14 @@ body {
   flex-direction: column;
   background-color: white;
   border-radius: 10px;
-  max-width: 495px;
+  max-width: 35vw;
   padding-left: 10px;
   border-left: 10px solid #00849c;
   margin-bottom: 3px;
+  border-bottom: 1px solid #dde8ec;
+  max-height: 18vw;
 }
+
 .pic-text-container {
   display: flex;
   flex-direction: row;

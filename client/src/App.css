@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
 .Login {
   justify-content: center;
 }
 
 .App {
   text-align: center;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
 }
 
 .App-logo {
@@ -47,7 +52,7 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   color: #00849c;
-  font-size: 20pt;
+  font-size: 24pt;
   margin: 0;
 }
 
@@ -55,11 +60,11 @@
   background-color: #00849c;
   color: white;
   padding: 2px;
-  margin: 4px;
-  width: 110px;
-  font-size: 14pt;
+  margin: 2px;
+  width: 90px;
+  font-size: 12pt;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 5px;
   border: #00849c solid 2pt;
 }
@@ -73,11 +78,11 @@
   background-color: white;
   color: #00849c;
   padding: 2px;
-  margin: 4px;
-  width: 110px;
-  font-size: 14pt;
+  margin: 2px;
+  width: 90px;
+  font-size: 12pt;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 5px;
   border: #00849c solid 2pt;
 }
@@ -98,32 +103,50 @@
   flex-grow: 1;
 }
 
-/* .content + .content {
-  margin-left: 2%;
-} */
-
 .left-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 25vw;
+  border-right: 1px solid #e4e4e4;
+  height: 90vh;
+  overflow-y: hidden;
+}
+
+.centre-content {
+  display: flex;
+  flex-direction: column;
+  width: 35vw;
+  background-color: white;
   height: 90vh;
   border-right: 1px solid #e4e4e4;
+  overflow-y: scroll;
 }
 
 .right-content {
   display: flex;
-  width: 75vw;
+  flex-direction: column;
+  width: 40vw;
+  height: 90vh;
   background-color: white;
 }
 
 .Filters {
-  margin: 10px;
+  margin-bottom: 20px;
 }
 
 .filterContainer {
   border-radius: 10px;
   border: 1px solid #e4e4e4;
+  height: 100%;
+  margin: 25px;
+  padding: 5px;
+  overflow-y: hidden;
+}
+
+.filterScroll {
+  height: 99%;
+  overflow-y: scroll;
 }
 
 .viewMode {
@@ -140,8 +163,9 @@
   width: fill;
   flex-direction: row;
   justify-content: flex-start;
-  margin: 10px;
-  margin-left: 40px;
+  align-content: flex-end;
+  margin: 5px;
+  margin-left: 22px;
 }
 
 .reset {
@@ -152,4 +176,28 @@
   margin: 10px;
   background: white;
   border: none;
+}
+
+.reset:hover {
+  text-decoration: underline;
+  background: none;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9px;
+  background: #d9e3ea;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c7d2da;
 }

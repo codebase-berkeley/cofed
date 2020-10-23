@@ -7,4 +7,6 @@
   font-size: 14pt;
   font-weight: 600;
   text-align: left;
+  text-transform: capitalize;
+  margin-left: 20px;
 }
