@@ -5,6 +5,7 @@ import cofedlogo from './assets/CoFEDlogo.png';
 import instagram from './assets/instagram.svg';
 import facebook from './assets/facebook.svg';
 import tina from './assets/tina.png';
+import plusSign from './assets/plus-sign.svg';
 
 export default function Profile(props) {
   const [edit, setEdit] = React.useState(false);
@@ -52,7 +53,8 @@ export default function Profile(props) {
         <div className="ProfileTextTagsContainer">
           <div className="picTextContainer">
             <div className="profPicContainer">
-              <button className="editPic">+</button>
+              <img className="profilePic" alt="Image" src={tina} />
+              <img className="editPic" alt="Image" src={plusSign} />
             </div>
             <div className="editProfileTextContainer">
               <input

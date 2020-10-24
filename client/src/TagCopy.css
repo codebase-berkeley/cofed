@@ -27,7 +27,6 @@
   margin-top: 10px;
   margin-left: 7px;
   font-size: 12px;
-  cursor: pointer;
 }
 
 .tagDeleteButton {
@@ -36,7 +35,7 @@
   border-radius: 28px;
   margin-right: 10px;
   padding-right: 8px;
-  background-color: #f8f9fb;
+  background-color: transparent;
   font: bold 10px 'Montserrat', sans-serif;
   color: #81a1b7;
   outline: none;
@@ -44,5 +43,6 @@
   cursor: pointer;
 }
 .tagDeleteButton:hover {
-  background-color: #ff6890;
+  color: #ff6890;
+  background-color: transparent;
 }
