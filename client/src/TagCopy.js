@@ -17,11 +17,14 @@ export default function Tag(props) {
   function renderEdit() {
     return (
       <div
-        onClick={() => props.onDelete(props.index)}
+        // {/*onClick={() => props.onDelete(props.index)*/}
         className="tagShapeEdit"
         edit={props.edit}
       >
-        {'ⓧ  ' + props.text}
+        <button className="tagDeleteButton" 
+        onClick={() => props.onDelete(props.index)}>ⓧ</button>
+        {/*'ⓧ  ' + props.text*/}
+        {props.text}
       </div>
     );
   }
