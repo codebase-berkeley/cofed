@@ -16,30 +16,19 @@ export default function Tag(props) {
 
   function renderEdit() {
     return (
-      <div
-        // {/*onClick={() => props.onDelete(props.index)*/}
-        className="tagShapeEdit"
-        edit={props.edit}
-      >
-        <button className="tagDeleteButton" 
-        onClick={() => props.onDelete(props.index)}>ⓧ</button>
-        {/*'ⓧ  ' + props.text*/}
+      <div className="tagShapeEdit" edit={props.edit}>
+        <button
+          className="tagDeleteButton"
+          onClick={() => props.onDelete(props.index)}
+        >
+          ⓧ
+        </button>
         {props.text}
       </div>
     );
   }
 
   return <>{edit ? renderEdit() : renderDisplay()}</>;
-
-  // return (
-  //   <div
-  //   onClick={() => props.onDelete(props.index)}
-  //   className="tagShape"
-  //   edit={props.edit}
-  //   >
-  //   {"ⓧ " + props.text}
-  //   </div>
-  // )
 }
 
 Tag.propTypes = { text: PropTypes.string };
