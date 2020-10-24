@@ -86,7 +86,6 @@ hr {
   line-height: 20px;
 }
 
-/*Everything below here is for the ProfileTextTags Section*/
 .ProfileTextTagsContainer {
   display: flex;
   flex-direction: column;
@@ -170,7 +169,6 @@ hr {
   width: 80%;
   flex-wrap: wrap;
   margin-left: 15px;
-  /* margin-right: 20px; */
 }
 
 .CoOpLocation {
@@ -195,7 +193,7 @@ a:visited {
   background-color: transparent;
   color: #c21d49;
 }
-/*Everything above here is for the ProfileTextTags Section*/
+
 .NameInput {
   font: 25px 'Montserrat', sans-serif;
   font-weight: bold;
