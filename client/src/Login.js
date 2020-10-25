@@ -1,5 +1,5 @@
-import CofedLogo from './CoFEDlogo.png';
-import GoogleLogo from './GoogleLogo.png';
+import CofedLogo from './assets/CoFEDlogo.png';
+import GoogleLogo from './assets/GoogleLogo.png';
 import React from 'react';
 import './Login.css';
 
