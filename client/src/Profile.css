@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-.blueBorder {
+.blue-border {
   display: block;
   flex-direction: column;
   justify-content: center;
@@ -9,8 +8,7 @@
   max-width: 630px;
   padding-left: 10px;
   border-left: 15px solid #00849c;
-  margin-bottom: 3px;
-  margin-left: 200px;
+  margin: 200px 0 3px;
   height: 880px;
 }
 
@@ -19,9 +17,7 @@ hr {
   height: 2px;
   border: 0;
   border-top: 1px solid #81a1b7;
-  margin: 1em 0;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin: 20px 20px 20px 50px;
   width: 530px;
 }
 
@@ -38,28 +34,22 @@ hr {
   margin-left: 60px;
 }
 
-.profileinfo {
+.profile-info {
   color: black;
   font-family: 'Montserrat', sans-serif;
-  margin-left: 75px;
   font-size: 12px;
-  margin-bottom: 15px;
-  margin-top: 15px;
-  margin-right: 75px;
+  margin: 15px 75px;
   font-weight: 400;
   word-wrap: break-word;
 }
 
-.missionInput {
+.mission-input {
   border-radius: 9px;
   border: 1px solid #81a1b7;
-  margin-top: 5px;
-  margin-left: 60px;
+  margin: 5px 0 0 60px;
   outline: none;
   font: 12px 'Montserrat', sans-serif;
-  padding: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 5px 15px;
   display: block;
   overflow: auto;
   resize: none;
@@ -68,16 +58,13 @@ hr {
   line-height: 20px;
 }
 
-.descriptionInput {
+.description-input {
   border-radius: 9px;
   border: 1px solid #81a1b7;
-  margin-top: 5px;
-  margin-left: 60px;
+  margin: 5px 0 0 60px;
   outline: none;
   font: 12px 'Montserrat', sans-serif;
-  padding: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 5px 20px 5px 20px;
   display: block;
   overflow: auto;
   resize: none;
@@ -86,7 +73,7 @@ hr {
   line-height: 20px;
 }
 
-.ProfileTextTagsContainer {
+.profile-text-tags-container {
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -94,27 +81,33 @@ hr {
   padding-left: 10px;
   margin-bottom: 3px;
 }
-.picTextContainer {
+.pic-text-container {
   display: flex;
   flex-direction: row;
-  padding-left: 35px;
-  padding-top: 20px;
+  padding: 20px 0 0 35px;
 }
 
-.profilePic {
+.profile-pic {
   border-radius: 1000px;
   width: 123px;
   height: 120px;
   margin: 10px;
-  margin-top: 0px;
+}
+.profile-pic-edit {
+  border-radius: 1000px;
+  width: 123px;
+  height: 120px;
+  margin: 10px;
+  opacity: 0.3;
 }
 
-.profPicContainer {
+.prof-pic-container {
   position: relative;
 }
 
-.editPic {
-  display: none;
+.edit-pic {
+  display: inline;
+  cursor: pointer;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -126,42 +119,32 @@ hr {
   border-radius: 50%;
 }
 
-.profPicContainer:hover .editPic {
-  display: inline;
-}
-
-.profPicContainer:hover .profilePic {
-  opacity: 0.3;
-}
-
-.nameContainer {
+.name-container {
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
   text-align: left;
-  padding-left: 12px;
-  padding-top: 8px;
+  padding: 8px 0 0 12px;
   margin-right: 20px;
 }
 
-.tagsContainer {
+.tags-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 12px 20px 22px 20px;
+  margin: 12px 20px;
   max-width: 500px;
 }
 
-.profileTextContainer {
+.profile-text-container {
   font: 25px 'Montserrat', sans-serif;
   color: #00849c;
   display: flex;
   flex-direction: column;
-  margin-left: 15px;
-  margin-right: 20px;
+  margin: 0 20px 0 15px;
 }
 
-.editProfileTextContainer {
+.edit-profile-text-container {
   font: 25px 'Montserrat', sans-serif;
   color: #00849c;
   display: flex;
@@ -171,7 +154,16 @@ hr {
   margin-left: 15px;
 }
 
-.CoOpLocation {
+.co-op-name {
+  font: 25px 'Montserrat', sans-serif;
+  font-weight: bold;
+  color: #00849c;
+  height: 30px;
+  width: 294px;
+  outline: none;
+}
+
+.co-op-location {
   font: 15px 'Montserrat', sans-serif;
   font-weight: 500;
   line-height: 18px;
@@ -179,7 +171,7 @@ hr {
   padding: 5px;
 }
 
-.CoOpContact {
+.co-op-contact {
   font: 12px 'Montserrat', sans-serif;
   color: black;
   font-weight: 500;
@@ -188,13 +180,17 @@ hr {
   margin-top: 3px;
 }
 
-/*Note: I am changing all link colors to red*/
-a:visited {
-  background-color: transparent;
-  color: #c21d49;
+.co-op-contact-link {
+  font: 12px 'Montserrat', sans-serif;
+  color: black;
+  font-weight: 500;
+  line-height: 15px;
+  padding-left: 5px;
+  margin-top: 3px;
+  color: #00849c;
 }
 
-.NameInput {
+.name-input {
   font: 25px 'Montserrat', sans-serif;
   font-weight: bold;
   color: #00849c;
@@ -203,56 +199,33 @@ a:visited {
   padding: 10px;
   outline: none;
 }
-.smallInput {
+.small-input {
   font: 11px 'Montserrat', sans-serif;
   font-weight: 500;
   line-height: 11px;
   border-radius: 5px;
   color: black;
-  padding: 5px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 5px 13px 5px 13px;
   width: 126px;
   height: 15px;
   outline: none;
 }
 
-.topDiv {
+.top-div {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: flex-end;
   margin-top: 10px;
   width: 100%;
 }
 
-.logoDiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 50%;
-  padding-left: 10px;
-}
-
-.editDiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 50%;
-  padding-right: 20px;
-}
-
-.logo {
-  width: 112px;
-  height: 40px;
-  padding-top: 10px;
-}
-
-.editButton {
+.edit-button {
   width: 49px;
   height: 20px;
   border-radius: 28px;
   background-color: #f8f9fb;
   font: bold 10px 'Montserrat', sans-serif;
+  margin: 20px 20px 0px 0px;
   color: #81a1b7;
   outline: none;
   border: none;
@@ -260,12 +233,13 @@ a:visited {
   box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.2), 0 0px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
-.saveButton {
+.save-button {
   width: 49px;
   height: 20px;
   border-radius: 28px;
   background-color: #81a1b7;
   font: bold 10px 'Montserrat', sans-serif;
+  margin: 20px 20px 0px 0px;
   color: white;
   outline: none;
   border: none;
@@ -273,14 +247,13 @@ a:visited {
   box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.2), 0 0px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
-.socialsDiv {
+.socials-div {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  padding-left: 50px;
-  padding-bottom: 50px;
+  padding: 0 0 50px 50px;
 }
-.socialButton {
+.social-button {
   width: 25px;
   height: 25px;
   margin: 4px;

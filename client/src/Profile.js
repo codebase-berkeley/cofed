@@ -1,18 +1,16 @@
 import React from 'react';
 import './Profile.css';
-import Tag from './TagCopy.js';
-import cofedlogo from './assets/CoFEDlogo.png';
+import Tag from './Tag.js';
 import instagram from './assets/instagram.svg';
 import facebook from './assets/facebook.svg';
 import tina from './assets/tina.png';
 import plusSign from './assets/plus-sign.svg';
 
 export default function Profile(props) {
-  const [edit, setEdit] = React.useState(false);
-  const [name, setName] = React.useState(props.name); //from props
-  const [location, setLocation] = React.useState(props.location); //from props
+  const [editMode, setEditMode] = React.useState(false);
+  const [name, setName] = React.useState(props.name);
+  const [location, setLocation] = React.useState(props.location);
 
-  const [profilePic, setProfilePic] = React.useState(props.profilePic);
   const [phone, setPhone] = React.useState(props.phone);
   const [tags, setTags] = React.useState(props.tags);
   const [mission, setMission] = React.useState(props.missionText);
@@ -21,9 +19,7 @@ export default function Profile(props) {
   const [fbLink, setFbLink] = React.useState(props.fbLink);
 
   const [website, setWebsite] = React.useState(props.website);
-  const [websiteLink, setWebsiteLink] = React.useState(props.websiteLink);
   const [email, setEmail] = React.useState(props.email);
-  const [emailLink, setEmailLink] = React.useState(props.emailLink);
 
   function handleDelete(tagIndex) {
     const newTags = tags.filter((tag, i) => i != tagIndex);
@@ -31,82 +27,26 @@ export default function Profile(props) {
   }
 
   function toggleEdit() {
-    //edit button function
-    setEdit(!edit);
+    setEditMode(!editMode);
   }
 
   function renderEdit() {
     return (
-      <div className="blueBorder">
-        <div className="topDiv">
-          <div className="logoDiv">
-            <a href="https://www.cofed.coop/">
-              <img src={cofedlogo} className="logo" />
-            </a>
-          </div>
-          <div className="editDiv">
-            <button className="saveButton" onClick={toggleEdit}>
-              Save
-            </button>
-          </div>
+      <div className="blue-border">
+        <div className="top-div">
+          <button className="save-button" onClick={toggleEdit}>
+            Save
+          </button>
         </div>
-        <div className="ProfileTextTagsContainer">
-          <div className="picTextContainer">
-            <div className="profPicContainer">
-              <img className="profilePic" alt="Image" src={tina} />
-              <img className="editPic" alt="Image" src={plusSign} />
-            </div>
-            <div className="editProfileTextContainer">
-              <input
-                className="NameInput"
-                type="text"
-                placeholder="Enter name:"
-                value={name}
-                onChange={e => setName(e.target.value)}
-              ></input>
-
-              <input
-                className="smallInput"
-                type="text"
-                placeholder="Enter location:"
-                value={location}
-                onChange={e => setLocation(e.target.value)}
-              ></input>
-
-              <input
-                className="smallInput"
-                type="text"
-                placeholder="Enter website link:"
-                value={website}
-                onChange={e => setWebsite(e.target.value)}
-              ></input>
-
-              <input
-                className="smallInput"
-                type="text"
-                placeholder="Enter email address:"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              ></input>
-
-              <input
-                className="smallInput"
-                type="text"
-                placeholder="Enter phone number:"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-              ></input>
-            </div>
-          </div>
-
-          <div className="tagsContainer">
+        <div className="profile-text-tags-container">
+          {renderContactInputs()}
+          <div className="tags-container">
             {tags &&
               tags.map((text, index) => (
                 <Tag
                   key={index}
                   text={text}
                   index={index}
-                  edit={edit}
                   onDelete={handleDelete}
                 />
               ))}
@@ -116,7 +56,7 @@ export default function Profile(props) {
           <hr />
           <div className="header">Mission Statement</div>
           <textarea
-            className="missionInput"
+            className="mission-input"
             type="text"
             placeholder="Enter mission statement:"
             maxLength="350"
@@ -126,7 +66,7 @@ export default function Profile(props) {
           <hr />
           <div className="header">Description</div>
           <textarea
-            className="descriptionInput"
+            className="description-input"
             type="text"
             placeholder="Enter description:"
             maxLength="1000"
@@ -135,89 +75,152 @@ export default function Profile(props) {
           ></textarea>
           <hr />
         </div>
-        <div className="socialsDiv">
+        {renderEditSocials()}
+      </div>
+    );
+  }
+
+  function renderContactInputs() {
+    return (
+      <div className="pic-text-container">
+        <div className="prof-pic-container">
+          <img className="profile-pic-edit" alt="Image" src={tina} />
+          <img className="edit-pic" alt="Image" src={plusSign} />
+        </div>
+        <div className="edit-profile-text-container">
           <input
-            className="smallInput"
+            className="name-input"
             type="text"
-            placeholder="Enter facebok link:"
-            value={fbLink}
-            onChange={e => setFbLink(e.target.value)}
+            placeholder="Enter name:"
+            value={name}
+            onChange={e => setName(e.target.value)}
           ></input>
+
           <input
-            className="smallInput"
+            className="small-input"
             type="text"
-            placeholder="Enter instagram link:"
-            value={instaLink}
-            onChange={e => setInstaLink(e.target.value)}
+            placeholder="Enter location:"
+            value={location}
+            onChange={e => setLocation(e.target.value)}
+          ></input>
+
+          <input
+            className="small-input"
+            type="text"
+            placeholder="Enter website link:"
+            value={website}
+            onChange={e => setWebsite(e.target.value)}
+          ></input>
+
+          <input
+            className="small-input"
+            type="text"
+            placeholder="Enter email address:"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          ></input>
+
+          <input
+            className="small-input"
+            type="text"
+            placeholder="Enter phone number:"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
           ></input>
         </div>
+      </div>
+    );
+  }
+
+  function renderEditSocials() {
+    return (
+      <div className="socials-div">
+        <input
+          className="small-input"
+          type="text"
+          placeholder="Enter facebok link:"
+          value={fbLink}
+          onChange={e => setFbLink(e.target.value)}
+        ></input>
+        <input
+          className="small-input"
+          type="text"
+          placeholder="Enter instagram link:"
+          value={instaLink}
+          onChange={e => setInstaLink(e.target.value)}
+        ></input>
       </div>
     );
   }
 
   function renderDisplay() {
     return (
-      <div className="blueBorder">
-        <div className="topDiv">
-          <div className="logoDiv">
-            <a href="https://www.cofed.coop/">
-              <img src={cofedlogo} className="logo" />
-            </a>
-          </div>
-          <div className="editDiv">
-            <button className="editButton" onClick={toggleEdit}>
-              Edit
-            </button>
-          </div>
+      <div className="blue-border">
+        <div className="top-div">
+          <button className="edit-button" onClick={toggleEdit}>
+            Edit
+          </button>
         </div>
-        <div className="ProfileTextTagsContainer">
-          <div className="picTextContainer">
-            <img className="profilePic" alt="Image" src={tina} />
-            <div className="profileTextContainer">
-              <b className="CoOpName">{name}</b>
-              <div className="CoOpLocation">{location}</div>
-              <a className="CoOpContact" href={websiteLink} target="_blank">
-                {website}
-              </a>
-              <a className="CoOpContact" href={emailLink} target="_blank">
-                {email}
-              </a>
-              <div className="CoOpContact">{phone} </div>
-            </div>
-          </div>
-          <div className="tagsContainer">
+        <div className="profile-text-tags-container">
+          {renderContact()}
+          <div className="tags-container">
             {tags &&
               tags.map((text, index) => (
-                <Tag
-                  key={index}
-                  text={text}
-                  index={index}
-                  edit={edit}
-                  onDelete={handleDelete}
-                />
+                <Tag key={index} text={text} index={index} />
               ))}
           </div>
         </div>
         <div className="descriptions">
           <hr />
           <div className="header">Mission Statement</div>
-          <div className="profileinfo">{mission}</div>
+          <div className="profile-info">{mission}</div>
           <hr />
           <div className="header">Description</div>
-          <div className="profileinfo">{description}</div>
+          <div className="profile-info">{description}</div>
           <hr />
         </div>
-        <div className="socialsDiv">
-          <a href={instaLink} target="_blank">
-            <img src={facebook} className="socialButton" />
+        <div className="socials-div">
+          <a href={instaLink} target="_blank" rel="noreferrer">
+            <img src={facebook} className="social-button" />
           </a>
-          <a href={fbLink} target="_blank">
-            <img src={instagram} className="socialButton" />
+          <a href={fbLink} target="_blank" rel="noreferrer">
+            <img src={instagram} className="social-button" />
           </a>
         </div>
       </div>
     );
   }
 
-  return <>{edit ? renderEdit() : renderDisplay()}</>;
+  function renderContact() {
+    return (
+      <div className="profile-text-tags-container">
+        <div className="pic-text-container">
+          <img className="profile-pic" alt="Image" src={tina} />
+          <div className="profile-text-container">
+            <b className="co-op-name">{name}</b>
+            <div className="co-op-location">{location}</div>
+            <a
+              className="co-op-contact-link"
+              href={website}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {website}
+            </a>
+            <a
+              className="co-op-contact-link"
+              href={email}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {email}
+            </a>
+            <div className="co-op-contact">{phone} </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return editMode ? renderEdit() : renderDisplay();
 }
