@@ -1,6 +1,7 @@
 import React from 'react';
 import './navbar.css';
 import logo from './CoFEDlogo.png';
+import PropTypes from 'prop-types';
 
 function logout() {
   console.log('Logged Out');
@@ -24,3 +25,7 @@ export default function NavBar(props) {
     </div>
   );
 }
+
+NavBar.propTypes = {
+  username: PropTypes.string,
+};

@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div className="App">
       <NavBar username="Rad Radishes" />
-      <FiltersPage />{' '}
+      <FiltersPage />
     </div>
   );
 }

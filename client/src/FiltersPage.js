@@ -1,5 +1,6 @@
-import './App.css';
+import './FiltersPage.css';
 import Login from './Login';
+import CoFEDlogo from './CoFEDlogo.png';
 import CardComponent from './CardComponent';
 import Filters from './Filters';
 import NavBar from './navbar';
@@ -7,47 +8,50 @@ import React from 'react';
 import './Filter.css';
 
 export default function FiltersPage() {
-  ///////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////
-  // Map and List view mode buttons
+  const [listOrMap, setListOrMap] = React.useState(true);
 
-  const [mode, setMode] = React.useState(1);
-
-  function render() {
-    if (mode == 1) {
+  function renderView() {
+    if (listOrMap == true) {
       return (
         <div>
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
+            profile={CoFEDlogo}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
@@ -59,64 +63,38 @@ export default function FiltersPage() {
     }
   }
 
-  function list_button() {
-    if (mode == 1) {
-      return (
-        <button
-          className="activeButton"
-          type="button"
-          onClick={() => setMode(1)}
-        >
-          List
-        </button>
-      );
-    } else {
-      return (
-        <button
-          className="inactiveButton"
-          type="button"
-          onClick={() => setMode(1)}
-        >
-          List
-        </button>
-      );
-    }
+  function renderListButton() {
+    const isActive = listOrMap == true ? 'active-button' : 'inactive-button';
+    return (
+      <button
+        className={isActive}
+        type="button"
+        onClick={() => setListOrMap(true)}
+      >
+        List
+      </button>
+    );
   }
 
-  function map_button() {
-    if (mode == 2) {
-      return (
-        <button
-          className="activeButton"
-          type="button"
-          onClick={() => setMode(2)}
-        >
-          Map
-        </button>
-      );
-    } else {
-      return (
-        <button
-          className="inactiveButton"
-          type="button"
-          onClick={() => setMode(2)}
-        >
-          Map
-        </button>
-      );
-    }
+  function renderMapButton() {
+    const isActive = listOrMap == false ? 'active-button' : 'inactive-button';
+    return (
+      <button
+        className={isActive}
+        type="button"
+        onClick={() => setListOrMap(false)}
+      >
+        Map
+      </button>
+    );
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////
-  // Filter Dropdowns
-
-  const [role, setRole] = React.useState([]);
   const [location, setLocation] = React.useState([]);
+  const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [other, setOther] = React.useState([]);
-  console.log(role, location, race, products, other);
+  console.log({ role, location, race, products, other });
 
   function reset() {
     setRole([]);
@@ -125,29 +103,23 @@ export default function FiltersPage() {
     setProducts([]);
     setOther([]);
   }
-  //////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////
+
   return (
     <div className="App">
       <div className="container">
         <div className="content">
           <div className="left-content">
-            <div className="viewMode">
-              {list_button()} {map_button()}
+            <div className="view-mode">
+              {renderListButton()} {renderMapButton()}
             </div>
-            <div className="filterReset">
+            <div className="filter-reset">
               <h3 className="filter-title">Filters</h3>
-              <button
-                className="reset"
-                style={{ marginTop: '14px' }}
-                type="button"
-                onClick={() => reset()}
-              >
+              <button className="reset" type="button" onClick={reset}>
                 Reset
               </button>
             </div>
-            <div className="filterContainer">
-              <div className="filterScroll">
+            <div className="filter-container">
+              <div className="filter-scroll">
                 <Filters title="role" values={role} onChange={setRole} />
                 <Filters
                   title="location"
@@ -167,7 +139,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="centre-content">
-            <div>{render()}</div>
+            <div>{renderView()}</div>
           </div>
         </div>
         <div className="content">

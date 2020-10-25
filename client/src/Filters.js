@@ -1,16 +1,3 @@
-// Nav bar
-// - logo on left, icon, hello on right, logout on right
-// - logo is static / does nothing
-// - logout - empty function on click, maybe  console.log('logged out')
-
-// list vs map buttons
-//
-
-// filtering sidebar on left
-// filter title, reset button which removes all selects
-// div box with scroll
-// -
-
 import './Filter.css';
 import React from 'react';
 
@@ -22,7 +9,7 @@ function arrayMove(array, from, to) {
   return array;
 }
 
-const colourOptions = [
+const colorOptions = [
   { value: 'richard', label: 'Richard' },
   { value: 'bianca', label: 'Bianca' },
   { value: 'claire', label: 'Claire' },
@@ -40,7 +27,7 @@ const TagStyle = {
     border: isFocused ? '2px solid #00849c' : '1px solid #81A1B7',
     borderRadius: '10px',
     width: '20vw',
-    margin: '10px',
+    margin: isFocused ? '10px' : '11px',
     boxShadow: isFocused ? 'pink' : 'none',
 
     ':hover': {
@@ -68,7 +55,6 @@ const TagStyle = {
       fontFamily: 'Montserrat',
       fontWeight: '300',
       textAlign: 'left',
-      // cursor: isDisabled ? 'not-allowed' : 'default',
 
       ':hover': {
         ...styles[':hover'],
@@ -93,8 +79,6 @@ const TagStyle = {
       fontFamily: 'Montserrat',
       fontWeight: 'bold',
       padding: '4px 22px',
-      // marginTop: '10px',
-      // marginLeft: '7px',
       fontSize: '13px',
     };
   },
@@ -115,33 +99,25 @@ const TagStyle = {
 };
 
 export default function MultiSelectSort(props) {
-  //const [selected, setSelected] = React.useState([]);
   const onChange = selectedOptions => {
     props.onChange(selectedOptions);
   };
   const onSortEnd = ({ oldIndex, newIndex }) => {
     const newValue = arrayMove(props.values, oldIndex, newIndex);
     props.onChange(newValue);
-    console.log(
-      'Values sorted:',
-      newValue.map(i => i.value)
-    );
   };
 
   return (
     <div className="Filters">
       <div className="select-title">{props.title}</div>
       <Select
-        // react-sortable-hoc props:
         axis="xy"
         onSortEnd={onSortEnd}
         distance={4}
-        // small fix for https://github.com/clauderic/react-sortable-hoc/pull/352:
         getHelperDimensions={({ node }) => node.getBoundingClientRect()}
-        // react-select props:
         isMulti
         styles={TagStyle}
-        options={colourOptions}
+        options={colorOptions}
         value={props.values}
         onChange={onChange}
         placeholder={'Select ' + props.title + '...'}
