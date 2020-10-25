@@ -62,7 +62,7 @@ export default function Profile(props) {
             maxLength="350"
             value={mission}
             onChange={e => setMission(e.target.value)}
-          ></textarea>
+          />
           <hr />
           <div className="header">Description</div>
           <textarea
@@ -72,7 +72,7 @@ export default function Profile(props) {
             maxLength="1000"
             value={description}
             onChange={e => setDescription(e.target.value)}
-          ></textarea>
+          />
           <hr />
         </div>
         {renderEditSocials()}
@@ -94,7 +94,7 @@ export default function Profile(props) {
             placeholder="Enter name:"
             value={name}
             onChange={e => setName(e.target.value)}
-          ></input>
+          />
 
           <input
             className="small-input"
@@ -102,7 +102,7 @@ export default function Profile(props) {
             placeholder="Enter location:"
             value={location}
             onChange={e => setLocation(e.target.value)}
-          ></input>
+          />
 
           <input
             className="small-input"
@@ -110,7 +110,7 @@ export default function Profile(props) {
             placeholder="Enter website link:"
             value={website}
             onChange={e => setWebsite(e.target.value)}
-          ></input>
+          />
 
           <input
             className="small-input"
@@ -118,7 +118,7 @@ export default function Profile(props) {
             placeholder="Enter email address:"
             value={email}
             onChange={e => setEmail(e.target.value)}
-          ></input>
+          />
 
           <input
             className="small-input"
@@ -126,7 +126,7 @@ export default function Profile(props) {
             placeholder="Enter phone number:"
             value={phone}
             onChange={e => setPhone(e.target.value)}
-          ></input>
+          />
         </div>
       </div>
     );
@@ -141,14 +141,14 @@ export default function Profile(props) {
           placeholder="Enter facebok link:"
           value={fbLink}
           onChange={e => setFbLink(e.target.value)}
-        ></input>
+        />
         <input
           className="small-input"
           type="text"
           placeholder="Enter instagram link:"
           value={instaLink}
           onChange={e => setInstaLink(e.target.value)}
-        ></input>
+        />
       </div>
     );
   }
