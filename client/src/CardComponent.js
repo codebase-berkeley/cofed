@@ -16,7 +16,9 @@ export default function CardComponent(props) {
         </div>
         <div className="tagsContainer">
           {props.tags &&
-            props.tags.map(text => <Tag text={text} key={props.name + text} />)}
+            props.tags.map((text, index) => (
+              <Tag key={index} text={text} index={index} />
+            ))}
         </div>
       </div>
     </div>
