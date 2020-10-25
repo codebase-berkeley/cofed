@@ -114,8 +114,7 @@ button:focus {
   background-color: white;
 }
 
-button:hover,
-.loginButtons button:hover {
+.loginPageButton:hover {
   background-color: rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
