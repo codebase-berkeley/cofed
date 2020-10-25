@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-.CardComponent body {
-  background-color: #efefef;
-}
-
 .cardContainer {
   display: flex;
   flex-direction: column;
