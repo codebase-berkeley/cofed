@@ -1,7 +1,8 @@
 import './Filter.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Select, { components } from 'react-select';
+import Select from 'react-select';
 
 function arrayMove(array, from, to) {
   array = array.slice();
@@ -29,6 +30,7 @@ const TagStyle = {
     width: '20vw',
     margin: isFocused ? '10px' : '11px',
     boxShadow: isFocused ? 'pink' : 'none',
+    padding: '10px',
 
     ':hover': {
       border: isFocused ? '2px solid #00849c' : '1px solid #81A1B7',
@@ -125,3 +127,9 @@ export default function MultiSelectSort(props) {
     </div>
   );
 }
+
+MultiSelectSort.propTypes = {
+  onChange: PropTypes.func,
+  values: PropTypes.array,
+  title: PropTypes.string,
+};

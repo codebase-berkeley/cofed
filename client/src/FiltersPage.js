@@ -1,9 +1,7 @@
 import './FiltersPage.css';
-import Login from './Login';
 import CoFEDlogo from './CoFEDlogo.png';
 import CardComponent from './CardComponent';
 import Filters from './Filters';
-import NavBar from './navbar';
 import React from 'react';
 import './Filter.css';
 
@@ -113,7 +111,7 @@ export default function FiltersPage() {
               {renderListButton()} {renderMapButton()}
             </div>
             <div className="filter-reset">
-              <h3 className="filter-title">Filters</h3>
+              <div className="filter-title">Filters</div>
               <button className="reset" type="button" onClick={reset}>
                 Reset
               </button>

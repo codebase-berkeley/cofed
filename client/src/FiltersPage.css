@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
 .filter-title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   color: #00849c;
   font-size: 24pt;
   margin: 0;
+  padding-left: 20px;
 }
 
 .active-button {
