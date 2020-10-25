@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CardComponent.css';
-import Tag from './Tag.js';
+import Tag from './Tag';
 
-function CardComponent(props) {
+export default function CardComponent(props) {
   return (
     <div>
       <div className="cardContainer">
@@ -31,5 +31,3 @@ CardComponent.propTypes = {
   profile: PropTypes.string,
   tags: PropTypes.array,
 };
-
-export default CardComponent;
