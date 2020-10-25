@@ -45,12 +45,20 @@ export default function Login() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          <button type="button" onClick={handleSubmit}>
+          <button
+            className="loginPageButton"
+            type="button"
+            onClick={handleSubmit}
+          >
             Login
           </button>
         </div>
         <a href="#">
-          <button type="button" onClick={handleSubmit}>
+          <button
+            className="loginPageButton"
+            type="button"
+            onClick={handleSubmit}
+          >
             Create Account
           </button>
         </a>
@@ -60,7 +68,7 @@ export default function Login() {
       </div>
       <div className="googleButton">
         <a href="#">
-          <button type="button">
+          <button className="loginPageButton" type="button">
             <img src={GoogleLogo} />
             Login via Google
           </button>
