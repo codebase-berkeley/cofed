@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 10vh;
+  height: calc(10vh - 1px);
   border-bottom: 1px solid #e4e4e4;
 }
 
