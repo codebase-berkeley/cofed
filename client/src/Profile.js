@@ -180,10 +180,10 @@ export default function Profile(props) {
           <div className="profile-hr"></div>
         </div>
         <div className="profile-socials-div">
-          <a href={'//' + fbLink} target="_blank" rel="noreferrer">
+          <a href={fbLink} target="_blank" rel="noreferrer">
             <img src={facebook} className="profile-social-button" />
           </a>
-          <a href={'//' + instaLink} target="_blank" rel="noreferrer">
+          <a href={instaLink} target="_blank" rel="noreferrer">
             <img src={instagram} className="profile-social-button" />
           </a>
         </div>

@@ -48,7 +48,6 @@
 .container {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   height: 90vh;
 }
 
@@ -82,10 +81,6 @@
   width: 40vw;
   height: 90vh;
   background-color: white;
-}
-
-.Filters {
-  /* margin-bottom: 20px; */
 }
 
 .filter-container {
@@ -162,7 +157,3 @@
 .FiltersPage {
   overflow: hidden;
 }
-
-/* body {
-  overflow: hidden;
-} */
