@@ -1,7 +1,6 @@
 import React from 'react';
 import './navbar.css';
 import logo from './assets/CoFEDlogo.png';
-import Profile from './Profile';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
