@@ -1,11 +1,10 @@
 import './FiltersPage.css';
-import tina from './assets/tina.png';
-import CardComponent from './CardComponent';
-import Filters from './Filters';
-import NavBar from './navbar';
+import tina from '../../assets/tina.png';
+import Card from '../../components/Card/Card';
+import Filters from '../../components/Filter/Filter';
+import NavBar from '../../components/Navbar/Navbar';
 import React from 'react';
-import Profile from './Profile';
-import './Filter.css';
+import ProfilePage from '../ProfilePage/ProfilePage';
 
 export default function FiltersPage() {
   const [listOrMap, setListOrMap] = React.useState(true);
@@ -14,43 +13,43 @@ export default function FiltersPage() {
     if (listOrMap == true) {
       return (
         <div>
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
-          <CardComponent
+          <Card
             profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
@@ -145,7 +144,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            <Profile
+            <ProfilePage
               name="Richard's Radishes"
               location="Berkeley, CA"
               email="RichardRadishes@gmail.com"

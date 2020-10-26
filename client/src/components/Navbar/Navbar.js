@@ -1,8 +1,8 @@
 import React from 'react';
-import './navbar.css';
-import logo from './assets/CoFEDlogo.png';
+import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './Navbar.css';
 
 function logout() {
   console.log('Logged Out');

@@ -1,8 +1,8 @@
 import './App.css';
-import FiltersPage from './FiltersPage';
-import Login from './Login';
-import Register from './Register';
-import Profile from './Profile';
+import FiltersPage from './pages/FiltersPage/FiltersPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import React from 'react';
 
@@ -11,13 +11,13 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={FiltersPage} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/register" component={RegisterPage} />
         <Route
           exact
           path="/profile"
           component={() => (
-            <Profile
+            <ProfilePage
               name="Richard's Radishes"
               location="Berkeley, CA"
               email="RichardRadishes@gmail.com"

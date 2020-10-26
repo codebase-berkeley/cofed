@@ -1,10 +1,10 @@
-import CofedLogo from './assets/CoFEDlogo.png';
-import GoogleLogo from './assets/GoogleLogo.png';
+import CofedLogo from '../../assets/CoFEDlogo.png';
+import GoogleLogo from '../../assets/GoogleLogo.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css';
+import './LoginPage.css';
 
-export default function Login() {
+export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
 
