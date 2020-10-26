@@ -1,6 +1,7 @@
 import CofedLogo from './assets/CoFEDlogo.png';
 import GoogleLogo from './assets/GoogleLogo.png';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css';
 
 export default function Login() {
@@ -45,15 +46,17 @@ export default function Login() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          <button
-            className="loginPageButton"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Login
-          </button>
+          <Link to="/">
+            <button
+              className="loginPageButton"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Login
+            </button>
+          </Link>
         </div>
-        <a href="#">
+        <Link to="/register">
           <button
             className="loginPageButton"
             type="button"
@@ -61,7 +64,7 @@ export default function Login() {
           >
             Create Account
           </button>
-        </a>
+        </Link>
       </div>
       <div className="orText">
         <br /> — OR — <br />

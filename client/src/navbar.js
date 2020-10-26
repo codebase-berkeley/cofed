@@ -1,6 +1,8 @@
 import React from 'react';
 import './navbar.css';
-import logo from './CoFEDlogo.png';
+import logo from './assets/CoFEDlogo.png';
+import Profile from './Profile';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function logout() {
@@ -10,17 +12,25 @@ function logout() {
 export default function NavBar(props) {
   return (
     <div className="navbar">
-      <img className="logo" src={logo} alt="cofed logo" />
-      <div className="rightside">
-        <p className="hello">
+      <Link to="/">
+        <img className="navbar-logo" src={logo} alt="cofed logo" />
+      </Link>
+      <div className="navbar-rightside">
+        <p className="navbar-hello">
           Hello,{' '}
-          <a href="#" target="_blank">
+          <Link to="/profile" className="navbar-link-to-profile">
             <b>{props.username}</b>
-          </a>
+          </Link>
         </p>
-        <button className="logoutButton" type="button" onClick={logout}>
-          Logout
-        </button>
+        <Link to="/login">
+          <button
+            className="navbar-logout-button"
+            type="button"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </Link>
       </div>
     </div>
   );

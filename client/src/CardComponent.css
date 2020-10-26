@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-.cardContainer {
+.card-container {
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -13,20 +13,20 @@
   max-height: 18vw;
 }
 
-.pic-text-container {
+.card-pic-text-container {
   display: flex;
   flex-direction: row;
   padding-left: 35px;
   padding-top: 20px;
 }
 
-.profile-pic {
+.card-profile-pic {
   border-radius: 1000px;
   width: 70px;
   height: 70px;
 }
 
-.nameContainer {
+.card-name-container {
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
@@ -36,7 +36,7 @@
   margin-right: 20px;
 }
 
-.tagsContainer {
+.card-tags-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -44,10 +44,12 @@
   max-width: 400px;
 }
 
-.nameContainer {
+.card-co-op-name {
   font-size: 23px;
+  font-weight: 400;
 }
 
-.CoOp-Location {
+.card-co-op-location {
   font-size: 17px;
+  font-weight: 300;
 }

@@ -6,15 +6,15 @@ import Tag from './Tag';
 export default function CardComponent(props) {
   return (
     <div>
-      <div className="cardContainer">
-        <div className="pic-text-container">
-          <img className="profile-pic" alt="Image" src={props.profile} />
-          <div className="nameContainer">
-            <b className="CoOp-Name">{props.name}</b>
-            <div className="CoOp-Location">{props.location}</div>
+      <div className="card-container">
+        <div className="card-pic-text-container">
+          <img className="card-profile-pic" alt="Image" src={props.profile} />
+          <div className="card-name-container">
+            <div className="card-co-op-name">{props.name}</div>
+            <div className="card-co-op-location">{props.location}</div>
           </div>
         </div>
-        <div className="tagsContainer">
+        <div className="card-tags-container">
           {props.tags &&
             props.tags.map((text, index) => (
               <Tag key={index} text={text} index={index} />

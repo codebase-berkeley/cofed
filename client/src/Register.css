@@ -6,14 +6,14 @@
   height: 100vh;
 }
 
-.register_header {
+.register-header {
   color: #00849c;
-  font: 48px 'Montserrat', sans-serif;
+  font: 28pt 'Montserrat', sans-serif;
   margin-bottom: 20px;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
-.textInputSet {
+.text-input-set {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,7 +24,7 @@
   color: #81a1b7;
   font: 18px 'Montserrat', sans-serif;
   font-weight: 700;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 
 .accountButton {
@@ -38,25 +38,39 @@
   border-radius: 9px;
   outline: none;
   cursor: pointer;
+  margin-bottom: 40px;
 }
 
 .accountButton:hover {
   background-color: #0790a9;
 }
 
-.inputBox {
+.register-input-box {
   border-radius: 9px;
   border: 1px solid #81a1b7;
-  height: 56px;
   margin-top: 5px;
+  width: 330px;
   outline: none;
-  font: 25px 'Montserrat', sans-serif;
+  font: 14px 'Montserrat', sans-serif;
   padding-right: 15px;
   padding-left: 15px;
 }
 
-.termsText {
+.terms-text {
   font: 10px 'Montserrat', sans-serif;
   color: #81a1b7;
   margin-top: 50px;
+}
+
+.terms-and-cond {
+  text-decoration: underline;
+  font: 10px 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: #81a1b7;
+}
+
+.terms-and-cond:hover {
+  text-decoration-color: #6d8a9d;
+  color: #6d8a9d;
+  cursor: pointer;
 }

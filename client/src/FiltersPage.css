@@ -85,7 +85,7 @@
 }
 
 .Filters {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .filter-container {
@@ -130,11 +130,14 @@
   background: white;
   border: none;
   margin-top: 14px;
+  outline: none;
 }
 
-.reset:hover {
+.reset:hover,
+.reset:active {
   text-decoration: underline;
   background: none;
+  outline: none;
 }
 
 /* Scrollbar styles */
@@ -160,6 +163,6 @@
   overflow: hidden;
 }
 
-body {
+/* body {
   overflow: hidden;
-}
+} */
