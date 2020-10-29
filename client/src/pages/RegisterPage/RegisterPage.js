@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Register.css';
+import './RegisterPage.css';
 
-export default function Register() {
+export default function RegisterPage() {
   const [nameInput, setNameInput] = React.useState('');
   const [passwordInput, setPasswordInput] = React.useState('');
   const [emailInput, setEmailInput] = React.useState('');

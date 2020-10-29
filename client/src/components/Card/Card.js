@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './CardComponent.css';
-import Tag from './Tag';
+import './Card.css';
+import Tag from '../Tag/Tag';
 
 export default function CardComponent(props) {
   return (

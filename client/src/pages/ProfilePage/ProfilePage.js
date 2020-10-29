@@ -1,10 +1,10 @@
 import React from 'react';
-import './Profile.css';
-import Tag from './Tag.js';
-import instagram from './assets/instagram.svg';
-import facebook from './assets/facebook.svg';
-import tina from './assets/tina.png';
-import plusSign from './assets/plus-sign.svg';
+import Tag from '../../components/Tag/Tag';
+import instagram from '../../assets/instagram.svg';
+import facebook from '../../assets/facebook.svg';
+import tina from '../../assets/tina.png';
+import plusSign from '../../assets/plus-sign.svg';
+import './ProfilePage.css';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
