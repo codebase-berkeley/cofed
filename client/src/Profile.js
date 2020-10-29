@@ -32,15 +32,15 @@ export default function Profile(props) {
 
   function renderEdit() {
     return (
-      <div className="blue-border">
-        <div className="top-div">
-          <button className="save-button" onClick={toggleEdit}>
+      <div className="profile-blue-border">
+        <div className="profile-top-div">
+          <button className="profile-save-button" onClick={toggleEdit}>
             Save
           </button>
         </div>
         <div className="profile-text-tags-container">
           {renderContactInputs()}
-          <div className="tags-container">
+          <div className="profile-tags-container">
             {tags &&
               tags.map((text, index) => (
                 <Tag
@@ -52,28 +52,28 @@ export default function Profile(props) {
               ))}
           </div>
         </div>
-        <div className="descriptions">
-          <hr />
-          <div className="header">Mission Statement</div>
+        <div className="profile-descriptions">
+          <div className="profile-hr"></div>
+          <div className="profile-header">Mission Statement</div>
           <textarea
-            className="mission-input"
+            className="profile-mission-input"
             type="text"
             placeholder="Enter mission statement:"
             maxLength="350"
             value={mission}
             onChange={e => setMission(e.target.value)}
           />
-          <hr />
-          <div className="header">Description</div>
+          <div className="profile-hr"></div>
+          <div className="profile-header">Description</div>
           <textarea
-            className="description-input"
+            className="profile-description-input"
             type="text"
             placeholder="Enter description:"
             maxLength="1000"
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-          <hr />
+          <div className="profile-hr"></div>
         </div>
         {renderEditSocials()}
       </div>
@@ -82,14 +82,14 @@ export default function Profile(props) {
 
   function renderContactInputs() {
     return (
-      <div className="pic-text-container">
-        <div className="prof-pic-container">
+      <div className="profile-pic-text-container">
+        <div className="profile-pic-container">
           <img className="profile-pic-edit" alt="Image" src={tina} />
-          <img className="edit-pic" alt="Image" src={plusSign} />
+          <img className="profile-edit-pic" alt="Image" src={plusSign} />
         </div>
-        <div className="edit-profile-text-container">
+        <div className="profile-edit-profile-text-container">
           <input
-            className="name-input"
+            className="profile-name-input"
             type="text"
             placeholder="Enter name:"
             value={name}
@@ -97,7 +97,7 @@ export default function Profile(props) {
           />
 
           <input
-            className="small-input"
+            className="profile-small-input"
             type="text"
             placeholder="Enter location:"
             value={location}
@@ -105,7 +105,7 @@ export default function Profile(props) {
           />
 
           <input
-            className="small-input"
+            className="profile-small-input"
             type="text"
             placeholder="Enter website link:"
             value={website}
@@ -113,7 +113,7 @@ export default function Profile(props) {
           />
 
           <input
-            className="small-input"
+            className="profile-small-input"
             type="text"
             placeholder="Enter email address:"
             value={email}
@@ -121,7 +121,7 @@ export default function Profile(props) {
           />
 
           <input
-            className="small-input"
+            className="profile-small-input"
             type="text"
             placeholder="Enter phone number:"
             value={phone}
@@ -134,16 +134,16 @@ export default function Profile(props) {
 
   function renderEditSocials() {
     return (
-      <div className="socials-div">
+      <div className="profile-socials-div">
         <input
-          className="small-input"
+          className="profile-small-input"
           type="text"
           placeholder="Enter facebok link:"
           value={fbLink}
           onChange={e => setFbLink(e.target.value)}
         />
         <input
-          className="small-input"
+          className="profile-small-input"
           type="text"
           placeholder="Enter instagram link:"
           value={instaLink}
@@ -155,36 +155,36 @@ export default function Profile(props) {
 
   function renderDisplay() {
     return (
-      <div className="blue-border">
-        <div className="top-div">
-          <button className="edit-button" onClick={toggleEdit}>
+      <div className="profile-blue-border">
+        <div className="profile-top-div">
+          <button className="profile-edit-button" onClick={toggleEdit}>
             Edit
           </button>
         </div>
         <div className="profile-text-tags-container">
           {renderContact()}
-          <div className="tags-container">
+          <div className="profile-tags-container">
             {tags &&
               tags.map((text, index) => (
                 <Tag key={index} text={text} index={index} />
               ))}
           </div>
         </div>
-        <div className="descriptions">
-          <hr />
-          <div className="header">Mission Statement</div>
+        <div className="profile-descriptions">
+          <div className="profile-hr"></div>
+          <div className="profile-header">Mission Statement</div>
           <div className="profile-info">{mission}</div>
-          <hr />
-          <div className="header">Description</div>
+          <div className="profile-hr"></div>
+          <div className="profile-header">Description</div>
           <div className="profile-info">{description}</div>
-          <hr />
+          <div className="profile-hr"></div>
         </div>
-        <div className="socials-div">
-          <a href={instaLink} target="_blank" rel="noreferrer">
-            <img src={facebook} className="social-button" />
-          </a>
+        <div className="profile-socials-div">
           <a href={fbLink} target="_blank" rel="noreferrer">
-            <img src={instagram} className="social-button" />
+            <img src={facebook} className="profile-social-button" />
+          </a>
+          <a href={instaLink} target="_blank" rel="noreferrer">
+            <img src={instagram} className="profile-social-button" />
           </a>
         </div>
       </div>
@@ -193,30 +193,28 @@ export default function Profile(props) {
 
   function renderContact() {
     return (
-      <div className="profile-text-tags-container">
-        <div className="pic-text-container">
-          <img className="profile-pic" alt="Image" src={tina} />
-          <div className="profile-text-container">
-            <b className="co-op-name">{name}</b>
-            <div className="co-op-location">{location}</div>
-            <a
-              className="co-op-contact-link"
-              href={website}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {website}
-            </a>
-            <a
-              className="co-op-contact-link"
-              href={email}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {email}
-            </a>
-            <div className="co-op-contact">{phone} </div>
-          </div>
+      <div className="profile-pic-text-container">
+        <img className="profile-pic" alt="Image" src={tina} />
+        <div className="profile-text-container">
+          <b className="profile-co-op-name">{name}</b>
+          <div className="profile-co-op-location">{location}</div>
+          <a
+            className="profile-co-op-contact-link"
+            href={'//' + website}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {website}
+          </a>
+          <a
+            className="profile-co-op-contact-link"
+            href={email}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {email}
+          </a>
+          <div className="profile-co-op-contact">{phone} </div>
         </div>
       </div>
     );

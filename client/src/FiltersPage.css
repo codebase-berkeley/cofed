@@ -48,7 +48,6 @@
 .container {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   height: 90vh;
 }
 
@@ -82,10 +81,6 @@
   width: 40vw;
   height: 90vh;
   background-color: white;
-}
-
-.Filters {
-  margin-bottom: 20px;
 }
 
 .filter-container {
@@ -130,11 +125,14 @@
   background: white;
   border: none;
   margin-top: 14px;
+  outline: none;
 }
 
-.reset:hover {
+.reset:hover,
+.reset:active {
   text-decoration: underline;
   background: none;
+  outline: none;
 }
 
 /* Scrollbar styles */
@@ -157,9 +155,5 @@
 }
 
 .FiltersPage {
-  overflow: hidden;
-}
-
-body {
   overflow: hidden;
 }

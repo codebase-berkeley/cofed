@@ -1,8 +1,10 @@
 import './FiltersPage.css';
-import CoFEDlogo from './CoFEDlogo.png';
+import tina from './assets/tina.png';
 import CardComponent from './CardComponent';
 import Filters from './Filters';
+import NavBar from './navbar';
 import React from 'react';
+import Profile from './Profile';
 import './Filter.css';
 
 export default function FiltersPage() {
@@ -13,43 +15,43 @@ export default function FiltersPage() {
       return (
         <div>
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
           />
           <CardComponent
-            profile={CoFEDlogo}
+            profile={tina}
             name="Bianca's Radishes"
             location="Berkeley, CA"
             tags={['vegetables', 'fruit']}
@@ -103,7 +105,8 @@ export default function FiltersPage() {
   }
 
   return (
-    <div className="App">
+    <div className="FiltersPage">
+      <NavBar username="Rad Radishes" />
       <div className="container">
         <div className="content">
           <div className="left-content">
@@ -142,7 +145,26 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            <div>profile here</div>
+            <Profile
+              name="Richard's Radishes"
+              location="Berkeley, CA"
+              email="RichardRadishes@gmail.com"
+              website="RichardRadishes.com"
+              phone="303-866-1349"
+              instaLink="instagram.com"
+              fbLink="facebook.com"
+              missionText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+              descText="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+              tags={[
+                'Organic',
+                'Non-GMO',
+                'Farming',
+                'LGBTQ',
+                'Marketplace',
+                'Radishes',
+                'Vegetables',
+              ]}
+            />
           </div>
         </div>
       </div>

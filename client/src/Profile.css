@@ -1,4 +1,4 @@
-.blue-border {
+.profile-blue-border {
   display: block;
   flex-direction: column;
   justify-content: center;
@@ -6,32 +6,35 @@
   background-color: white;
   border-radius: 10px;
   max-width: 630px;
-  padding-left: 10px;
+  padding-left: 5px;
   border-left: 15px solid #00849c;
-  margin: 200px 0 3px;
-  height: 880px;
+  margin: 0px;
+  height: 900px;
+  overflow-y: auto;
 }
 
-hr {
+.profile-hr {
   display: block;
   height: 2px;
   border: 0;
   border-top: 1px solid #81a1b7;
-  margin: 20px 20px 20px 50px;
-  width: 530px;
+  margin: 10px 10px 10px 50px;
+  width: 85%;
 }
 
-.descriptions {
+.profile-descriptions {
   display: flex;
   flex-direction: column;
 }
 
-.header {
+.profile-header {
   color: #81a1b7;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 14px;
   margin-left: 60px;
+  display: flex;
+  justify-content: left;
 }
 
 .profile-info {
@@ -43,7 +46,7 @@ hr {
   word-wrap: break-word;
 }
 
-.mission-input {
+.profile-mission-input {
   border-radius: 9px;
   border: 1px solid #81a1b7;
   margin: 5px 0 0 60px;
@@ -58,7 +61,7 @@ hr {
   line-height: 20px;
 }
 
-.description-input {
+.profile-description-input {
   border-radius: 9px;
   border: 1px solid #81a1b7;
   margin: 5px 0 0 60px;
@@ -81,10 +84,10 @@ hr {
   padding-left: 10px;
   margin-bottom: 3px;
 }
-.pic-text-container {
+.profile-pic-text-container {
   display: flex;
   flex-direction: row;
-  padding: 20px 0 0 35px;
+  margin: 20px 0 0 35px;
 }
 
 .profile-pic {
@@ -101,15 +104,15 @@ hr {
   opacity: 0.3;
 }
 
-.prof-pic-container {
+.profile-pic-container {
   position: relative;
 }
 
-.edit-pic {
+.profile-edit-pic {
   display: inline;
   cursor: pointer;
   position: absolute;
-  top: 50%;
+  margin-top: 68px;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -119,7 +122,7 @@ hr {
   border-radius: 50%;
 }
 
-.name-container {
+.profile-name-container {
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
@@ -128,11 +131,11 @@ hr {
   margin-right: 20px;
 }
 
-.tags-container {
+.profile-tags-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 12px 20px;
+  margin: 12px 20px 12px 35px;
   max-width: 500px;
 }
 
@@ -141,77 +144,72 @@ hr {
   color: #00849c;
   display: flex;
   flex-direction: column;
-  margin: 0 20px 0 15px;
+  margin-right: 20px;
 }
 
-.edit-profile-text-container {
+.profile-edit-profile-text-container {
   font: 25px 'Montserrat', sans-serif;
   color: #00849c;
   display: flex;
   flex-direction: row;
   width: 80%;
   flex-wrap: wrap;
-  margin-left: 15px;
 }
 
-.co-op-name {
+.profile-co-op-name {
   font: 25px 'Montserrat', sans-serif;
   font-weight: bold;
   color: #00849c;
-  height: 30px;
   width: 294px;
   outline: none;
 }
 
-.co-op-location {
+.profile-co-op-location {
   font: 15px 'Montserrat', sans-serif;
   font-weight: 500;
   line-height: 18px;
   color: black;
   padding: 5px;
+  margin-left: 10px;
 }
 
-.co-op-contact {
+.profile-co-op-contact {
   font: 12px 'Montserrat', sans-serif;
   color: black;
   font-weight: 500;
   line-height: 15px;
   padding-left: 5px;
   margin-top: 3px;
+  margin-left: 10px;
 }
 
-.co-op-contact-link {
+.profile-co-op-contact-link {
   font: 12px 'Montserrat', sans-serif;
-  color: black;
-  font-weight: 500;
-  line-height: 15px;
-  padding-left: 5px;
-  margin-top: 3px;
+  margin: 3px 0px 0px 15px;
   color: #00849c;
-}
-
-.name-input {
-  font: 25px 'Montserrat', sans-serif;
-  font-weight: bold;
-  color: #00849c;
-  height: 30px;
-  width: 294px;
-  padding: 10px;
   outline: none;
 }
-.small-input {
+
+.profile-name-input {
+  font: 25px 'Montserrat', sans-serif;
+  font-weight: bold;
+  width: 80%;
+  color: #00849c;
+}
+
+.profile-small-input {
   font: 11px 'Montserrat', sans-serif;
   font-weight: 500;
   line-height: 11px;
   border-radius: 5px;
   color: black;
   padding: 5px 13px 5px 13px;
-  width: 126px;
+  width: 33%;
   height: 15px;
   outline: none;
 }
 
-.top-div {
+.profile-top-div {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -219,27 +217,26 @@ hr {
   width: 100%;
 }
 
-.edit-button {
+.profile-edit-button {
   width: 49px;
   height: 20px;
   border-radius: 28px;
+  border: none;
+  outline: none;
   background-color: #f8f9fb;
   font: bold 10px 'Montserrat', sans-serif;
-  margin: 20px 20px 0px 0px;
-  color: #81a1b7;
-  outline: none;
-  border: none;
-  cursor: pointer;
+  margin: 20px 30px 0px 0px;
+  color: #81a1b3;
   box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.2), 0 0px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
-.save-button {
+.profile-save-button {
   width: 49px;
   height: 20px;
   border-radius: 28px;
   background-color: #81a1b7;
   font: bold 10px 'Montserrat', sans-serif;
-  margin: 20px 20px 0px 0px;
+  margin: 20px 30px 0px 0px;
   color: white;
   outline: none;
   border: none;
@@ -247,18 +244,14 @@ hr {
   box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.2), 0 0px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
-.socials-div {
+.profile-socials-div {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   padding: 0 0 50px 50px;
 }
-.social-button {
+.profile-social-button {
   width: 25px;
   height: 25px;
   margin: 4px;
-}
-
-body {
-  background-color: lime;
 }

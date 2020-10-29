@@ -4,13 +4,9 @@
   justify-content: center;
 }
 
-.App {
-  text-align: center;
-  overflow: hidden;
-}
-
 body {
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: auto;
 }
 
 .App-logo {
