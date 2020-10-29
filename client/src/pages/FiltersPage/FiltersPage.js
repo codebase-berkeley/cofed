@@ -5,9 +5,26 @@ import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
 import React from 'react';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import Map from 'pigeon-maps';
+import Marker from 'pigeon-marker';
+import Overlay from 'pigeon-overlay';
 
 export default function FiltersPage() {
   const [listOrMap, setListOrMap] = React.useState(true);
+
+  function mapTilerProvider(x, y, z, dpr) {
+    return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
+  }
+
+  const markers = {
+    place1: [[50.874, 4.6947], 1],
+    place2: [[50.212, 4], 2],
+    place3: [[51, 5], 3],
+  };
+
+  function markerClick({ anchor }) {
+    console.log(anchor);
+  }
 
   function renderView() {
     if (listOrMap == true) {
@@ -58,7 +75,25 @@ export default function FiltersPage() {
         </div>
       );
     } else {
-      return <div>map please </div>;
+      return (
+        <div className="filters-page-map">
+          <Map
+            center={[50.879, 4.6997]}
+            zoom={12}
+            twoFingerDrag={true}
+            provider={mapTilerProvider}
+          >
+            {Object.keys(markers).map(key => (
+              <Marker
+                key={key}
+                anchor={markers[key][0]}
+                payload={markers[key][1]}
+                onClick={markerClick}
+              />
+            ))}
+          </Map>{' '}
+        </div>
+      );
     }
   }
 

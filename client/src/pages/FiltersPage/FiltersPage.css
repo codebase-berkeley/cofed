@@ -157,3 +157,9 @@
 .FiltersPage {
   overflow: hidden;
 }
+
+.filters-page-map {
+  height: 90vh;
+  width: 35vw;
+  overflow: hidden;
+}
