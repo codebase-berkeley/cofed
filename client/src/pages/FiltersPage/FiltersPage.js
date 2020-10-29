@@ -7,78 +7,79 @@ import React from 'react';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
-import Overlay from 'pigeon-overlay';
 
 export default function FiltersPage() {
-  const [listOrMap, setListOrMap] = React.useState(true);
+  const [listMode, setListMode] = React.useState(true);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const markers = {
-    place1: [[50.874, 4.6947], 1],
-    place2: [[50.212, 4], 2],
-    place3: [[51, 5], 3],
-  };
+  const markers = [
+    [50.874, 4.6947],
+    [50.212, 4],
+    [51, 5],
+  ];
 
   function markerClick({ anchor }) {
     console.log(anchor);
   }
 
   function renderView() {
-    if (listOrMap == true) {
+    if (listMode == true) {
       return (
         <div>
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
+          <div className="list-mode">
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+            <Card
+              profile={tina}
+              name="Bianca's Radishes"
+              location="Berkeley, CA"
+              tags={['vegetables', 'fruit']}
+            />
+          </div>
         </div>
       );
     } else {
       return (
-        <div className="filters-page-map">
+        <div className="map-mode">
           <Map
-            center={[50.879, 4.6997]}
+            center={markers[0]}
             zoom={12}
             twoFingerDrag={true}
             provider={mapTilerProvider}
@@ -86,24 +87,24 @@ export default function FiltersPage() {
             {Object.keys(markers).map(key => (
               <Marker
                 key={key}
-                anchor={markers[key][0]}
-                payload={markers[key][1]}
+                anchor={markers[key]}
+                payload={key}
                 onClick={markerClick}
               />
             ))}
-          </Map>{' '}
+          </Map>
         </div>
       );
     }
   }
 
   function renderListButton() {
-    const isActive = listOrMap == true ? 'active-button' : 'inactive-button';
+    const isActive = listMode == true ? 'active-button' : 'inactive-button';
     return (
       <button
         className={isActive}
         type="button"
-        onClick={() => setListOrMap(true)}
+        onClick={() => setListMode(true)}
       >
         List
       </button>
@@ -111,12 +112,12 @@ export default function FiltersPage() {
   }
 
   function renderMapButton() {
-    const isActive = listOrMap == false ? 'active-button' : 'inactive-button';
+    const isActive = listMode == false ? 'active-button' : 'inactive-button';
     return (
       <button
         className={isActive}
         type="button"
-        onClick={() => setListOrMap(false)}
+        onClick={() => setListMode(false)}
       >
         Map
       </button>

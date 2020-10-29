@@ -157,6 +157,11 @@
   overflow: hidden;
 }
 
-.filters-page-map {
+.map-mode {
   height: 90vh;
+}
+
+.list-mode {
+  height: 90vh;
+  overflow-y: auto;
 }
