@@ -5,70 +5,104 @@ import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
 import React from 'react';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import Map from 'pigeon-maps';
+import Marker from 'pigeon-marker';
 
 export default function FiltersPage() {
-  const [listOrMap, setListOrMap] = React.useState(true);
+  const [listMode, setListMode] = React.useState(true);
 
-  function renderView() {
-    if (listOrMap == true) {
-      return (
-        <div>
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-        </div>
-      );
-    } else {
-      return <div>map please </div>;
-    }
+  function mapTilerProvider(x, y, z, dpr) {
+    return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
+  }
+
+  const markers = [
+    [50.874, 4.6947],
+    [50.212, 4],
+    [51, 5],
+  ];
+
+  function markerClick({ payload }) {
+    console.log(payload);
+  }
+
+  function renderListView() {
+    return (
+      <div className="list-mode">
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+      </div>
+    );
+  }
+
+  function renderMapView() {
+    return (
+      <div className="map-mode">
+        <Map
+          center={markers[0]}
+          zoom={12}
+          twoFingerDrag={true}
+          provider={mapTilerProvider}
+        >
+          {markers.map((anchor, index) => (
+            <Marker
+              payload={index}
+              key={index}
+              anchor={anchor}
+              onClick={markerClick}
+            />
+          ))}
+        </Map>
+      </div>
+    );
   }
 
   function renderListButton() {
-    const isActive = listOrMap == true ? 'active-button' : 'inactive-button';
+    const isActive = listMode ? 'active-button' : 'inactive-button';
     return (
       <button
         className={isActive}
         type="button"
-        onClick={() => setListOrMap(true)}
+        onClick={() => setListMode(true)}
       >
         List
       </button>
@@ -76,12 +110,12 @@ export default function FiltersPage() {
   }
 
   function renderMapButton() {
-    const isActive = listOrMap == false ? 'active-button' : 'inactive-button';
+    const isActive = listMode ? 'inactive-button' : 'active-button';
     return (
       <button
         className={isActive}
         type="button"
-        onClick={() => setListOrMap(false)}
+        onClick={() => setListMode(false)}
       >
         Map
       </button>
@@ -139,7 +173,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="centre-content">
-            <div>{renderView()}</div>
+            <div>{listMode ? renderListView() : renderMapView()}</div>
           </div>
         </div>
         <div className="content">
