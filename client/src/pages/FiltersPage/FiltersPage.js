@@ -27,51 +27,49 @@ export default function FiltersPage() {
 
   function renderListView() {
     return (
-      <div>
-        <div className="list-mode">
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-          <Card
-            profile={tina}
-            name="Bianca's Radishes"
-            location="Berkeley, CA"
-            tags={['vegetables', 'fruit']}
-          />
-        </div>
+      <div className="list-mode">
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
+        <Card
+          profile={tina}
+          name="Bianca's Radishes"
+          location="Berkeley, CA"
+          tags={['vegetables', 'fruit']}
+        />
       </div>
     );
   }
