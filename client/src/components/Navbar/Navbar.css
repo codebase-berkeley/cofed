@@ -34,21 +34,20 @@
   text-decoration: none;
 }
 
-.navbar-logout-button,
-.navbar-logout-button:active,
-.navbar-logout-button:focus {
-  margin-right: 40px;
+.nav-button {
+  margin: 10px;
   background-color: white;
-  font-size: 14pt;
+  font: 12pt 'Montserrat', sans-serif;
   font-weight: 300;
-  font-family: 'Montserrat', sans-serif;
   color: black;
   border: none;
   outline: none;
   cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 10px;
 }
 
-.navbar-logout-button:hover {
-  text-decoration: underline;
-  background: none;
+.nav-button:hover {
+  background-color: #f3f3f3;
+  color: #81a1b7;
 }

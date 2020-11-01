@@ -60,7 +60,7 @@ export default function RegisterPage() {
           <span className="terms-and-cond">Terms and Conditions</span>
         </a>
       </p>
-      <Link to="/profile">
+      <Link to="/createprofile">
         <button className="accountButton" type="button" onClick={createAccount}>
           Create Account
         </button>

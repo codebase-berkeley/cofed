@@ -4,7 +4,7 @@ import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
 import React from 'react';
-import ProfilePage from '../ProfilePage/ProfilePage';
+import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 
@@ -178,7 +178,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            <ProfilePage
+            <Profile
               name="Richard's Radishes"
               location="Berkeley, CA"
               email="RichardRadishes@gmail.com"
@@ -197,6 +197,8 @@ export default function FiltersPage() {
                 'Radishes',
                 'Vegetables',
               ]}
+              allowEdit={false}
+              allowView={true}
             />
           </div>
         </div>

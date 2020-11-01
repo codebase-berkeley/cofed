@@ -15,18 +15,14 @@ export default function NavBar(props) {
         <img className="navbar-logo" src={logo} alt="cofed logo" />
       </Link>
       <div className="navbar-rightside">
-        <p className="navbar-hello">
-          Hello,{' '}
-          <Link to="/profile" className="navbar-link-to-profile">
-            <b>{props.username}</b>
-          </Link>
-        </p>
+        <Link to="/">
+          <button className="nav-button">Home</button>
+        </Link>
+        <Link to="/profile" className="navbar-link-to-profile">
+          <button className="nav-button">My Profile</button>
+        </Link>
         <Link to="/login">
-          <button
-            className="navbar-logout-button"
-            type="button"
-            onClick={logout}
-          >
+          <button className="nav-button" type="button" onClick={logout}>
             Logout
           </button>
         </Link>
