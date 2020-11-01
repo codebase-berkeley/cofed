@@ -57,6 +57,7 @@ const TagStyle = {
       fontFamily: 'Montserrat',
       fontWeight: '300',
       textAlign: 'left',
+      cursor: 'pointer',
 
       ':hover': {
         ...styles[':hover'],

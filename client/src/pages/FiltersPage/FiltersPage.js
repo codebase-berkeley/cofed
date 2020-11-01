@@ -15,61 +15,125 @@ export default function FiltersPage() {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const markers = [
-    [50.874, 4.6947],
-    [50.212, 4],
-    [51, 5],
+  const coops = [
+    {
+      name: 'Radish Co-op',
+      location: {
+        address: 'San Diego CA',
+        lat: 37.7157, // latitude (calculated with Geocoding)
+        lng: -117.1611, // longitude (calculated with Geocoding)
+      },
+      email: 'coopemail@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'black-owned'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: 'Beet Co-op',
+      location: {
+        address: 'Seattle WA',
+        lat: 47.6062, // latitude (calculated with Geocoding)
+        lng: -122.3321, // longitude (calculated with Geocoding)
+      },
+      email: 'coopemail@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'black-owned'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: 'Carrot Co-op',
+      location: {
+        address: 'Berkeley CA',
+        lat: 37.8715, // latitude (calculated with Geocoding)
+        lng: -122.273, // longitude (calculated with Geocoding)
+      },
+      email: 'coopemail@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'black-owned'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: 'Corn Co-op',
+      location: {
+        address: 'Cupertino CA',
+        lat: 37.323, // latitude (calculated with Geocoding)
+        lng: -122.0322, // longitude (calculated with Geocoding)
+      },
+      email: 'coopemail@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'black-owned'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: 'Cabbage Co-op',
+      location: {
+        address: 'Santa Rosa CA',
+        lat: 38.4404, // latitude (calculated with Geocoding)
+        lng: -122.7141, // longitude (calculated with Geocoding)
+      },
+      email: 'coopemail@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'black-owned'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: 'Eric Eggplant Co-op',
+      location: {
+        address: 'North Potomac MD',
+        lat: 39.0978, // latitude (calculated with Geocoding)
+        lng: 77.2348, // longitude (calculated with Geocoding)
+      },
+      email: 'ericEggplants@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'eggplants', 'non-GMO'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profile_picture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
   ];
-
-  function markerClick({ payload }) {
-    console.log(payload);
-  }
 
   function renderListView() {
     return (
       <div className="list-mode">
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
-        <Card
-          profile={tina}
-          name="Bianca's Radishes"
-          location="Berkeley, CA"
-          tags={['vegetables', 'fruit']}
-        />
+        {coops.map((coop, index) => (
+          <Card
+            key={index}
+            profile={coop.profile_picture}
+            name={coop.name}
+            location={coop.location.address}
+            tags={coop.tags}
+            selected={selectedIndex === index}
+            onClick={() => renderProfile(coop, index)}
+          />
+        ))}
       </div>
     );
   }
@@ -78,17 +142,17 @@ export default function FiltersPage() {
     return (
       <div className="map-mode">
         <Map
-          center={markers[0]}
-          zoom={12}
+          center={[coops[0].location.lat, coops[0].location.lng]}
+          zoom={6}
           twoFingerDrag={true}
           provider={mapTilerProvider}
         >
-          {markers.map((anchor, index) => (
+          {coops.map((coop, index) => (
             <Marker
               payload={index}
               key={index}
-              anchor={anchor}
-              onClick={markerClick}
+              anchor={[coop.location.lat, coop.location.lng]}
+              onClick={() => renderProfile(coop, index)}
             />
           ))}
         </Map>
@@ -122,12 +186,18 @@ export default function FiltersPage() {
     );
   }
 
+  function renderProfile(coop, index) {
+    setCoop(coop);
+    setSelectedIndex(index);
+  }
+
   const [location, setLocation] = React.useState([]);
   const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [other, setOther] = React.useState([]);
-  console.log({ role, location, race, products, other });
+  const [coop, setCoop] = React.useState(coops[0]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   function reset() {
     setRole([]);
@@ -173,33 +243,12 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="centre-content">
-            <div>{listMode ? renderListView() : renderMapView()}</div>
+            {listMode ? renderListView() : renderMapView()}
           </div>
         </div>
         <div className="content">
           <div className="right-content">
-            <Profile
-              name="Richard's Radishes"
-              location="Berkeley, CA"
-              email="RichardRadishes@gmail.com"
-              website="RichardRadishes.com"
-              phone="303-866-1349"
-              instaLink="instagram.com"
-              fbLink="facebook.com"
-              missionText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-              descText="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-              tags={[
-                'Organic',
-                'Non-GMO',
-                'Farming',
-                'LGBTQ',
-                'Marketplace',
-                'Radishes',
-                'Vegetables',
-              ]}
-              allowEdit={false}
-              allowView={true}
-            />
+            {coop && <Profile allowView={true} allowEdit={false} coop={coop} />}
           </div>
         </div>
       </div>

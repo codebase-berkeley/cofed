@@ -12,16 +12,29 @@ import { Link } from 'react-router-dom';
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
 
-  const [name, setName] = React.useState(props.name);
-  const [location, setLocation] = React.useState(props.location);
-  const [phone, setPhone] = React.useState(props.phone);
-  const [tags, setTags] = React.useState(props.tags);
-  const [mission, setMission] = React.useState(props.missionText);
-  const [description, setDescription] = React.useState(props.descText);
-  const [instaLink, setInstaLink] = React.useState(props.instaLink);
-  const [fbLink, setFbLink] = React.useState(props.fbLink);
-  const [website, setWebsite] = React.useState(props.website);
-  const [email, setEmail] = React.useState(props.email);
+  const [name, setName] = React.useState('');
+  const [location, setLocation] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [tags, setTags] = React.useState('');
+  const [mission, setMission] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [instaLink, setInstaLink] = React.useState('');
+  const [fbLink, setFbLink] = React.useState('');
+  const [website, setWebsite] = React.useState('');
+  const [email, setEmail] = React.useState('');
+
+  React.useEffect(() => {
+    setName(props.coop.name);
+    setLocation(props.coop.location.address);
+    setPhone(props.coop.phone);
+    setTags(props.coop.tags);
+    setMission(props.coop.mission);
+    setDescription(props.coop.description);
+    setFbLink(props.coop.fbLink);
+    setInstaLink(props.coop.instaLink);
+    setEmail(props.coop.email);
+    setWebsite(props.coop.website);
+  }, [props.coop]);
 
   if (props.allowEdit) {
     return (
@@ -47,7 +60,7 @@ export default function Profile(props) {
   }
 
   function handleDelete(tagIndex) {
-    const newTags = tags.filter((tag, i) => i != tagIndex);
+    const newTags = tags.filter((tag, i) => i !== tagIndex);
     setTags(newTags);
   }
 

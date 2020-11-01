@@ -11,6 +11,11 @@
   margin-bottom: 3px;
   border-bottom: 1px solid #dde8ec;
   max-height: 18vw;
+  cursor: pointer;
+}
+
+.card-selected {
+  background-color: #f3f3f3;
 }
 
 .card-pic-text-container {
