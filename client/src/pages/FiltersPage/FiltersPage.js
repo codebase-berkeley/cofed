@@ -17,9 +17,9 @@ export default function FiltersPage() {
 
   const coops = [
     {
-      name: 'Radish Co-op',
+      name: "Bianca's Squash",
       location: {
-        address: 'San Diego CA',
+        address: 'Berkeley, CA',
         lat: 37.7157, // latitude (calculated with Geocoding)
         lng: -117.1611, // longitude (calculated with Geocoding)
       },
@@ -29,14 +29,14 @@ export default function FiltersPage() {
       tags: ['organic', 'black-owned'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
     {
-      name: 'Beet Co-op',
+      name: "Richard's Mushrooms",
       location: {
-        address: 'Seattle WA',
+        address: 'Seattle, WA',
         lat: 47.6062, // latitude (calculated with Geocoding)
         lng: -122.3321, // longitude (calculated with Geocoding)
       },
@@ -46,14 +46,14 @@ export default function FiltersPage() {
       tags: ['organic', 'black-owned'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
     {
-      name: 'Carrot Co-op',
+      name: "Claire's Radishes",
       location: {
-        address: 'Berkeley CA',
+        address: 'Berkeley, CA',
         lat: 37.8715, // latitude (calculated with Geocoding)
         lng: -122.273, // longitude (calculated with Geocoding)
       },
@@ -63,14 +63,14 @@ export default function FiltersPage() {
       tags: ['organic', 'black-owned'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
     {
-      name: 'Corn Co-op',
+      name: "Jane's Onions",
       location: {
-        address: 'Cupertino CA',
+        address: 'Cupertino, CA',
         lat: 37.323, // latitude (calculated with Geocoding)
         lng: -122.0322, // longitude (calculated with Geocoding)
       },
@@ -80,14 +80,14 @@ export default function FiltersPage() {
       tags: ['organic', 'black-owned'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
     {
-      name: 'Cabbage Co-op',
+      name: "Ranon's Cheese",
       location: {
-        address: 'Santa Rosa CA',
+        address: 'Bangkok, TH',
         lat: 38.4404, // latitude (calculated with Geocoding)
         lng: -122.7141, // longitude (calculated with Geocoding)
       },
@@ -97,14 +97,14 @@ export default function FiltersPage() {
       tags: ['organic', 'black-owned'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
     {
-      name: 'Eric Eggplant Co-op',
+      name: "Eric's Eggplants",
       location: {
-        address: 'North Potomac MD',
+        address: 'North Potomac, MD',
         lat: 39.0978, // latitude (calculated with Geocoding)
         lng: 77.2348, // longitude (calculated with Geocoding)
       },
@@ -114,7 +114,41 @@ export default function FiltersPage() {
       tags: ['organic', 'eggplants', 'non-GMO'],
       mission: 'lorem ipsum',
       description: 'lorem upsum',
-      profile_picture: tina,
+      profilePicture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: "Isabel's Burgers",
+      location: {
+        address: 'Auckland, NZ',
+        lat: 39.0978, // latitude (calculated with Geocoding)
+        lng: 77.2348, // longitude (calculated with Geocoding)
+      },
+      email: 'ericEggplants@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'eggplants', 'non-GMO'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profilePicture: tina,
+      instagram: 'https://instagram.com',
+      facebook: 'https://facebook.com',
+    },
+    {
+      name: "Zaid's Chickens",
+      location: {
+        address: 'Berkeley, CA',
+        lat: 39.0978, // latitude (calculated with Geocoding)
+        lng: 77.2348, // longitude (calculated with Geocoding)
+      },
+      email: 'ericEggplants@gmail.com',
+      phone: '555-555-5555',
+      website: 'https://www.cofed.coop/',
+      tags: ['organic', 'eggplants', 'non-GMO'],
+      mission: 'lorem ipsum',
+      description: 'lorem upsum',
+      profilePicture: tina,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
@@ -126,7 +160,7 @@ export default function FiltersPage() {
         {coops.map((coop, index) => (
           <Card
             key={index}
-            profile={coop.profile_picture}
+            profile={coop.profilePicture}
             name={coop.name}
             location={coop.location.address}
             tags={coop.tags}

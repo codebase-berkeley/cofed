@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import React from 'react';
 import Profile from './components/Profile/Profile';
+import tina from './assets/tina.png';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     tags: ['organic', 'black-owned'],
     facebook: 'https://facebook.com',
+    profilePicture: tina,
   };
 
   return (

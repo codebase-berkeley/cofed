@@ -3,7 +3,6 @@ import Tag from '../../components/Tag/Tag';
 import './Profile.css';
 import instagram from '../../assets/instagram.svg';
 import facebook from '../../assets/facebook.svg';
-import tina from '../../assets/tina.png';
 import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
@@ -22,6 +21,7 @@ export default function Profile(props) {
   const [fbLink, setFbLink] = React.useState('');
   const [website, setWebsite] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [profilePicture, setProfilePicture] = React.useState('');
 
   React.useEffect(() => {
     setName(props.coop.name);
@@ -34,6 +34,7 @@ export default function Profile(props) {
     setInstaLink(props.coop.instaLink);
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
+    setProfilePicture(props.coop.profilePicture);
   }, [props.coop]);
 
   if (props.allowEdit) {
@@ -216,7 +217,7 @@ export default function Profile(props) {
     return (
       <div className="profile-pic-text-container">
         <div className="profile-pic-container">
-          <img className="profile-pic-edit" alt="Image" src={tina} />
+          <img className="profile-pic-edit" alt="Image" src={profilePicture} />
           <img className="profile-edit-pic" alt="Image" src={plusSign} />
         </div>
         <div className="profile-edit-profile-text-container">
@@ -262,7 +263,7 @@ export default function Profile(props) {
   function renderContact() {
     return (
       <div className="profile-pic-text-container">
-        <img className="profile-pic" alt="Image" src={tina} />
+        <img className="profile-pic" alt="Image" src={profilePicture} />
         <div className="profile-text-container">
           <b className="profile-co-op-name">{name}</b>
           <div className="profile-co-op-location">{location}</div>
