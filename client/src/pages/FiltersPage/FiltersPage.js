@@ -244,6 +244,50 @@ export default function FiltersPage() {
     setOther([]);
   }
 
+  const roleOptions = [
+    { value: 'cooperative', label: 'Cooperative' },
+    { value: 'distributor', label: 'Distributor' },
+    { value: 'producer', label: 'Producer' },
+  ];
+  const locationOptions = [
+    { value: 'Alabama', label: 'Alabama' },
+    { value: 'Alaska', label: 'Alaska' },
+    { value: 'Arizona', label: 'Arizona' },
+    { value: 'Arkansas', label: 'Arkansas' },
+    { value: 'California', label: 'California' },
+    { value: 'Colorado', label: 'Colorado' },
+    { value: 'Connecticut', label: 'Connecticut' },
+    { value: 'Delaware', label: 'Delaware' },
+    { value: 'District of Columbia', label: 'District of Columbia' },
+    { value: 'Florida', label: 'Florida' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Hawaii', label: 'Hawaii' },
+    { value: 'Idaho', label: 'Idaho' },
+  ];
+  const raceOptions = [
+    { value: 'black', label: 'Black-owned' },
+    { value: 'native', label: 'Native-owned' },
+    { value: 'asian', label: 'Asian-owned' },
+    { value: 'pacificIslander', label: 'Pacific Islander-owned' },
+    { value: 'hispanicOrLatinx', label: 'Hispanic or Latinx-owned' },
+  ];
+  const productOptions = [
+    { value: 'fruits', label: 'Fruits' },
+    { value: 'vegetables', label: 'Vegetables' },
+    { value: 'natural', label: 'Natural Goods' },
+    { value: 'wholefoods', label: 'Wholefoods' },
+    { value: 'dairy', label: 'Dairy' },
+    { value: 'brew', label: 'Brew' },
+    { value: 'fish', label: 'Fish' },
+    { value: 'meats', label: 'Meats' },
+  ];
+  const otherOptions = [
+    { value: 'nonGMO', label: 'Verified Non-GMO' },
+    { value: 'startup', label: 'Startup' },
+    { value: 'queer', label: 'Queer-owned' },
+    { value: 'nonprofit', label: 'Non-profit' },
+  ];
+
   return (
     <div className="FiltersPage">
       <NavBar username="Rad Radishes" />
@@ -261,19 +305,36 @@ export default function FiltersPage() {
             </div>
             <div className="filter-container">
               <div className="filter-scroll">
-                <Filters title="role" values={role} onChange={setRole} />
+                <Filters
+                  title="role"
+                  options={roleOptions}
+                  values={role}
+                  onChange={setRole}
+                />
                 <Filters
                   title="location"
+                  options={locationOptions}
                   values={location}
                   onChange={setLocation}
                 />
-                <Filters title="race" values={race} onChange={setRace} />
+                <Filters
+                  title="race"
+                  options={raceOptions}
+                  values={race}
+                  onChange={setRace}
+                />
                 <Filters
                   title="products"
+                  options={productOptions}
                   values={products}
                   onChange={setProducts}
                 />
-                <Filters title="other" values={other} onChange={setOther} />
+                <Filters
+                  title="other"
+                  options={otherOptions}
+                  values={other}
+                  onChange={setOther}
+                />
               </div>
             </div>
           </div>

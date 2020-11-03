@@ -10,17 +10,6 @@ function arrayMove(array, from, to) {
   return array;
 }
 
-const colorOptions = [
-  { value: 'richard', label: 'Richard' },
-  { value: 'bianca', label: 'Bianca' },
-  { value: 'claire', label: 'Claire' },
-  { value: 'ranon', label: 'Ranon' },
-  { value: 'eric', label: 'Eric' },
-  { value: 'isabel', label: 'Isabel' },
-  { value: 'jane', label: 'Jane' },
-  { value: 'zaid', label: 'Zaid' },
-];
-
 const TagStyle = {
   control: (styles, { isFocused }) => ({
     ...styles,
@@ -120,7 +109,7 @@ export default function MultiSelectSort(props) {
         getHelperDimensions={({ node }) => node.getBoundingClientRect()}
         isMulti
         styles={TagStyle}
-        options={colorOptions}
+        options={props.options}
         value={props.values}
         onChange={onChange}
         placeholder={'Select ' + props.title + '...'}
@@ -133,4 +122,5 @@ MultiSelectSort.propTypes = {
   onChange: PropTypes.func,
   values: PropTypes.array,
   title: PropTypes.string,
+  options: PropTypes.array,
 };
