@@ -1,6 +1,7 @@
 import './FiltersPage.css';
 import tina from '../../assets/tina.png';
 import burger from '../../assets/burger.png';
+import eggplanted from '../../assets/eggplanted.jpg';
 import cheese from '../../assets/cheese.png';
 
 import Card from '../../components/Card/Card';
@@ -111,15 +112,16 @@ export default function FiltersPage() {
       location: {
         address: 'North Potomac, MD',
         lat: 39.0978, // latitude (calculated with Geocoding)
-        lng: 77.2348, // longitude (calculated with Geocoding)
+        lng: -77.2348, // longitude (calculated with Geocoding)
       },
       email: 'ericEggplants@gmail.com',
       phone: '555-555-5555',
       website: 'https://www.cofed.coop/',
       tags: ['organic', 'eggplants', 'non-GMO'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      mission: 'Raise organic eggplants without harming chickenplants',
+      description:
+        'We are a chicken-friendly institution. We are proud to say that no chickenplants are ever harmed on under our watch',
+      profilePicture: eggplanted,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
