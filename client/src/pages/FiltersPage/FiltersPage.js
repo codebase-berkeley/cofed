@@ -1,5 +1,7 @@
 import './FiltersPage.css';
 import tina from '../../assets/tina.png';
+import burger from '../../assets/burger.png';
+
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
@@ -122,16 +124,17 @@ export default function FiltersPage() {
       name: "Isabel's Burgers",
       location: {
         address: 'Auckland, NZ',
-        lat: 39.0978, // latitude (calculated with Geocoding)
-        lng: 77.2348, // longitude (calculated with Geocoding)
+        lat: -36.8771, // latitude (calculated with Geocoding)
+        lng: 174.914565, // longitude (calculated with Geocoding)
       },
-      email: 'ericEggplants@gmail.com',
+      email: 'isabel@burgers.com',
       phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'eggplants', 'non-GMO'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      website: 'https://www.isabelsburgers.org/',
+      tags: ['burgers', 'startup', 'non-GMO', 'food distributor'],
+      mission: 'To promote and make known the universal appeal of burgers.',
+      description:
+        "Isabel's burgers is a startup food distributor operating locally in Auckland, New Zealand. We service restaurants, retail stores, and educational institutions. We focus on burgers, but also deliver and distribute a range of other non-GMO foods. We are able to offer vegan options for all our burgers, including those made with synthetic meats.",
+      profilePicture: burger,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
