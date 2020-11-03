@@ -1,6 +1,7 @@
 import './FiltersPage.css';
 import tina from '../../assets/tina.png';
 import burger from '../../assets/burger.png';
+import cheese from '../../assets/cheese.png';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -90,16 +91,18 @@ export default function FiltersPage() {
       name: "Ranon's Cheese",
       location: {
         address: 'Bangkok, TH',
-        lat: 38.4404, // latitude (calculated with Geocoding)
-        lng: -122.7141, // longitude (calculated with Geocoding)
+        lat: 13.7563, // latitude (calculated with Geocoding)
+        lng: 100.5018, // longitude (calculated with Geocoding)
       },
-      email: 'coopemail@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'black-owned'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      email: 'ranonscheese@gmail.com',
+      phone: '+66856783344',
+      website: 'https://www.ranonsthaicheese.coop/',
+      tags: ['organic', 'international'],
+      mission:
+        'Provide the best cheese from humanely raised, rescued Thai cows.',
+      description:
+        'Only the best Thai cheese! From only the best and happiest Thai cows!',
+      profilePicture: cheese,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
