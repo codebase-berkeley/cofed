@@ -1,5 +1,6 @@
 import './FiltersPage.css';
 import tina from '../../assets/tina.png';
+import toad from '../../assets/toad.png';
 import burger from '../../assets/burger.png';
 import eggplanted from '../../assets/eggplanted.jpg';
 import cheese from '../../assets/cheese.png';
@@ -48,10 +49,11 @@ export default function FiltersPage() {
       email: 'coopemail@gmail.com',
       phone: '555-555-5555',
       website: 'https://www.cofed.coop/',
-      tags: ['organic', 'black-owned'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      tags: ['organic', 'vegan', 'fair trade'],
+      mission: 'To promote the welfare of the mushroom kingdom.',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      profilePicture: toad,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
