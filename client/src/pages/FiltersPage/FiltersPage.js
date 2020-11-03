@@ -3,6 +3,7 @@ import tina from '../../assets/tina.png';
 import burger from '../../assets/burger.png';
 import eggplanted from '../../assets/eggplanted.jpg';
 import cheese from '../../assets/cheese.png';
+import radish from '../../assets/radish.png';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -61,13 +62,14 @@ export default function FiltersPage() {
         lat: 37.8715, // latitude (calculated with Geocoding)
         lng: -122.273, // longitude (calculated with Geocoding)
       },
-      email: 'coopemail@gmail.com',
+      email: 'claireradishes@gmail.com',
       phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'black-owned'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      website: 'https://loveradish.co.uk/',
+      tags: ['radish', 'Distributor', 'Asian-Owned', 'vegetables', 'crunchy'],
+      mission:
+        'To distribute radishes to as many people as possible. Expose the spicy, crunchiness to the world.',
+      description: 'Radishes are life',
+      profilePicture: radish,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
