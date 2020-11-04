@@ -5,6 +5,7 @@ import burger from '../../assets/burger.png';
 import eggplanted from '../../assets/eggplanted.jpg';
 import cheese from '../../assets/cheese.png';
 import radish from '../../assets/radish.png';
+import heihei from '../../assets/heihei.png';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -150,17 +151,18 @@ export default function FiltersPage() {
     {
       name: "Zaid's Chickens",
       location: {
-        address: 'Berkeley, CA',
-        lat: 39.0978, // latitude (calculated with Geocoding)
-        lng: 77.2348, // longitude (calculated with Geocoding)
+        address: 'Tracy, CA',
+        lat: 37.6915, // latitude (calculated with Geocoding)
+        lng: -121.4348, // longitude (calculated with Geocoding)
       },
-      email: 'ericEggplants@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'eggplants', 'non-GMO'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      email: 'yummychicken@gmail.com',
+      phone: '209-555-5555',
+      website: 'https://www.chicken.coop/',
+      tags: ['meat', 'chickens', 'non-GMO', 'poultry', 'cooperative'],
+      mission: 'Coop with Coops',
+      description:
+        "Our chickens are grass-fed and produce the highest quality Grade AA eggs. Our quality of meat can't be beat!",
+      profilePicture: heihei,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
