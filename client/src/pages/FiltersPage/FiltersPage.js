@@ -2,6 +2,7 @@ import './FiltersPage.css';
 import tina from '../../assets/tina.png';
 import toad from '../../assets/toad.png';
 import burger from '../../assets/burger.png';
+import onion from '../../assets/onion.png';
 import eggplanted from '../../assets/eggplanted.jpg';
 import cheese from '../../assets/cheese.png';
 import radish from '../../assets/radish.png';
@@ -87,9 +88,10 @@ export default function FiltersPage() {
       phone: '555-555-5555',
       website: 'https://www.cofed.coop/',
       tags: ['organic', 'black-owned'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
+      mission: 'To season the world with the rise of organic onions.',
+      description:
+        'Loveliness in the form of onions. Fragrant, crunchy, and delightful onions grown and harvested with love.',
+      profilePicture: onion,
       instagram: 'https://instagram.com',
       facebook: 'https://facebook.com',
     },
