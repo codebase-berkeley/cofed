@@ -15,13 +15,9 @@
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true
-      
     }
-    
   },
   "parser": "babel-eslint",
-
-
   "rules": {
     "no-unused-vars": [
       "warn",
@@ -31,7 +27,7 @@
   },
   "settings": {
     "react": {
-      "version": "detect"
+      "version": "^16.14.0"
     }
   }
 }
