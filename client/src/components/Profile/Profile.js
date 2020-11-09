@@ -7,6 +7,7 @@ import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
@@ -23,19 +24,48 @@ export default function Profile(props) {
   const [email, setEmail] = React.useState('');
   const [profilePicture, setProfilePicture] = React.useState('');
 
+  // request from the database a list of all the profile information
+
+  const [about, setAbout] = React.useState(null);
+
+  async function fetchData() {
+    console.log(5);
+    const res = await axios.get(
+      'http://localhost:3000/api'
+      // {
+      //   headers: {
+      //     authorization: `Bearer keyOL1kQZed9BEO1f`,
+      //   },
+      // }
+    );
+    console.log(res);
+    console.log(500);
+
+    // setAbout(res.data.records);
+  }
+
   React.useEffect(() => {
-    setName(props.coop.name);
-    setLocation(props.coop.location.address);
-    setPhone(props.coop.phone);
-    setTags(props.coop.tags);
-    setMission(props.coop.mission);
-    setDescription(props.coop.description);
-    setFbLink(props.coop.fbLink);
-    setInstaLink(props.coop.instaLink);
-    setEmail(props.coop.email);
-    setWebsite(props.coop.website);
-    setProfilePicture(props.coop.profilePicture);
-  }, [props.coop]);
+    console.log(100);
+    fetchData();
+  }, []);
+
+  // if (!about) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // React.useEffect(() => {
+  //   setName(props.coop.name);
+  //   setLocation(props.coop.location.address);
+  //   setPhone(props.coop.phone);
+  //   setTags(props.coop.tags);
+  //   setMission(props.coop.mission);
+  //   setDescription(props.coop.description);
+  //   setFbLink(props.coop.fbLink);
+  //   setInstaLink(props.coop.instaLink);
+  //   setEmail(props.coop.email);
+  //   setWebsite(props.coop.website);
+  //   setProfilePicture(props.coop.profilePicture);
+  // }, [props.coop]);
 
   if (props.allowEdit) {
     return (
