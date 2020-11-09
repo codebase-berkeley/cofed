@@ -6,7 +6,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = 8000;
+const port = 8001;
 
 // Body-parser setup
 app.use(express.json());

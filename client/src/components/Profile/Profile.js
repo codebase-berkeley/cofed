@@ -29,23 +29,22 @@ export default function Profile(props) {
   const [about, setAbout] = React.useState(null);
 
   async function fetchData() {
-    console.log(5);
-    const res = await axios.get(
-      'http://localhost:3000/api'
-      // {
-      //   headers: {
-      //     authorization: `Bearer keyOL1kQZed9BEO1f`,
-      //   },
-      // }
-    );
+    console.log('fetchData is running!');
+    const res = await axios.get('http://localhost:8001/api/profile', {
+      headers: {
+        // authorization: `Bearer keyOL1kQZed9BEO1f`,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+      },
+    });
     console.log(res);
-    console.log(500);
 
     // setAbout(res.data.records);
   }
 
   React.useEffect(() => {
-    console.log(100);
     fetchData();
   }, []);
 
