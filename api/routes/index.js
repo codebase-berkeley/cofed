@@ -14,4 +14,14 @@ router.get('/', async (req, res) => {
   }
 });
 
+//retrieving ALL co-ops in our coops table
+router.get('/coops', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM coops;`);
+    res.send(query.rows[0]);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 module.exports = router;

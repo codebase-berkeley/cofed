@@ -46,3 +46,5 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
+
+-- INSERT INTO coops VALUES (1, 'claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', 'https://instagram.com', 'https://facebook.com');
