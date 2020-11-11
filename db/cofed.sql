@@ -2,10 +2,9 @@ DROP DATABASE IF EXISTS cofed;
 
 CREATE DATABASE cofed;
 
--- CREATE USER root
--- WITH ENCRYPTED PASSWORD 'password';
-
--- \c cofed;
+CREATE USER root
+WITH ENCRYPTED PASSWORD 'password';
+\c cofed;
 
 CREATE TABLE coops
 (
@@ -45,14 +44,20 @@ CREATE TABLE coop_tags
     tag_id SERIAL REFERENCES tags (id)
 );
 
--- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
 
--- GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
--- GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
+GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
 INSERT INTO coops
 VALUES
     (1, 'test@gmail.com', 'password', 'Test', '123456789',
         'Berkeley, CA', 37.8715, -123.2730, 'test.com', 'test', 'test', 'test', 'test',
         'test');
+
+INSERT INTO coops
+VALUES
+    (2, 'test2@gmail.com', 'password2', 'Test2', '123456789',
+        'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
+        'test2');

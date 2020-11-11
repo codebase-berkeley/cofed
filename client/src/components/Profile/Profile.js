@@ -12,59 +12,61 @@ import axios from 'axios';
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
 
-  const [name, setName] = React.useState('');
-  const [location, setLocation] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [tags, setTags] = React.useState('');
-  const [mission, setMission] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [instaLink, setInstaLink] = React.useState('');
-  const [fbLink, setFbLink] = React.useState('');
-  const [website, setWebsite] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [profilePicture, setProfilePicture] = React.useState('');
+  const [name, setName] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+  const [phone, setPhone] = React.useState(null);
+  const [tags, setTags] = React.useState(null);
+  const [mission, setMission] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [instaLink, setInstaLink] = React.useState(null);
+  const [fbLink, setFbLink] = React.useState(null);
+  const [website, setWebsite] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [profilePicture, setProfilePicture] = React.useState(null);
+
+  //find a cleaner solution to the "Loading screen"
+  const [dataFetched, setDataFetched] = React.useState(null);
 
   // request from the database a list of all the profile information
 
-  const [about, setAbout] = React.useState(null);
+  const CoopId = '1'; // And then you can just issue GET for COOPID upon login
 
   async function fetchData() {
     console.log('fetchData is running!');
-    const res = await axios.get('http://localhost:8001/api/profile', {
+    const res = await axios.get('/api/coop/' + CoopId, {
       headers: {
-        // authorization: `Bearer keyOL1kQZed9BEO1f`,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods':
           'GET, POST, PATCH, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
       },
     });
-    console.log(res);
 
-    // setAbout(res.data.records);
+    setProfileVariables(res.data);
   }
 
   React.useEffect(() => {
     fetchData();
   }, []);
 
-  // if (!about) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!name) {
+    return <div>Loading...</div>;
+  }
 
-  // React.useEffect(() => {
-  //   setName(props.coop.name);
-  //   setLocation(props.coop.location.address);
-  //   setPhone(props.coop.phone);
-  //   setTags(props.coop.tags);
-  //   setMission(props.coop.mission);
-  //   setDescription(props.coop.description);
-  //   setFbLink(props.coop.fbLink);
-  //   setInstaLink(props.coop.instaLink);
-  //   setEmail(props.coop.email);
-  //   setWebsite(props.coop.website);
-  //   setProfilePicture(props.coop.profilePicture);
-  // }, [props.coop]);
+  function setProfileVariables(res) {
+    setLocation(res['addr']);
+    setPhone(res['phone_number']);
+    setTags(props.coop.tags);
+    setMission(res['mission_statement']);
+    setDescription(res['description_text']);
+    setFbLink(res['fb_link']);
+    setInstaLink(res['insta_link']);
+    setEmail(res['email']);
+    setWebsite(res['website']);
+    setProfilePicture(res['profile_pic']);
+    setName(res['coop_name']);
+    setDataFetched('true');
+  }
 
   if (props.allowEdit) {
     return (
