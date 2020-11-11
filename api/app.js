@@ -6,7 +6,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = 8001;
+const port = 8000;
 
 // Body-parser setup
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use('/api', indexRouter);
 app.use('/auth', authRouter);
 
 // TODO: Remove cors after development
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: 'https://localhost:8000' }));
 
 app.get('/', (req, res) => res.send('Hello, world!'));
 

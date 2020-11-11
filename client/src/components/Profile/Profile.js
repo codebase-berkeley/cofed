@@ -30,7 +30,7 @@ export default function Profile(props) {
 
   async function fetchData() {
     console.log('fetchData is running!');
-    const res = await axios.get('http://localhost:8001/api/profile', {
+    const res = await axios.get('https://localhost:8000/api/profile', {
       headers: {
         // authorization: `Bearer keyOL1kQZed9BEO1f`,
         'Access-Control-Allow-Origin': '*',
