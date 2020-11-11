@@ -2,8 +2,9 @@ DROP DATABASE IF EXISTS cofed;
 
 CREATE DATABASE cofed;
 
--- CREATE USER root
--- WITH ENCRYPTED PASSWORD 'password';
+-- Comment these two lines out after you've run this file for the first time
+CREATE USER root
+WITH ENCRYPTED PASSWORD 'password';
 
 \c cofed;
 
