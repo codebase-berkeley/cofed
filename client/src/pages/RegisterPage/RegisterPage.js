@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './RegisterPage.css';
+import axios from 'axios';
 
 export default function RegisterPage() {
   const [nameInput, setNameInput] = React.useState('');
@@ -8,12 +9,48 @@ export default function RegisterPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
 
-  function createAccount() {
-    console.log(nameInput);
-    console.log(passwordInput);
-    console.log(emailInput);
-    console.log(locationInput);
+  // function createAccount() {
+  //   console.log(nameInput);
+  //   console.log(passwordInput);
+  //   console.log(emailInput);
+  //   console.log(locationInput);
+  // }
+
+  const CoopId = '5';
+
+  async function createAccount() {
+    console.log('fetchData is running!');
+
+    let requestString =
+      CoopId +
+      '/' +
+      emailInput +
+      '/' +
+      nameInput +
+      '/' +
+      locationInput +
+      '/' +
+      passwordInput;
+
+    const res = await axios.post('/api/coop/' + requestString, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+      },
+    });
+
+    console.log(res.data);
   }
+
+  React.useEffect(() => {
+    createAccount();
+  }, []);
+
+  // if (!name) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="register">
