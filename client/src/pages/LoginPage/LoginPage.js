@@ -3,6 +3,7 @@ import GoogleLogo from '../../assets/GoogleLogo.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.css';
+import axios from 'axios';
 
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
@@ -12,6 +13,31 @@ export default function LoginPage() {
     console.log(emailInput, pwInput);
     setEmailInput('');
     setPwInput('');
+  }
+
+  async function checkLogin() {
+    try {
+      const email = await axios.get('/api/coop/' + emailInput, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods':
+            'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+        },
+      });
+
+      const password = await axios.get('/api/coop/' + emailInput, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods':
+            'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+        },
+      });
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 
   return (
@@ -46,7 +72,20 @@ export default function LoginPage() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          <Link to="/">
+          if(checkLogin()){' '}
+          {
+            <Link to="/">
+              <button
+                className="loginPageButton"
+                type="button"
+                onClick={handleSubmit}
+              >
+                Login
+              </button>
+            </Link>
+          }
+          else{' '}
+          {
             <button
               className="loginPageButton"
               type="button"
@@ -54,7 +93,7 @@ export default function LoginPage() {
             >
               Login
             </button>
-          </Link>
+          }
         </div>
         <Link to="/register">
           <button

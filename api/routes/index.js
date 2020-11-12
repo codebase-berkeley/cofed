@@ -2,8 +2,6 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 
-// This is an example SQL query - use this as a template
-
 router.get('/coop/:CoopID', async (req, res) => {
   try {
     const id = req.params['CoopID'];
@@ -14,23 +12,26 @@ router.get('/coop/:CoopID', async (req, res) => {
   }
 });
 
-// This is an example SQL query - use this as a template
-router.post('/coop/:CoopID/:email', async (req, res) => {
-  try {
-    const id = req.params['CoopID'];
-    const email = req.params['email'];
-    const name = req.params['name'];
-    const addr = req.params['addr'];
-    const pass = req.params['pass'];
+router.post('/coop', async (req, res) => {
+  const id = parseInt(req.body.id, 10);
+  const email = req.body.email;
+  const name = req.body.name;
+  const addr = req.body.addr;
+  const pass = req.body.pass;
 
-    let v =
-      '(' + id + ', ' + email + ', ' + name + ', ' + addr + ', ' + pass + ')';
-    res.send(v);
-    await db.query(
-      'INSERT INTO coops (id, email, pass, coop_name) VALUES ' + v
-    );
-  } catch (error) {
-    console.log(error.stack);
+  // let v =
+  //   '(' + id + ', ' + email + ', ' + name + ', ' + addr + ', ' + pass + ')';
+  // await db.query(
+  //   'INSERT INTO coops (id, email, pass, coop_name) VALUES ' + v
+  // );
+
+  const text =
+    'INSERT INTO coops(id, email, pass, coop_name, addr) VALUES($1, $2, $3, $4, $5)';
+  const values = [id, email, pass, name, addr];
+  try {
+    await db.query(text, values);
+  } catch (err) {
+    console.log(err.stack);
   }
 });
 module.exports = router;

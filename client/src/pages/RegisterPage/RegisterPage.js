@@ -21,32 +21,26 @@ export default function RegisterPage() {
   async function createAccount() {
     console.log('fetchData is running!');
 
-    let requestString =
-      CoopId +
-      '/' +
-      emailInput +
-      '/' +
-      nameInput +
-      '/' +
-      locationInput +
-      '/' +
-      passwordInput;
-
-    const res = await axios.post('/api/coop/' + requestString, {
+    const res = await axios.post('/api/coop', {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods':
           'GET, POST, PATCH, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
       },
+      id: CoopId,
+      email: emailInput,
+      name: nameInput,
+      addr: locationInput,
+      pass: passwordInput,
     });
 
     console.log(res.data);
   }
 
-  React.useEffect(() => {
-    createAccount();
-  }, []);
+  // React.useEffect(() => {
+  //   createAccount();
+  // }, []);
 
   // if (!name) {
   //   return <div>Loading...</div>;
