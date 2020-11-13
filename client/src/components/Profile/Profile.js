@@ -18,23 +18,23 @@ export default function Profile(props) {
   const [mission, setMission] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [instaLink, setInstaLink] = React.useState('');
-  const [fbLink, setFbLink] = React.useState('');
+  const [fb_link, setFbLink] = React.useState('');
   const [website, setWebsite] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [profilePicture, setProfilePicture] = React.useState('');
 
   React.useEffect(() => {
     setName(props.coop.name);
-    setLocation(props.coop.location.address);
+    setLocation(props.coop.addr);
     setPhone(props.coop.phone);
     setTags(props.coop.tags);
     setMission(props.coop.mission);
     setDescription(props.coop.description);
-    setFbLink(props.coop.fbLink);
-    setInstaLink(props.coop.instaLink);
+    setFbLink(props.coop.fb_link);
+    setInstaLink(props.coop.insta_link);
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
-    setProfilePicture(props.coop.profilePicture);
+    setProfilePicture(props.coop.profile_pic);
   }, [props.coop]);
 
   if (props.allowEdit) {
@@ -183,7 +183,7 @@ export default function Profile(props) {
           <div className="profile-hr"></div>
         </div>
         <div className="profile-socials-div">
-          <a href={fbLink} target="_blank" rel="noreferrer">
+          <a href={fb_link} target="_blank" rel="noreferrer">
             <img src={facebook} className="profile-social-button" />
           </a>
           <a href={instaLink} target="_blank" rel="noreferrer">

@@ -4,10 +4,12 @@
   "repository": "https://github.com/codebase-berkeley/cofed.git",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "pg": "^8.4.2"
+    "pg": "^8.4.2",
+    "react-toggle": "^4.1.1"
   },
   "scripts": {
     "start": "concurrently \"yarn client\" \"yarn server\" \"yarn db\"",

@@ -93,6 +93,21 @@
   overflow-y: hidden;
 }
 
+.filter-toggle-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.starred-only-text {
+  font-size: 12pt;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  color: #81a1b7;
+  margin-right: 5px;
+}
+
 .filter-scroll {
   height: 99%;
   overflow-y: scroll;
