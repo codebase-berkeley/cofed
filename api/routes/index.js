@@ -18,7 +18,11 @@ router.get('/', async (req, res) => {
 router.get('/coops', async (req, res) => {
   try {
     const query = await db.query(`SELECT * FROM coops;`);
+<<<<<<< HEAD
     res.send(query.rows);
+=======
+    res.send(query.rows[0]);
+>>>>>>> cf80176906a4512777dc43d2a06f1678f056f3a1
   } catch (error) {
     console.log(error.stack);
   }

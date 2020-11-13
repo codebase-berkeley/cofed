@@ -48,5 +48,9 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
+<<<<<<< HEAD
 INSERT INTO coops (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link )
 VALUES ('claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '','https://instagram.com', 'https://facebook.com');
+=======
+-- INSERT INTO coops VALUES (1, 'claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', 'https://instagram.com', 'https://facebook.com');
+>>>>>>> cf80176906a4512777dc43d2a06f1678f056f3a1
