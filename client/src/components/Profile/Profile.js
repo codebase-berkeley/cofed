@@ -31,6 +31,29 @@ export default function Profile(props) {
 
   const CoopId = '1'; // And then you can just issue GET for COOPID upon login
 
+  async function putData() {
+    console.log('putData is running!');
+    const res = await axios.put('/api/coop', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+      },
+      id: CoopId,
+      name: name,
+      addr: location,
+      phone: phone,
+      mission: mission,
+      description: description,
+      insta: instaLink,
+      fb: fbLink,
+      web: website,
+      email: email,
+      photo: profilePicture,
+    });
+  }
+
   async function fetchData() {
     console.log('fetchData is running!');
     const res = await axios.get('/api/coop/' + CoopId, {
@@ -88,6 +111,9 @@ export default function Profile(props) {
   }
 
   function toggleEdit() {
+    if (editMode) {
+      putData();
+    }
     setEditMode(!editMode);
   }
 

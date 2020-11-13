@@ -11,33 +11,39 @@ export default function LoginPage() {
 
   function handleSubmit() {
     console.log(emailInput, pwInput);
+    checkLogin();
     setEmailInput('');
     setPwInput('');
   }
 
   async function checkLogin() {
-    try {
-      const email = await axios.get('/api/coop/' + emailInput, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':
-            'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-        },
-      });
+    console.log('checkLogin is running!');
+    // const coopId = await axios.get('/api/authen', {
+    //   headers: {
+    //     'Access-Control-Allow-Origin': '*',
+    //     'Access-Control-Allow-Methods':
+    //       'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+    //     'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+    //   },
+    //   password: pwInput,
+    //   email: emailInput,
+    // });
 
-      const password = await axios.get('/api/coop/' + emailInput, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':
-            'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-        },
-      });
-      return true;
-    } catch (err) {
-      return false;
-    }
+    // console.log('coopId: ' + coopId);
+
+    const res = await axios.get('/api/authen', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+      },
+      params: {
+        email: emailInput,
+      },
+    });
+
+    console.log(res);
   }
 
   return (
@@ -72,28 +78,15 @@ export default function LoginPage() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          if(checkLogin()){' '}
-          {
-            <Link to="/">
-              <button
-                className="loginPageButton"
-                type="button"
-                onClick={handleSubmit}
-              >
-                Login
-              </button>
-            </Link>
-          }
-          else{' '}
-          {
-            <button
-              className="loginPageButton"
-              type="button"
-              onClick={handleSubmit}
-            >
-              Login
-            </button>
-          }
+          {/* <Link to="/"> */}
+          <button
+            className="loginPageButton"
+            type="button"
+            onClick={handleSubmit}
+          >
+            Login
+          </button>
+          {/* </Link> */}
         </div>
         <Link to="/register">
           <button

@@ -34,7 +34,7 @@ export default function RegisterPage() {
       addr: locationInput,
       pass: passwordInput,
     });
-
+    
     console.log(res.data);
   }
 
