@@ -18,8 +18,8 @@ export default function FiltersPage() {
   const [race, setRace] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [other, setOther] = React.useState([]);
-  // const [coop, setCoop] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [starrerId, setStarrerId] = React.useState(1);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -41,9 +41,20 @@ export default function FiltersPage() {
       params: {
         starrerId: 1,
       },
+<<<<<<< HEAD
     }); 
     //set the query data as the starred coops
     setStarredCoops(starred.data);
+=======
+    }); */
+
+    setCoops(res.data);
+    setCoopShown(res.data[0]);
+    console.log(res.data, res.data[0], typeof res.data);
+    console.log(coopShown);
+    //set the query data as the starred coops
+    // setStarredCoops(starred);
+>>>>>>> a300ba813dd6740f225f5852eaa47dae6e640a1b
   }
 
   React.useEffect(() => {
@@ -55,6 +66,7 @@ export default function FiltersPage() {
   }
 
   function toggleStar(starredId, starrerId, coop) {
+    console.log(starredCoops);
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred
       //remove the coop from the list of starred
@@ -277,13 +289,15 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coopShown && (
+            {coops && (
               <Profile
                 allowView={true}
                 allowEdit={false}
                 coop={coopShown}
                 starred={starredCoops.includes(coopShown.id)}
-                handleStar={toggleStar}
+                handleStar={() =>
+                  toggleStar(coopShown.id, starrerId, coopShown)
+                }
               />
             )}
           </div>
