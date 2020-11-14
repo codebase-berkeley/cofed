@@ -41,20 +41,9 @@ export default function FiltersPage() {
       params: {
         starrerId: 1,
       },
-<<<<<<< HEAD
     }); 
     //set the query data as the starred coops
     setStarredCoops(starred.data);
-=======
-    }); */
-
-    setCoops(res.data);
-    setCoopShown(res.data[0]);
-    console.log(res.data, res.data[0], typeof res.data);
-    console.log(coopShown);
-    //set the query data as the starred coops
-    // setStarredCoops(starred);
->>>>>>> a300ba813dd6740f225f5852eaa47dae6e640a1b
   }
 
   React.useEffect(() => {
