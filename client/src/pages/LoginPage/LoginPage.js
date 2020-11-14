@@ -8,6 +8,7 @@ import axios from 'axios';
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
+  let [loginSwitch, setLoginSwitch] = React.useState('/login');
 
   function handleSubmit() {
     console.log(emailInput, pwInput);
@@ -17,7 +18,6 @@ export default function LoginPage() {
   }
 
   async function checkLogin() {
-    console.log('checkLogin is running!');
     // const coopId = await axios.get('/api/authen', {
     //   headers: {
     //     'Access-Control-Allow-Origin': '*',
@@ -31,19 +31,23 @@ export default function LoginPage() {
 
     // console.log('coopId: ' + coopId);
 
-    const res = await axios.get('/api/authen', {
+    const res = await axios.post('/api/authen', {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods':
           'GET, POST, PATCH, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
       },
-      params: {
-        email: emailInput,
-      },
+      email: emailInput,
+      pass: pwInput,
     });
-
-    console.log(res);
+    console.log(res.data);
+    //if there is no input, res.data = '' = false
+    if (res.data) {
+      setLoginSwitch('/');
+    }
+    //if statement that changes the value of loginSwitch if necessary
+    // <Link to="/"></Link>;
   }
 
   return (
@@ -78,21 +82,21 @@ export default function LoginPage() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          {/* <Link to="/"> */}
-          <button
-            className="loginPageButton"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Login
-          </button>
-          {/* </Link> */}
+          <Link to="/">
+            <button
+              className="loginPageButton"
+              type="button"
+              onClick={handleSubmit}
+            >
+              Login
+            </button>
+          </Link>
         </div>
         <Link to="/register">
           <button
             className="loginPageButton"
             type="button"
-            onClick={handleSubmit}
+            // onClick={handleSubmit}
           >
             Create Account
           </button>

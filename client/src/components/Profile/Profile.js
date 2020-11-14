@@ -51,6 +51,7 @@ export default function Profile(props) {
       web: website,
       email: email,
       photo: profilePicture,
+      tags: tags,
     });
   }
 
@@ -64,7 +65,6 @@ export default function Profile(props) {
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
       },
     });
-
     setProfileVariables(res.data);
   }
 
@@ -79,7 +79,8 @@ export default function Profile(props) {
   function setProfileVariables(res) {
     setLocation(res['addr']);
     setPhone(res['phone_number']);
-    setTags(props.coop.tags);
+    // setTags(props.coop.tags);
+    setTags(res['tags']);
     setMission(res['mission_statement']);
     setDescription(res['description_text']);
     setFbLink(res['fb_link']);

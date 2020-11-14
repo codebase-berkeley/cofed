@@ -61,3 +61,50 @@ VALUES
     (2, 'test2@gmail.com', 'password2', 'Test2', '123456789',
         'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
         'test2');
+
+INSERT INTO tags
+VALUES
+    (1, 'THE FIRST TAG');
+
+INSERT INTO tags
+VALUES
+    (2, 'THE SECOND TAG');
+
+INSERT INTO tags
+VALUES
+    (3, 'THE THIRD TAG');
+
+INSERT INTO tags
+VALUES
+    (4, 'NOOT IN COOP 1 TAG');
+
+INSERT INTO tags
+VALUES
+    (5, 'NO COOP 1 TAG');
+
+
+INSERT INTO coop_tags
+VALUES
+    (1, 1, 1);
+
+INSERT INTO coop_tags
+VALUES
+    (2, 1, 2);
+
+INSERT INTO coop_tags
+VALUES
+    (3, 1, 3);
+
+INSERT INTO coop_tags
+VALUES
+    (4, 2, 4);
+
+INSERT INTO coop_tags
+VALUES
+    (5, 2, 5);
+
+INSERT INTO coop_tags
+VALUES
+    (6, 2, 3);
+
+        
