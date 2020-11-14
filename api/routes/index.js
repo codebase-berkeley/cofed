@@ -2,26 +2,35 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 
+//input: a SQL query that asks for tags
+//output: an array of tags
+
+function getArrayOfTags(query) {
+  //extract the tags from queryTags.rows into an array of tags
+  const listOfDictTags = Object.values(query.rows);
+
+  //helper function that returns the value in the dictionary
+  function getValue(d) {
+    for (var key in d) {
+      return d[key];
+    }
+  }
+
+  var listOfTags = listOfDictTags.map(getValue);
+  return listOfTags;
+}
+
 router.get('/coop/:CoopID', async (req, res) => {
   try {
     const id = req.params['CoopID'];
 
-    const queryTags = await db.query(
+    var queryTags = await db.query(
       'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id=' +
         id
     );
     const query = await db.query('SELECT * FROM coops WHERE id = ' + id);
 
-    //extract the tags from queryTags.rows into an array of tags
-    const listOfDictTags = Object.values(queryTags.rows);
-
-    //helper function that returns the value in the dictionary
-    function getValue(d) {
-      for (var key in d) {
-        return d[key];
-      }
-    }
-    var listOfTags = listOfDictTags.map(getValue);
+    var listOfTags = getArrayOfTags(queryTags);
 
     //put the array of tags into the query.rows[0] dictionary
     query.rows[0]['tags'] = listOfTags;
@@ -52,7 +61,7 @@ router.post('/coop', async (req, res) => {
 });
 
 router.put('/coop', async (req, res) => {
-  const id = parseInt(req.body.id, 10);
+  const coop_id = parseInt(req.body.id, 10);
   const name = req.body.name;
   const addr = req.body.addr;
   const phone = req.body.phone;
@@ -66,11 +75,11 @@ router.put('/coop', async (req, res) => {
   const tags = req.body.tags;
 
   const text =
-    'UPDATE coops SET tags = $12, coop_name = $3, addr = $4, ' +
+    'UPDATE coops SET coop_name = $3, addr = $4, ' +
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
     'insta_link = $8, fb_link = $9, website = $10, email = $2, profile_pic = $11 WHERE id = $1';
   const values = [
-    id,
+    coop_id,
     email,
     name,
     addr,
@@ -81,12 +90,17 @@ router.put('/coop', async (req, res) => {
     fb,
     web,
     photo,
-    tags,
   ];
 
   //input: tags = [TAG1, TAG2]
 
   //very easy to get with helper function: tagsDatabase = [TAG1, TAG2, TAG3]
+  var queryTags = await db.query(
+    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id=' +
+      coop_id
+  );
+  var listOfTagsDatabase = getArrayOfTags(queryTags);
+  //EVERYTHING WORKS UP TO THIS POINT
 
   //add = [TAG 4]
   //find the tag's id

@@ -53,6 +53,8 @@ export default function Profile(props) {
       photo: profilePicture,
       tags: tags,
     });
+    //see the output of the put request
+    console.log(res);
   }
 
   async function fetchData() {
@@ -79,7 +81,6 @@ export default function Profile(props) {
   function setProfileVariables(res) {
     setLocation(res['addr']);
     setPhone(res['phone_number']);
-    // setTags(props.coop.tags);
     setTags(res['tags']);
     setMission(res['mission_statement']);
     setDescription(res['description_text']);
