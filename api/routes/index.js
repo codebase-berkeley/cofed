@@ -126,14 +126,6 @@ router.put('/coop', async (req, res) => {
     //delete the tag
     res.send('sadsda ' + tag_idee);
   }
-  // for (var tagNameFromArray in deleteArray) {
-  //   res.send(tagNameFromArray);
-  //   var tag_idee = await db.query(
-  //     //find the tag id to delete
-  //     'SELECT id FROM tags WHERE tag_name = ' + tagNameFromArray
-  //   );
-  //   res.send(tag_idee);
-  // }
 
   //use TAG 3 and the tags table to find id (the tag's id)
   //find the tag id to delete
