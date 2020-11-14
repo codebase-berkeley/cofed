@@ -1,14 +1,6 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
-import tina from '../../assets/tina.png';
-import toad from '../../assets/toad.png';
-import burger from '../../assets/burger.png';
-import onion from '../../assets/onion.png';
-import eggplanted from '../../assets/eggplanted.jpg';
-import cheese from '../../assets/cheese.png';
-import radish from '../../assets/radish.png';
-import heihei from '../../assets/heihei.png';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -34,21 +26,26 @@ export default function FiltersPage() {
   }
 
   const [coops, setCoops] = React.useState(null); //all coops
-  const [coopShown, setCoopShown] = React.useState(coops[0]); //the cooop shown on the right
   //tracker for the starred coops, an array of starred coops
-  const [starredCoops, setStarredCoops] = React.useState(null);
+  const [starredCoops, setStarredCoops] = React.useState([]);
+  const [coopShown, setCoopShown] = React.useState([]);
 
   async function fetchData() {
     const res = await axios.get('/api/coops');
-    //get the toggle star info
+
+    /* //get the toggle star info
     const starred = await axios.get('/api/getStarred', {
       params: {
         starrerId: 1,
       },
-    });
+    }); */
+
     setCoops(res.data);
+    console.log(coops);
+    console.log(res.data);
     //set the query data as the starred coops
-    setStarredCoops(starred);
+    // setStarredCoops(starred);
+    setCoopShown(coops[0]);
   }
 
   React.useEffect(() => {
@@ -99,7 +96,7 @@ export default function FiltersPage() {
             name={coop.coop_name}
             location={coop.addr}
             tags={coop.tags}
-            starred={starredCoops.includes(coop.id)}
+            // starred={starredCoops.includes(coop.id)}
             selected={selectedIndex === index}
             onClick={() => renderProfile(coop, index)}
           />
@@ -160,13 +157,6 @@ export default function FiltersPage() {
     setCoopShown(coop);
     setSelectedIndex(index);
   }
-
-  // const [location, setLocation] = React.useState([]);
-  // const [role, setRole] = React.useState([]);
-  // const [race, setRace] = React.useState([]);
-  // const [products, setProducts] = React.useState([]);
-  // const [other, setOther] = React.useState([]);
-  // const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   function reset() {
     setRole([]);
@@ -289,12 +279,12 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coop && (
+            {coopShown && (
               <Profile
                 allowView={true}
                 allowEdit={false}
                 coop={coopShown}
-                starred={starredCoops.includes(coop.id)}
+                starred={starredCoops.includes(coopShown.id)}
                 handleStar={toggleStar}
               />
             )}

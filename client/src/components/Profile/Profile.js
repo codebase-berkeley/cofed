@@ -7,7 +7,6 @@ import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
@@ -25,7 +24,7 @@ export default function Profile(props) {
   const [profilePicture, setProfilePicture] = React.useState('');
   //add in the starred attribute
   const [starred, setStarred] = React.useState(false);
-  //add in the passed-in starring functionality 
+  //add in the passed-in starring functionality
   const [handleStarring, setHandleStarring] = React.useState(null);
 
   React.useEffect(() => {

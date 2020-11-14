@@ -8,7 +8,8 @@ WITH ENCRYPTED PASSWORD 'password';
 
 \c cofed;
 
-CREATE TABLE coops (
+CREATE TABLE coops
+(
     id SERIAL PRIMARY KEY,
     email VARCHAR,
     pass VARCHAR,
@@ -25,18 +26,21 @@ CREATE TABLE coops (
     fb_link VARCHAR
 );
 
-CREATE TABLE stars (
+CREATE TABLE stars
+(
     id SERIAL PRIMARY KEY,
     starred_coop_id SERIAL REFERENCES coops (id),
     starrer_coop_id SERIAL REFERENCES coops (id)
 );
 
-CREATE TABLE tags (
+CREATE TABLE tags
+(
     id SERIAL PRIMARY KEY,
     tag_name VARCHAR
 );
 
-CREATE TABLE coop_tags (
+CREATE TABLE coop_tags
+(
     id SERIAL PRIMARY KEY,
     coop_id SERIAL REFERENCES coops (id),
     tag_id SERIAL REFERENCES tags (id)
@@ -48,9 +52,23 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
-<<<<<<< HEAD
-INSERT INTO coops (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link )
-VALUES ('claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '','https://instagram.com', 'https://facebook.com');
-=======
--- INSERT INTO coops VALUES (1, 'claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', 'https://instagram.com', 'https://facebook.com');
->>>>>>> cf80176906a4512777dc43d2a06f1678f056f3a1
+INSERT INTO coops
+    (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link )
+VALUES
+    ('claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Isabels Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Ranons Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Janes Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Richards Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Biancas Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com');
+
+
+INSERT INTO stars
+    (starred_coop_id, starrer_coop_id)
+VALUES
+    (1, 2),
+    (1, 3),
+    (2, 1),
+    (4, 1),
+    (5, 2),
+    (6, 1);
