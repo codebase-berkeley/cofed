@@ -40,13 +40,12 @@ export default function FiltersPage() {
       },
     }); */
 
-    setCoops(res.data);
-    console.log(coops);
-    console.log(res.data);
-    console.log(typeof res.data);
+    setCoops(res.data, () => {
+      setCoopShown(coops[0]);
+    });
     //set the query data as the starred coops
     // setStarredCoops(starred);
-    setCoopShown(coops[0]);
+    // setCoopShown(coops[0]);
   }
 
   React.useEffect(() => {
