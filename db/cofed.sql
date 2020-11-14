@@ -64,15 +64,15 @@ VALUES
 
 INSERT INTO tags
 VALUES
-    (1, 'THE FIRST TAG');
+    (1, 'f');
 
 INSERT INTO tags
 VALUES
-    (2, 'THE SECOND TAG');
+    (2, 's');
 
 INSERT INTO tags
 VALUES
-    (3, 'THE THIRD TAG');
+    (3, 't');
 
 INSERT INTO tags
 VALUES

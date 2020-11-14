@@ -108,14 +108,34 @@ router.put('/coop', async (req, res) => {
       coop_id
   );
   var listOfTagsDatabase = getArrayOfTags(queryTags);
-  //EVERYTHING WORKS UP TO THIS POINT
 
   //delete_diff = [TAG 3];
   deleteArray = diffArray(listOfTagsDatabase, tags);
-  res.send(deleteArray);
+  //EVERYTHING WORKS UP TO THIS POINT
+
+  //for every tag in the deleteArray
+  for (var i = 0; i < deleteArray.length; i++) {
+    var tagNameFromArray = deleteArray[i];
+    const text = 'SELECT id FROM tags WHERE tag_name = $1';
+    const value = [tagNameFromArray];
+
+    //find the tag id to delete
+    var query = await db.query(text, value);
+    var tag_idee = getArrayOfTags(query)[0];
+
+    //delete the tag
+    res.send('sadsda ' + tag_idee);
+  }
+  // for (var tagNameFromArray in deleteArray) {
+  //   res.send(tagNameFromArray);
+  //   var tag_idee = await db.query(
+  //     //find the tag id to delete
+  //     'SELECT id FROM tags WHERE tag_name = ' + tagNameFromArray
+  //   );
+  //   res.send(tag_idee);
+  // }
 
   //use TAG 3 and the tags table to find id (the tag's id)
-  //DELETE FROM coop_tags WHERE coop_id = coopid AND tag_id = id (from above)
   //find the tag id to delete
   // - tag_idee = SELECT id FROM tags WHERE tag_name = 'THE THIRD TAG'
   //delete it from the coops_tag table
