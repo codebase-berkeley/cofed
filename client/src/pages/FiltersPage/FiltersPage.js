@@ -94,7 +94,7 @@ export default function FiltersPage() {
             name={coop.coop_name}
             location={coop.addr}
             tags={coop.tags}
-            // starred={starredCoops.includes(coop.id)}
+            starred={starredCoops.includes(coop.id)}
             selected={selectedIndex === index}
             onClick={() => renderProfile(coop, index)}
           />
