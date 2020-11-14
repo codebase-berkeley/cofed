@@ -31,8 +31,7 @@ router.get('/getStarred', async (req, res) => {
       //DONE: use get the id's of the starred co-ops
       `SELECT starred_coop_id 
       FROM stars 
-      WHERE starrer_coop_id = $1 
-      RETURNING *;`,
+      WHERE starrer_coop_id = $1;`,
       [req.params.starrerId]
     );
     res.send(query.rows);

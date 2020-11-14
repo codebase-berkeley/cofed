@@ -32,20 +32,18 @@ export default function FiltersPage() {
 
   async function fetchData() {
     const res = await axios.get('/api/coops');
+    setCoops(res.data, () => {
+      setCoopShown(coops[0]);
+    });
 
-    /* //get the toggle star info
+    //get the toggle star info
     const starred = await axios.get('/api/getStarred', {
       params: {
         starrerId: 1,
       },
-    }); */
-
-    setCoops(res.data, () => {
-      setCoopShown(coops[0]);
-    });
+    }); 
     //set the query data as the starred coops
-    // setStarredCoops(starred);
-    // setCoopShown(coops[0]);
+    setStarredCoops(starred.data);
   }
 
   React.useEffect(() => {
