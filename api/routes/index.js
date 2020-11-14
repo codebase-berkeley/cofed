@@ -20,6 +20,14 @@ function getArrayOfTags(query) {
   return listOfTags;
 }
 
+//input: array1, array 2
+//output: an array of things in array1 that are NOT in array 2
+function diffArray(arr1, arr2) {
+  //stack overflowed
+  var n = arr1.filter(x => !arr2.includes(x));
+  return n;
+}
+
 router.get('/coop/:CoopID', async (req, res) => {
   try {
     const id = req.params['CoopID'];
@@ -102,6 +110,17 @@ router.put('/coop', async (req, res) => {
   var listOfTagsDatabase = getArrayOfTags(queryTags);
   //EVERYTHING WORKS UP TO THIS POINT
 
+  //delete_diff = [TAG 3];
+  deleteArray = diffArray(listOfTagsDatabase, tags);
+  res.send(deleteArray);
+
+  //use TAG 3 and the tags table to find id (the tag's id)
+  //DELETE FROM coop_tags WHERE coop_id = coopid AND tag_id = id (from above)
+  //find the tag id to delete
+  // - tag_idee = SELECT id FROM tags WHERE tag_name = 'THE THIRD TAG'
+  //delete it from the coops_tag table
+  // - DELETE FROM coop_tags WHERE coop_id = 1 AND tag_id = tag_idee;
+
   //add = [TAG 4]
   //find the tag's id
   // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
@@ -109,14 +128,6 @@ router.put('/coop', async (req, res) => {
   // - new_id = SELECT id FROM coop_tags ORDER BY id DESC LIMIT 1;
   //insert new row into coop_tags
   // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
-
-  //diff = [TAG 3]
-  //use TAG 3 and the tags table to find id (the tag's id)
-  //DELETE FROM coop_tags WHERE coop_id = coopid AND tag_id = id (from above)
-  //find the tag id to delete
-  // - tag_idee = SELECT id FROM tags WHERE tag_name = 'THE THIRD TAG'
-  //delete it from the coops_tag table
-  // - DELETE FROM coop_tags WHERE coop_id = 1 AND tag_id = tag_idee;
 
   try {
     await db.query(text, values);
