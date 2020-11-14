@@ -1,6 +1,6 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
-import axios from 'axios'
+import axios from 'axios';
 import tina from '../../assets/tina.png';
 import toad from '../../assets/toad.png';
 import burger from '../../assets/burger.png';
@@ -26,34 +26,68 @@ export default function FiltersPage() {
   const [race, setRace] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [other, setOther] = React.useState([]);
-  const [coop, setCoop] = React.useState();
+  // const [coop, setCoop] = React.useState();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const [coops, setCoops] = React.useState(null);
-  
-  async function fetchData() {
-    const res = await axios.get("/api/coops");
-    console.log("DEBUG: res.data = ")
-    console.log(res.data);
+  const [coops, setCoops] = React.useState(null); //all coops
+  const [coopShown, setCoopShown] = React.useState(coops[0]); //the cooop shown on the right
+  //tracker for the starred coops, an array of starred coops
+  const [starredCoops, setStarredCoops] = React.useState(null);
 
+  async function fetchData() {
+    const res = await axios.get('/api/coops');
+    //get the toggle star info
+    const starred = await axios.get('/api/getStarred', {
+      params: {
+        starrerId: 1,
+      },
+    });
     setCoops(res.data);
+    //set the query data as the starred coops
+    setStarredCoops(starred);
   }
 
   React.useEffect(() => {
     fetchData();
   }, []);
 
-  
-
   if (!coops) {
     return <div>Loading...</div>;
   }
 
-  
+  function toggleStar(starredId, starrerId, coop) {
+    if (starredCoops.includes(starredId)) {
+      //if the coop is already starred
+      //remove the coop from the list of starred
+      /*** CHECK??? ***/
+      const index = starredCoops.indexOf(coop.id);
+      if (index > -1) {
+        starredCoops.splice(index, 1);
+      }
+      //remove the row from the database
+      axios.delete('/delete', {
+        data: {
+          starred_id: starredId,
+          starrer_id: starrerId,
+        },
+      });
+    } else {
+      //if the coop isn't starred yet
+      //add the coop from the list of starred
+      starredCoops.push(coop);
+      //make a post request
+      axios.post('/addStar', {
+        data: {
+          starred_id: starredId,
+          starrer_id: starrerId,
+        },
+      });
+    }
+  }
 
   function renderListView() {
     return (
@@ -65,6 +99,7 @@ export default function FiltersPage() {
             name={coop.coop_name}
             location={coop.addr}
             tags={coop.tags}
+            starred={starredCoops.includes(coop.id)}
             selected={selectedIndex === index}
             onClick={() => renderProfile(coop, index)}
           />
@@ -122,7 +157,7 @@ export default function FiltersPage() {
   }
 
   function renderProfile(coop, index) {
-    setCoop(coop);
+    setCoopShown(coop);
     setSelectedIndex(index);
   }
 
@@ -131,9 +166,7 @@ export default function FiltersPage() {
   // const [race, setRace] = React.useState([]);
   // const [products, setProducts] = React.useState([]);
   // const [other, setOther] = React.useState([]);
-  // const [coop, setCoop] = React.useState(coops[0]);
   // const [selectedIndex, setSelectedIndex] = React.useState(0);
-
 
   function reset() {
     setRole([]);
@@ -187,9 +220,7 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  function handleToggle() {
-
-  }
+  function handleToggle() {}
 
   return (
     <div className="FiltersPage">
@@ -212,7 +243,8 @@ export default function FiltersPage() {
                 className="filter-toggle"
                 defaultChecked={false}
                 icons={false}
-                onChange={handleToggle} />
+                onChange={handleToggle}
+              />
             </label>
             <div className="filter-container">
               <div className="filter-scroll">
@@ -257,7 +289,15 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coop && <Profile allowView={true} allowEdit={false} coop={coop} />}
+            {coop && (
+              <Profile
+                allowView={true}
+                allowEdit={false}
+                coop={coopShown}
+                starred={starredCoops.includes(coop.id)}
+                handleStar={toggleStar}
+              />
+            )}
           </div>
         </div>
       </div>

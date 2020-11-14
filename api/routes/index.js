@@ -18,11 +18,53 @@ router.get('/', async (req, res) => {
 router.get('/coops', async (req, res) => {
   try {
     const query = await db.query(`SELECT * FROM coops;`);
-<<<<<<< HEAD
-    res.send(query.rows);
-=======
     res.send(query.rows[0]);
->>>>>>> cf80176906a4512777dc43d2a06f1678f056f3a1
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieve the co-ops and their starred attribute
+router.get('/getStarred', async (req, res) => {
+  try {
+    const query = await db.query(
+      //DONE: use get the id's of the starred co-ops
+      `SELECT starred_coop_id FROM stars WHERE starrer_coop_id = $1`,
+      [req.params.starrerId]
+    );
+    res.send(query);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//post new starred
+router.post('/addStar', async (request, response) => {
+  try {
+    const query = await db.query(
+      `INSERT INTO stars (starred_coop_id, starrer_coop_id))
+        VALUES ($1, $2);`,
+      [request.body.starred_coop_id, request.body.starrer_coop_id]
+    );
+    response.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//delete star
+router.delete('/delete', async (req, res) => {
+  const { starredId } = req.params;
+  const { starrerId } = req.params;
+  try {
+    const query = await db.query(
+      //DONE: delete row from stars table
+      `DELETE FROM stars 
+      WHERE starred_coop_id = $1 
+      AND starrer_coop_id = $2;`,
+      [request.body.starredId, request.body.starrerId]
+    );
+    res.send(`Successfully deleted star`);
   } catch (error) {
     console.log(error.stack);
   }

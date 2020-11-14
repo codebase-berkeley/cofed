@@ -7,6 +7,7 @@ import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
@@ -22,6 +23,10 @@ export default function Profile(props) {
   const [website, setWebsite] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [profilePicture, setProfilePicture] = React.useState('');
+  //add in the starred attribute
+  const [starred, setStarred] = React.useState(false);
+  //add in the passed-in starring functionality 
+  const [handleStarring, setHandleStarring] = React.useState(null);
 
   React.useEffect(() => {
     setName(props.coop.name);
@@ -35,6 +40,10 @@ export default function Profile(props) {
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
     setProfilePicture(props.coop.profile_pic);
+    //set the starred to the coop
+    setStarred(props.coop.starred);
+    //set the handle star method
+    setHandleStarring(props.handleStar);
   }, [props.coop]);
 
   if (props.allowEdit) {
@@ -266,6 +275,8 @@ export default function Profile(props) {
         <img className="profile-pic" alt="Image" src={profilePicture} />
         <div className="profile-text-container">
           <b className="profile-co-op-name">{name}</b>
+          {/* ADD THE STAR HERE (next to coop name -- only in view mode)
+            onClick = handleStarring) */}
           <div className="profile-co-op-location">{location}</div>
           <a
             className="profile-co-op-contact-link"
