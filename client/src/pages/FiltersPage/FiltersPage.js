@@ -25,7 +25,7 @@ export default function FiltersPage() {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const [coops, setCoops] = React.useState(null); //all coops
+  const [coops, setCoops] = React.useState([]); //all coops
   //tracker for the starred coops, an array of starred coops
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
@@ -43,6 +43,7 @@ export default function FiltersPage() {
     setCoops(res.data);
     console.log(coops);
     console.log(res.data);
+    console.log(typeof res.data);
     //set the query data as the starred coops
     // setStarredCoops(starred);
     setCoopShown(coops[0]);
