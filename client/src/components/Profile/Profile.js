@@ -27,7 +27,7 @@ export default function Profile(props) {
   //add in the passed-in starring functionality
   const [handleStarring, setHandleStarring] = React.useState(null);
 
-  React.useEffect(() => {
+  React.useEffect(() => {;
     setName(props.coop.coop_name);
     setLocation(props.coop.addr);
     setPhone(props.coop.phone);

@@ -26,14 +26,20 @@ router.get('/coops', async (req, res) => {
 
 //retrieve the co-ops and their starred attribute
 router.get('/getStarred', async (req, res) => {
+  //const {starredId} = req.params.starredId
+  //console.log("PARAMS = " + starredId)
   try {
     const query = await db.query(
       //DONE: use get the id's of the starred co-ops
+      // `SELECT *, starred_coop_id
+      // FROM coops LEFT JOIN stars 
+      // on coops.id = $1;`,
       `SELECT starred_coop_id 
       FROM stars 
-      WHERE starrer_coop_id = $1;`,
-      [req.params.starrerId]
+      WHERE starrer_coop_id = 1;`//,
+      //[starredId]
     );
+    console.log(query.rows);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);

@@ -60,7 +60,8 @@ VALUES
     ('claireradishes@gmail.com', '123456', 'Ranons Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
     ('claireradishes@gmail.com', '123456', 'Janes Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
     ('claireradishes@gmail.com', '123456', 'Richards Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
-    ('claireradishes@gmail.com', '123456', 'Biancas Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com');
+    ('claireradishes@gmail.com', '123456', 'Biancas Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Erics Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com');
 
 
 INSERT INTO stars

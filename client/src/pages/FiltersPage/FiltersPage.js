@@ -28,22 +28,26 @@ export default function FiltersPage() {
   const [coops, setCoops] = React.useState([]); //all coops
   //tracker for the starred coops, an array of starred coops
   const [starredCoops, setStarredCoops] = React.useState([]);
+  const starredIds = null;
   const [coopShown, setCoopShown] = React.useState([]);
 
   async function fetchData() {
     const res = await axios.get('/api/coops');
-    setCoops(res.data, () => {
-      setCoopShown(coops[0]);
-    });
+    setCoops(res.data);
+    setCoopShown(res.data[0]);
 
     //get the toggle star info
-    const starred = await axios.get('/api/getStarred', {
-      params: {
-        starrerId: 1,
-      },
-    }); 
+    const starred = await axios.get('/api/getStarred')//, {
+    //   params: {
+    //     starrerId: 1
+    //   }
+    // }); 
     //set the query data as the starred coops
-    setStarredCoops(starred.data);
+    console.log(starred.data)
+    let starredIds = starred.data.map((e) => {
+      return e.starred_coop_id
+    })
+    setStarredCoops(starredIds);
   }
 
   React.useEffect(() => {
@@ -54,35 +58,35 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
+  
   function toggleStar(starredId, starrerId, coop) {
-    console.log(starredCoops);
-    if (starredCoops.includes(starredId)) {
-      //if the coop is already starred
-      //remove the coop from the list of starred
-      /*** CHECK??? ***/
-      const index = starredCoops.indexOf(coop.id);
-      if (index > -1) {
-        starredCoops.splice(index, 1);
-      }
-      //remove the row from the database
-      axios.delete('/delete', {
-        data: {
-          starred_id: starredId,
-          starrer_id: starrerId,
-        },
-      });
-    } else {
-      //if the coop isn't starred yet
-      //add the coop from the list of starred
-      starredCoops.push(coop);
-      //make a post request
-      axios.post('/addStar', {
-        data: {
-          starred_id: starredId,
-          starrer_id: starrerId,
-        },
-      });
-    }
+    // if (starredCoops.includes(starredId)) {
+    //   //if the coop is already starred
+    //   //remove the coop from the list of starred
+    //   /*** CHECK??? ***/
+    //   const index = starredCoops.indexOf(coop.id);
+    //   if (index > -1) {
+    //     starredCoops.splice(index, 1);
+    //   }
+    //   //remove the row from the database
+    //   axios.delete('/delete', {
+    //     data: {
+    //       starred_id: starredId,
+    //       starrer_id: starrerId,
+    //     },
+    //   });
+    // } else {
+    //   //if the coop isn't starred yet
+    //   //add the coop from the list of starred
+    //   starredCoops.push(coop);
+    //   //make a post request
+    //   axios.post('/addStar', {
+    //     data: {
+    //       starred_id: starredId,
+    //       starrer_id: starrerId,
+    //     },
+    //   });
+    // }
   }
 
   function renderListView() {
