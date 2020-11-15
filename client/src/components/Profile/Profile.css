@@ -298,3 +298,17 @@
   height: 25px;
   margin: 4px;
 }
+
+.profile-starred {
+  width: 1em;
+  height: 1em;
+  fill: #ffc011;
+  cursor: pointer;
+}
+
+.profile-not-starred {
+  width: 1em;
+  height: 1em;
+  fill: grey;
+  cursor: pointer;
+}

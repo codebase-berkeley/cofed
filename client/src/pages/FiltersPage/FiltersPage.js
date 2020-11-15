@@ -20,6 +20,7 @@ export default function FiltersPage() {
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [starrerId, setStarrerId] = React.useState(1);
+  const [showOnlyStarred, setShowOnlyStarred] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -39,7 +40,6 @@ export default function FiltersPage() {
     //get the toggle star info
     const starred = await axios.get('/api/getStarred/1')
     //set the query data as the starred coops
-    console.log(starred.data)
     let starredIds = starred.data.map((e) => {
       return e.starred_coop_id
     })
@@ -103,6 +103,25 @@ export default function FiltersPage() {
       </div>
     );
   }
+
+  /* function renderStarredListView() {
+    return (
+      <div className="list-mode">
+        {coops.filter((coop, index) => (
+          <Card
+            key={index}
+            profile={coop.profile_pic}
+            name={coop.coop_name}
+            location={coop.addr}
+            tags={coop.tags}
+            starred={starredCoops.includes(coop.id)}
+            selected={selectedIndex === index}
+            onClick={() => renderProfile(coop, index)}
+          />
+        ))}
+      </div>
+    );
+  } */
 
   function renderMapView() {
     return (
@@ -209,7 +228,9 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  function handleToggle() {}
+  function handleToggle() {
+    showOnlyStarred ? setShowOnlyStarred(false):setShowOnlyStarred(true);
+  }
 
   return (
     <div className="FiltersPage">

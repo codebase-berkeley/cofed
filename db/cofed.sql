@@ -55,7 +55,7 @@ GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 INSERT INTO coops
     (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link )
 VALUES
-    ('claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
+    ('claireradishes@gmail.com', '123456', 'Claires Radishes', '555-555-5555', 'Berkeley, CA', 40.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
     ('claireradishes@gmail.com', '123456', 'Isabels Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
     ('claireradishes@gmail.com', '123456', 'Ranons Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),
     ('claireradishes@gmail.com', '123456', 'Janes Radishes', '555-555-5555', 'Berkeley, CA', 37.8715, -122.273, 'https://loveradish.co.uk/', 'mission', 'descrip', '', 'https://instagram.com', 'https://facebook.com'),

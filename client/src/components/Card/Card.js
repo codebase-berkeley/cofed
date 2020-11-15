@@ -9,6 +9,7 @@ export default function CardComponent(props) {
     'card-selected': props.selected,
   });
 
+
   function renderStar() {
     if (props.starred) {
       return (
