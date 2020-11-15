@@ -37,11 +37,7 @@ export default function FiltersPage() {
     setCoopShown(res.data[0]);
 
     //get the toggle star info
-    const starred = await axios.get('/api/getStarred')//, {
-    //   params: {
-    //     starrerId: 1
-    //   }
-    // }); 
+    const starred = await axios.get('/api/getStarred/1')
     //set the query data as the starred coops
     console.log(starred.data)
     let starredIds = starred.data.map((e) => {
@@ -59,34 +55,34 @@ export default function FiltersPage() {
   }
 
   
-  function toggleStar(starredId, starrerId, coop) {
-    // if (starredCoops.includes(starredId)) {
-    //   //if the coop is already starred
-    //   //remove the coop from the list of starred
-    //   /*** CHECK??? ***/
-    //   const index = starredCoops.indexOf(coop.id);
-    //   if (index > -1) {
-    //     starredCoops.splice(index, 1);
-    //   }
-    //   //remove the row from the database
-    //   axios.delete('/delete', {
-    //     data: {
-    //       starred_id: starredId,
-    //       starrer_id: starrerId,
-    //     },
-    //   });
-    // } else {
-    //   //if the coop isn't starred yet
-    //   //add the coop from the list of starred
-    //   starredCoops.push(coop);
-    //   //make a post request
-    //   axios.post('/addStar', {
-    //     data: {
-    //       starred_id: starredId,
-    //       starrer_id: starrerId,
-    //     },
-    //   });
-    // }
+  function toggleStar(starredId, starrerId) {
+    if (starredCoops.includes(starredId)) {
+      //if the coop is already starred
+      //remove the coop from the list of starred
+      console.log("HERE")
+      const index = starredCoops.indexOf(starredId);
+      if (index > -1) {
+        starredCoops.splice(index, 1);
+      }
+      //remove the row from the database
+      axios.delete('/api/delete', {
+        data: {
+          starred_id: starredId,
+          starrer_id: starrerId,
+        },
+      });
+    } else {
+      //if the coop isn't starred yet
+      //add the coop from the list of starred
+      starredCoops.push(starredId);
+      //make a post request
+      axios.post('/api/addStar', {
+        data: {
+          starred_id: starredId,
+          starrer_id: starrerId,
+        },
+      });
+    }
   }
 
   function renderListView() {
@@ -288,9 +284,8 @@ export default function FiltersPage() {
                 allowEdit={false}
                 coop={coopShown}
                 starred={starredCoops.includes(coopShown.id)}
-                handleStar={() =>
-                  toggleStar(coopShown.id, starrerId, coopShown)
-                }
+                handleStar={toggleStar}
+                starrerId={1}
               />
             )}
           </div>

@@ -18,26 +18,27 @@ router.get('/', async (req, res) => {
 router.get('/coops', async (req, res) => {
   try {
     const query = await db.query(`SELECT * FROM coops;`);
-    res.send(query.rows); //.rows);
+    res.send(query.rows); 
   } catch (error) {
     console.log(error.stack);
   }
 });
 
 //retrieve the co-ops and their starred attribute
-router.get('/getStarred', async (req, res) => {
-  //const {starredId} = req.params.starredId
-  //console.log("PARAMS = " + starredId)
+router.get('/getStarred/:starredId', async (req, res) => {
+  const {starredId} = req.params
+
+  console.log("PARAMS = " + starredId)
   try {
+    //DONE: use get the id's of the starred co-ops
+    // `SELECT *, starred_coop_id
+    // FROM coops LEFT JOIN stars 
+    // on coops.id = $1;`,
     const query = await db.query(
-      //DONE: use get the id's of the starred co-ops
-      // `SELECT *, starred_coop_id
-      // FROM coops LEFT JOIN stars 
-      // on coops.id = $1;`,
       `SELECT starred_coop_id 
       FROM stars 
-      WHERE starrer_coop_id = 1;`//,
-      //[starredId]
+      WHERE starrer_coop_id = $1;`,
+      [starredId]
     );
     console.log(query.rows);
     res.send(query.rows);
@@ -51,8 +52,7 @@ router.post('/addStar', async (request, response) => {
   try {
     const query = await db.query(
       `INSERT INTO stars (starred_coop_id, starrer_coop_id))
-        VALUES ($1, $2)
-        RETURNING *;`,
+        VALUES ($1, $2);`,
       [request.body.starred_coop_id, request.body.starrer_coop_id]
     );
     response.send(query.rows);
