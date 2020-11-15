@@ -1,7 +1,8 @@
 import FiltersPage from './pages/FiltersPage/FiltersPage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import loggedIn from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React from 'react';
 import Profile from './components/Profile/Profile';
 import tina from './assets/tina.png';
@@ -29,6 +30,8 @@ function App() {
       <Switch>
         <Route exact path="/" component={FiltersPage} />
         <Route exact path="/login" component={LoginPage} />
+        {/* {loggedIn() ? <Redirect to="/" /> : <Redirect to="/login" />}
+        </Route> */}
         <Route exact path="/register" component={RegisterPage} />
         <Route
           exact

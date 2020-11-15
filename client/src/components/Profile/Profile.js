@@ -24,15 +24,9 @@ export default function Profile(props) {
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
 
-  //find a cleaner solution to the "Loading screen"
-  const [dataFetched, setDataFetched] = React.useState(null);
-
-  // request from the database a list of all the profile information
-
-  const CoopId = '1'; // And then you can just issue GET for COOPID upon login
+  const CoopId = '1';
 
   async function putData() {
-    console.log('putData is running!');
     const res = await axios.put('/api/coop', {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -58,7 +52,6 @@ export default function Profile(props) {
   }
 
   async function fetchData() {
-    console.log('fetchData is running!');
     const res = await axios.get('/api/coop/' + CoopId, {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -90,7 +83,6 @@ export default function Profile(props) {
     setWebsite(res['website']);
     setProfilePicture(res['profile_pic']);
     setName(res['coop_name']);
-    setDataFetched('true');
   }
 
   if (props.allowEdit) {

@@ -2,9 +2,9 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 
-//input: a SQL query that asks for tags
-//output: an array of tags
-
+/** Returns an array of tags given a SQL query
+ *
+ */
 function getArrayOfTags(query) {
   //extract the tags from queryTags.rows into an array of tags
   const listOfDictTags = Object.values(query.rows);
@@ -20,10 +20,12 @@ function getArrayOfTags(query) {
   return listOfTags;
 }
 
-//input: array1, array 2
-//output: an array of things in array1 that are NOT in array 2
+/** Returns the difference between two arrays
+ *  Returns an array of objects in Array1
+ *  That are not in Array2
+ */
+
 function diffArray(arr1, arr2) {
-  //stack overflowed
   var n = arr1.filter(x => !arr2.includes(x));
   return n;
 }
@@ -40,19 +42,17 @@ router.get('/coop/:CoopID', async (req, res) => {
 
     var listOfTags = getArrayOfTags(queryTags);
 
-    //put the array of tags into the query.rows[0] dictionary
     query.rows[0]['tags'] = listOfTags;
 
     res.send(query.rows[0]);
-
-    // res.send(ans);
   } catch (error) {
     console.log(error.stack);
   }
 });
 
 router.post('/coop', async (req, res) => {
-  const id = parseInt(req.body.id, 10);
+  var idQuery = await db.query('SELECT id FROM coops ORDER BY id DESC LIMIT 1');
+  var id = getArrayOfTags(idQuery)[0] + 1;
   const email = req.body.email;
   const name = req.body.name;
   const addr = req.body.addr;
@@ -69,7 +69,7 @@ router.post('/coop', async (req, res) => {
 });
 
 router.put('/coop', async (req, res) => {
-  const coop_id = parseInt(req.body.id, 10);
+  const coopId = parseInt(req.body.id, 10);
   const name = req.body.name;
   const addr = req.body.addr;
   const phone = req.body.phone;
@@ -87,7 +87,7 @@ router.put('/coop', async (req, res) => {
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
     'insta_link = $8, fb_link = $9, website = $10, email = $2, profile_pic = $11 WHERE id = $1';
   const values = [
-    coop_id,
+    coopId,
     email,
     name,
     addr,
@@ -100,40 +100,32 @@ router.put('/coop', async (req, res) => {
     photo,
   ];
 
-  //input: tags = [TAG1, TAG2]
-
-  //very easy to get with helper function: tagsDatabase = [TAG1, TAG2, TAG3]
   var queryTags = await db.query(
     'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id=' +
-      coop_id
+      coopId
   );
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
-  //delete_diff = [TAG 3];
   deleteArray = diffArray(listOfTagsDatabase, tags);
-  //EVERYTHING WORKS UP TO THIS POINT
+  //addArray = diffArray(tags, listOfTagsDatabase);
 
   //for every tag in the deleteArray
   for (var i = 0; i < deleteArray.length; i++) {
     var tagNameFromArray = deleteArray[i];
-    const text = 'SELECT id FROM tags WHERE tag_name = $1';
-    const value = [tagNameFromArray];
+    var command = 'SELECT id FROM tags WHERE tag_name = $1';
+    var value = [tagNameFromArray];
 
     //find the tag id to delete
-    var query = await db.query(text, value);
+    var query = await db.query(command, value);
     var tag_idee = getArrayOfTags(query)[0];
 
-    //delete the tag
-    res.send('sadsda ' + tag_idee);
+    //delete the tag from the coops_tag table
+    command = 'DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id = $2';
+    value = [coopId, tag_idee];
+    await db.query(command, value);
   }
 
-  //use TAG 3 and the tags table to find id (the tag's id)
-  //find the tag id to delete
-  // - tag_idee = SELECT id FROM tags WHERE tag_name = 'THE THIRD TAG'
-  //delete it from the coops_tag table
-  // - DELETE FROM coop_tags WHERE coop_id = 1 AND tag_id = tag_idee;
-
-  //add = [TAG 4]
+  //for each tag to add:
   //find the tag's id
   // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
   //find the overall id

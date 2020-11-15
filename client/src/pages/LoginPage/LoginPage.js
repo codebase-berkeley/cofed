@@ -4,33 +4,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.css';
 import axios from 'axios';
-
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
   let [loginSwitch, setLoginSwitch] = React.useState('/login');
 
   function handleSubmit() {
-    console.log(emailInput, pwInput);
     checkLogin();
     setEmailInput('');
     setPwInput('');
   }
 
   async function checkLogin() {
-    // const coopId = await axios.get('/api/authen', {
-    //   headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Methods':
-    //       'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-    //     'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-    //   },
-    //   password: pwInput,
-    //   email: emailInput,
-    // });
-
-    // console.log('coopId: ' + coopId);
-
     const res = await axios.post('/api/authen', {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -41,13 +26,10 @@ export default function LoginPage() {
       email: emailInput,
       pass: pwInput,
     });
-    console.log(res.data);
     //if there is no input, res.data = '' = false
-    if (res.data) {
-      setLoginSwitch('/');
+    if (!res.data) {
+      console.log('errror!');
     }
-    //if statement that changes the value of loginSwitch if necessary
-    // <Link to="/"></Link>;
   }
 
   return (
@@ -93,11 +75,7 @@ export default function LoginPage() {
           </Link>
         </div>
         <Link to="/register">
-          <button
-            className="loginPageButton"
-            type="button"
-            // onClick={handleSubmit}
-          >
+          <button className="loginPageButton" type="button">
             Create Account
           </button>
         </Link>

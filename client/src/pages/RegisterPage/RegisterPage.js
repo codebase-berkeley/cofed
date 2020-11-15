@@ -15,12 +15,7 @@ export default function RegisterPage() {
   //   console.log(emailInput);
   //   console.log(locationInput);
   // }
-
-  const CoopId = '5';
-
   async function createAccount() {
-    console.log('fetchData is running!');
-
     const res = await axios.post('/api/coop', {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -28,14 +23,11 @@ export default function RegisterPage() {
           'GET, POST, PATCH, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
       },
-      id: CoopId,
       email: emailInput,
       name: nameInput,
       addr: locationInput,
       pass: passwordInput,
     });
-
-    console.log(res.data);
   }
 
   // React.useEffect(() => {
