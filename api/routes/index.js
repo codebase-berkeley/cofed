@@ -83,9 +83,9 @@ router.put('/coop', async (req, res) => {
   const tags = req.body.tags;
 
   const text =
-    'UPDATE coops SET coop_name = $3, addr = $4, ' +
+    'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
-    'insta_link = $8, fb_link = $9, website = $10, email = $2, profile_pic = $11 WHERE id = $1';
+    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
   const values = [
     coopId,
     email,
@@ -109,7 +109,6 @@ router.put('/coop', async (req, res) => {
   deleteArray = diffArray(listOfTagsDatabase, tags);
   //addArray = diffArray(tags, listOfTagsDatabase);
 
-  //for every tag in the deleteArray
   for (var i = 0; i < deleteArray.length; i++) {
     var tagNameFromArray = deleteArray[i];
     var command = 'SELECT id FROM tags WHERE tag_name = $1';
@@ -117,11 +116,11 @@ router.put('/coop', async (req, res) => {
 
     //find the tag id to delete
     var query = await db.query(command, value);
-    var tag_idee = getArrayOfTags(query)[0];
+    var tagId = getArrayOfTags(query)[0];
 
     //delete the tag from the coops_tag table
     command = 'DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id = $2';
-    value = [coopId, tag_idee];
+    value = [coopId, tagId];
     await db.query(command, value);
   }
 

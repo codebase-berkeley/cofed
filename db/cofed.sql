@@ -50,6 +50,8 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
+-- dummy data below
+
 INSERT INTO coops
 VALUES
     (1, 'test@gmail.com', 'password', 'Test', '123456789',

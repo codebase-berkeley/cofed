@@ -7,7 +7,6 @@ import axios from 'axios';
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
-  let [loginSwitch, setLoginSwitch] = React.useState('/login');
 
   function handleSubmit() {
     checkLogin();
@@ -26,9 +25,8 @@ export default function LoginPage() {
       email: emailInput,
       pass: pwInput,
     });
-    //if there is no input, res.data = '' = false
     if (!res.data) {
-      console.log('errror!');
+      console.log('error!');
     }
   }
 

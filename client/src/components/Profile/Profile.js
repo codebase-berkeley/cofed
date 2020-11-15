@@ -27,7 +27,7 @@ export default function Profile(props) {
   const CoopId = '1';
 
   async function putData() {
-    const res = await axios.put('/api/coop', {
+    await axios.put('/api/coop', {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods':
@@ -47,8 +47,6 @@ export default function Profile(props) {
       photo: profilePicture,
       tags: tags,
     });
-    //see the output of the put request
-    console.log(res);
   }
 
   async function fetchData() {

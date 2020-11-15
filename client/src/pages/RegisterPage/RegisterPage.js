@@ -9,14 +9,8 @@ export default function RegisterPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
 
-  // function createAccount() {
-  //   console.log(nameInput);
-  //   console.log(passwordInput);
-  //   console.log(emailInput);
-  //   console.log(locationInput);
-  // }
   async function createAccount() {
-    const res = await axios.post('/api/coop', {
+    await axios.post('/api/coop', {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods':
@@ -29,14 +23,6 @@ export default function RegisterPage() {
       pass: passwordInput,
     });
   }
-
-  // React.useEffect(() => {
-  //   createAccount();
-  // }, []);
-
-  // if (!name) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className="register">
