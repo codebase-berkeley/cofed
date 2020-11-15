@@ -28,12 +28,6 @@ export default function Profile(props) {
 
   async function putData() {
     await axios.put('/api/coop', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods':
-          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-      },
       id: CoopId,
       name: name,
       addr: location,
@@ -50,14 +44,7 @@ export default function Profile(props) {
   }
 
   async function fetchData() {
-    const res = await axios.get('/api/coop/' + CoopId, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods':
-          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-      },
-    });
+    const res = await axios.get('/api/coop/' + CoopId);
     setProfileVariables(res.data);
   }
 

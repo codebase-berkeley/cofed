@@ -11,12 +11,6 @@ export default function RegisterPage() {
 
   async function createAccount() {
     await axios.post('/api/coop', {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods':
-          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-      },
       email: emailInput,
       name: nameInput,
       addr: locationInput,

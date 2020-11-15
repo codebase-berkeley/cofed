@@ -108,5 +108,4 @@ VALUES
 INSERT INTO coop_tags
 VALUES
     (6, 2, 3);
-
-        
+    

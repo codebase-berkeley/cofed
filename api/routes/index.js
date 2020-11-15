@@ -3,21 +3,12 @@ const db = require('../../db/index');
 const router = express.Router();
 
 /** Returns an array of tags given a SQL query
- *
+ * map through an array,
+ * grab just the values of each dictionary,
+ *  and flatten the resulting array
  */
 function getArrayOfTags(query) {
-  //extract the tags from queryTags.rows into an array of tags
-  const listOfDictTags = Object.values(query.rows);
-
-  //helper function that returns the value in the dictionary
-  function getValue(d) {
-    for (var key in d) {
-      return d[key];
-    }
-  }
-
-  var listOfTags = listOfDictTags.map(getValue);
-  return listOfTags;
+  return query.rows.map(Object.values).flat();
 }
 
 /** Returns the difference between two arrays
@@ -33,16 +24,21 @@ function diffArray(arr1, arr2) {
 router.get('/coop/:CoopID', async (req, res) => {
   try {
     const id = req.params['CoopID'];
+    var command =
+      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1';
+    var values = [id];
 
-    var queryTags = await db.query(
-      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id=' +
-        id
-    );
-    const query = await db.query('SELECT * FROM coops WHERE id = ' + id);
-
+    var queryTags = await db.query(command, values);
     var listOfTags = getArrayOfTags(queryTags);
 
-    query.rows[0]['tags'] = listOfTags;
+    var command = 'SELECT * FROM coops WHERE id = $1';
+    const query = await db.query(command, values);
+
+    if (query.rows.length >= 1) {
+      query.rows[0]['tags'] = listOfTags;
+    } else {
+      res.status(404).send({ error: `coop ${id} not found` });
+    }
 
     res.send(query.rows[0]);
   } catch (error) {
@@ -52,11 +48,13 @@ router.get('/coop/:CoopID', async (req, res) => {
 
 router.post('/coop', async (req, res) => {
   var idQuery = await db.query('SELECT id FROM coops ORDER BY id DESC LIMIT 1');
-  var id = getArrayOfTags(idQuery)[0] + 1;
-  const email = req.body.email;
-  const name = req.body.name;
-  const addr = req.body.addr;
-  const pass = req.body.pass;
+  if (getArrayOfTags(idQuery).length >= 1) {
+    var id = getArrayOfTags(idQuery)[0] + 1;
+  } else {
+    var id = 1;
+  }
+
+  const { email, name, addr, pass } = req.body;
 
   const text =
     'INSERT INTO coops(id, email, pass, coop_name, addr) VALUES($1, $2, $3, $4, $5)';
@@ -70,17 +68,19 @@ router.post('/coop', async (req, res) => {
 
 router.put('/coop', async (req, res) => {
   const coopId = parseInt(req.body.id, 10);
-  const name = req.body.name;
-  const addr = req.body.addr;
-  const phone = req.body.phone;
-  const mission = req.body.mission;
-  const description = req.body.description;
-  const insta = req.body.insta;
-  const fb = req.body.fb;
-  const web = req.body.web;
-  const email = req.body.email;
-  const photo = req.body.photo;
-  const tags = req.body.tags;
+  const {
+    name,
+    addr,
+    phone,
+    mission,
+    description,
+    insta,
+    fb,
+    web,
+    email,
+    photo,
+    tags,
+  } = req.body;
 
   const text =
     'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
@@ -107,7 +107,7 @@ router.put('/coop', async (req, res) => {
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
   deleteArray = diffArray(listOfTagsDatabase, tags);
-  //addArray = diffArray(tags, listOfTagsDatabase);
+  addArray = diffArray(tags, listOfTagsDatabase);
 
   for (var i = 0; i < deleteArray.length; i++) {
     var tagNameFromArray = deleteArray[i];
@@ -123,6 +123,17 @@ router.put('/coop', async (req, res) => {
     value = [coopId, tagId];
     await db.query(command, value);
   }
+
+  //optimization by Richard, not fully functional
+  // await db.query(
+  //   `DELETE FROM coop_tags
+  //   WHERE coop_id = $1
+  //   AND tag_id IN (
+  //     SELECT id from tags
+  //     WHERE tag_name IN ($2)
+  //   );`,
+  //   [coopId, deleteArray.join(',')]
+  // );
 
   //for each tag to add:
   //find the tag's id
@@ -140,8 +151,7 @@ router.put('/coop', async (req, res) => {
 });
 
 router.post('/authen', async (req, res) => {
-  const email = req.body.email;
-  const pass = req.body.pass;
+  const { email, pass } = req.body;
   const text = 'SELECT id FROM coops WHERE email = $1 AND pass = $2';
   const values = [email, pass];
 
