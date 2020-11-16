@@ -13,6 +13,7 @@ import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
   const [listMode, setListMode] = React.useState(true);
+
   const [location, setLocation] = React.useState([]);
   const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
@@ -56,10 +57,12 @@ export default function FiltersPage() {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred
       //remove the coop from the list of starred
+      const tempStarredCoops = [...starredCoops];
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
-        starredCoops.splice(index, 1);
+        tempStarredCoops.splice(index, 1);
       }
+      setStarredCoops(tempStarredCoops);
       //remove the row from the database
       axios.delete('/api/delete', {
         data: {
@@ -70,7 +73,8 @@ export default function FiltersPage() {
     } else {
       //if the coop isn't starred yet
       //add the coop from the list of starred
-      starredCoops.push(starredId);
+      const tempStarredCoops = [...starredCoops, starredId];
+      setStarredCoops(tempStarredCoops);
       //make a post request
       axios.post('/api/addStar', {
         data: {
@@ -122,25 +126,49 @@ export default function FiltersPage() {
   }
 
   function renderMapView() {
-    return (
-      <div className="map-mode">
-        <Map
-          center={[coops[0].latitude, coops[0].longitude]}
-          zoom={6}
-          twoFingerDrag={true}
-          provider={mapTilerProvider}
-        >
-          {coops.map((coop, index) => (
-            <Marker
-              payload={index}
-              key={index}
-              anchor={[coop.latitude, coop.longitude]}
-              onClick={() => renderProfile(coop, index)}
-            />
-          ))}
-        </Map>
-      </div>
-    );
+    if (showStarredOnly) {
+      return (
+        <div className="map-mode">
+          <Map
+            center={[coops[0].latitude, coops[0].longitude]}
+            zoom={6}
+            twoFingerDrag={true}
+            provider={mapTilerProvider}
+          >
+            {coops
+              .filter(coop => starredCoops.includes(coop.id))
+              .map((coop, index) => (
+                <Marker
+                  payload={index}
+                  key={index}
+                  anchor={[coop.latitude, coop.longitude]}
+                  onClick={() => renderProfile(coop, index)}
+                />
+              ))}
+          </Map>
+        </div>
+      );
+    } else {
+      return (
+        <div className="map-mode">
+          <Map
+            center={[coops[0].latitude, coops[0].longitude]}
+            zoom={6}
+            twoFingerDrag={true}
+            provider={mapTilerProvider}
+          >
+            {coops.map((coop, index) => (
+              <Marker
+                payload={index}
+                key={index}
+                anchor={[coop.latitude, coop.longitude]}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
+          </Map>
+        </div>
+      );
+    }
   }
 
   function renderListButton() {

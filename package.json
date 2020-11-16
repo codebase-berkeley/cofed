@@ -4,6 +4,7 @@
   "repository": "https://github.com/codebase-berkeley/cofed.git",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/icons": "^4.9.1",
     "axios": "^0.21.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

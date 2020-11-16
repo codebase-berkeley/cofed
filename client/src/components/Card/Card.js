@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import './Card.css';
 import Tag from '../Tag/Tag';
 import classNames from 'classnames';
-import starred from '../../assets/starred.svg';
-import unstarred from '../../assets/unstarred.svg';
+import starredImage from '../../assets/starred.svg';
+import unstarredImage from '../../assets/unstarred.svg';
 
 export default function CardComponent(props) {
   const cardContainerClass = classNames('card-container', {
@@ -13,9 +13,9 @@ export default function CardComponent(props) {
 
   function renderStar() {
     if (props.starred) {
-      return <img className="card-starred" src={starred} />;
+      return <img className="card-starred" src={starredImage} />;
     } else {
-      return <img className="card-not-starred" src={unstarred} />;
+      return <img className="card-not-starred" src={unstarredImage} />;
     }
   }
 
@@ -53,5 +53,7 @@ export default function CardComponent(props) {
     profile: PropTypes.string,
     tags: PropTypes.array,
     selected: PropTypes.bool,
+    starred: PropTypes.bool,
+    profile_pic: PropTypes.string,
   };
 }

@@ -8,8 +8,8 @@ import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
-import starredImage from '../../assets/starred.svg';
-import unstarredImage from '../../assets/unstarred.svg';
+import starred from '../../assets/starred.svg';
+import unstarred from '../../assets/unstarred.svg';
 
 export default function Profile(props) {
   const [coopId, setCoopId] = React.useState('');
@@ -42,7 +42,8 @@ export default function Profile(props) {
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
     setProfilePicture(props.coop.profile_pic);
-  }, [props.coop]);
+    /* setStarred(props.starred); */
+  }, [props.coop, props.starrerId]);
 
   if (props.allowEdit) {
     return (
@@ -272,10 +273,12 @@ export default function Profile(props) {
   }
 
   function renderStar() {
-    let img = props.starred ? starredImage : unstarredImage;
-    return (
-      <img id="star" className="profile-star" onClick={clickStar} src={img} />
-    );
+    let img = props.starred ? starred : unstarred;
+    if (!props.allowEdit) {
+      return (
+        <img id="star" className="profile-star" onClick={clickStar} src={img} />
+      );
+    }
   }
 
   function renderContact() {
