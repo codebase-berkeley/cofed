@@ -28,8 +28,8 @@ router.get('/coop/:CoopID', async (req, res) => {
       'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1';
     var values = [id];
 
-    var queryTags = await db.query(command, values);
-    var listOfTags = getArrayOfTags(queryTags);
+    const queryTags = await db.query(command, values);
+    const listOfTags = getArrayOfTags(queryTags);
 
     var command = 'SELECT * FROM coops WHERE id = $1';
     const query = await db.query(command, values);
@@ -47,18 +47,11 @@ router.get('/coop/:CoopID', async (req, res) => {
 });
 
 router.post('/coop', async (req, res) => {
-  var idQuery = await db.query('SELECT id FROM coops ORDER BY id DESC LIMIT 1');
-  if (getArrayOfTags(idQuery).length >= 1) {
-    var id = getArrayOfTags(idQuery)[0] + 1;
-  } else {
-    var id = 1;
-  }
-
   const { email, name, addr, pass } = req.body;
 
   const text =
-    'INSERT INTO coops(id, email, pass, coop_name, addr) VALUES($1, $2, $3, $4, $5)';
-  const values = [id, email, pass, name, addr];
+    'INSERT INTO coops( email, pass, coop_name, addr) VALUES($1, $2, $3, $4)';
+  const values = [email, pass, name, addr];
   try {
     await db.query(text, values);
   } catch (err) {
@@ -109,31 +102,20 @@ router.put('/coop', async (req, res) => {
   deleteArray = diffArray(listOfTagsDatabase, tags);
   addArray = diffArray(tags, listOfTagsDatabase);
 
-  for (var i = 0; i < deleteArray.length; i++) {
-    var tagNameFromArray = deleteArray[i];
-    var command = 'SELECT id FROM tags WHERE tag_name = $1';
-    var value = [tagNameFromArray];
+  // for (var i = 0; i < deleteArray.length; i++) {
+  //   var tagNameFromArray = deleteArray[i];
+  //   var command = 'SELECT id FROM tags WHERE tag_name = $1';
+  //   var value = [tagNameFromArray];
 
-    //find the tag id to delete
-    var query = await db.query(command, value);
-    var tagId = getArrayOfTags(query)[0];
+  //   //find the tag id to delete
+  //   var query = await db.query(command, value);
+  //   var tagId = getArrayOfTags(query)[0];
 
-    //delete the tag from the coops_tag table
-    command = 'DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id = $2';
-    value = [coopId, tagId];
-    await db.query(command, value);
-  }
-
-  //optimization by Richard, not fully functional
-  // await db.query(
-  //   `DELETE FROM coop_tags
-  //   WHERE coop_id = $1
-  //   AND tag_id IN (
-  //     SELECT id from tags
-  //     WHERE tag_name IN ($2)
-  //   );`,
-  //   [coopId, deleteArray.join(',')]
-  // );
+  //   //delete the tag from the coops_tag table
+  //   command = 'DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id = $2';
+  //   value = [coopId, tagId];
+  //   await db.query(command, value);
+  // }
 
   //for each tag to add:
   //find the tag's id
@@ -144,6 +126,21 @@ router.put('/coop', async (req, res) => {
   // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
 
   try {
+    //richard version
+    await db.query(
+      `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
+      [coopId, deleteArray]
+    );
+
+    // ''t','s''
+    //'t','s'
+
+    //the issue is the deleteArray.join
+    //it doesn't create a comma seperate list of individual strings-> it creates one string
+    //the quote's don't match up (even when they do, the comment above still causes code to not work)
+    // await db.query(
+    //   `DELETE FROM coop_tags WHERE coop_id = 1 AND tag_id IN (SELECT id from tags WHERE tag_name IN ('t','s'));`
+    // );
     await db.query(text, values);
   } catch (err) {
     console.log(err.stack);

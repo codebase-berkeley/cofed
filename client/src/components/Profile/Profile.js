@@ -43,12 +43,11 @@ export default function Profile(props) {
     });
   }
 
-  async function fetchData() {
-    const res = await axios.get('/api/coop/' + CoopId);
-    setProfileVariables(res.data);
-  }
-
   React.useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get('/api/coop/' + CoopId);
+      setProfileVariables(res.data);
+    }
     fetchData();
   }, []);
 
@@ -237,12 +236,14 @@ export default function Profile(props) {
           className="profile-small-input"
           type="text"
           placeholder="Enter facebok link:"
+          value={fbLink}
           onChange={e => setFbLink(e.target.value)}
         />
         <input
           className="profile-small-input"
           type="text"
           placeholder="Enter instagram link:"
+          value={instaLink}
           onChange={e => setInstaLink(e.target.value)}
         />
       </div>
@@ -261,6 +262,7 @@ export default function Profile(props) {
             className="profile-name-input"
             type="text"
             placeholder="Enter name:"
+            value={name}
             onChange={e => setName(e.target.value)}
           />
 
@@ -268,6 +270,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter location:"
+            value={location}
             onChange={e => setLocation(e.target.value)}
           />
 
@@ -275,6 +278,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter website link:"
+            value={website}
             onChange={e => setWebsite(e.target.value)}
           />
 
@@ -282,6 +286,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter email address:"
+            value={email}
             onChange={e => setEmail(e.target.value)}
           />
 
@@ -289,6 +294,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter phone number:"
+            value={phone}
             onChange={e => setPhone(e.target.value)}
           />
         </div>

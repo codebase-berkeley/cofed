@@ -52,60 +52,29 @@ GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
 -- dummy data below
 
-INSERT INTO coops
+INSERT INTO coops (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link)
 VALUES
-    (1, 'test@gmail.com', 'password', 'Test', '123456789',
+    ('test@gmail.com', 'password', 'Test', '123456789',
         'Berkeley, CA', 37.8715, -123.2730, 'test.com', 'test', 'test', 'test', 'test',
-        'test');
-
-INSERT INTO coops
-VALUES
-    (2, 'test2@gmail.com', 'password2', 'Test2', '123456789',
+        'test'),
+    ('test2@gmail.com', 'password2', 'Test2', '123456789',
         'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
         'test2');
 
-INSERT INTO tags
+INSERT INTO tags (tag_name)
 VALUES
-    (1, 'f');
+    ('f'),
+    ('s'),
+    ('t'),
+    ('NOOT IN COOP 1 TAG'),
+    ('NO COOP 1 TAG');
 
-INSERT INTO tags
-VALUES
-    (2, 's');
-
-INSERT INTO tags
-VALUES
-    (3, 't');
-
-INSERT INTO tags
-VALUES
-    (4, 'NOOT IN COOP 1 TAG');
-
-INSERT INTO tags
-VALUES
-    (5, 'NO COOP 1 TAG');
-
-
-INSERT INTO coop_tags
-VALUES
-    (1, 1, 1);
-
-INSERT INTO coop_tags
-VALUES
-    (2, 1, 2);
-
-INSERT INTO coop_tags
-VALUES
-    (3, 1, 3);
-
-INSERT INTO coop_tags
-VALUES
-    (4, 2, 4);
-
-INSERT INTO coop_tags
-VALUES
-    (5, 2, 5);
-
-INSERT INTO coop_tags
-VALUES
-    (6, 2, 3);
+INSERT INTO coop_tags (coop_id, tag_id)
+VALUES 
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (2, 4),
+    (2, 5),
+    (2, 3);
     
