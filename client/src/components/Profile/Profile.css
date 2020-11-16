@@ -300,6 +300,12 @@
   margin: 4px;
 }
 
+.profile-star {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+
 .profile-starred {
   width: 1em;
   height: 1em;

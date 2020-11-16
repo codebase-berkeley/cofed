@@ -19,7 +19,6 @@ export default function FiltersPage() {
   const [products, setProducts] = React.useState([]);
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [starrerId, setStarrerId] = React.useState(1);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
@@ -29,7 +28,6 @@ export default function FiltersPage() {
   const [coops, setCoops] = React.useState([]); //all coops
   //tracker for the starred coops, an array of starred coops
   const [starredCoops, setStarredCoops] = React.useState([]);
-  const starredIds = null;
   const [coopShown, setCoopShown] = React.useState([]);
 
   async function fetchData() {
@@ -58,7 +56,6 @@ export default function FiltersPage() {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred
       //remove the coop from the list of starred
-      console.log('HERE');
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
         starredCoops.splice(index, 1);

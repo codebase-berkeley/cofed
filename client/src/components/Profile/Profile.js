@@ -26,17 +26,13 @@ export default function Profile(props) {
   const [website, setWebsite] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [profilePicture, setProfilePicture] = React.useState('');
-  //add in the starred attribute
-  const [starred, setStarred] = React.useState(false);
   const [starrerId, setStarrerId] = React.useState(null);
-  //add in the passed-in starring functionality
-  // const [handleStar, setHandleStar] = React.useState(null);
 
   React.useEffect(() => {
     setName(props.coop.coop_name);
     setLocation(props.coop.addr);
     setCoopId(props.coop.id);
-    setStarrerId(props.starrer_id);
+    setStarrerId(props.starrerId);
     setPhone(props.coop.phone);
     setTags(props.coop.tags);
     setMission(props.coop.mission);
@@ -46,8 +42,6 @@ export default function Profile(props) {
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
     setProfilePicture(props.coop.profile_pic);
-    //set the starred to the coop
-    setStarred(props.starred);
   }, [props.coop]);
 
   if (props.allowEdit) {
@@ -273,24 +267,15 @@ export default function Profile(props) {
     );
   }
 
+  function clickStar() {
+    props.handleStar(coopId, starrerId);
+  }
+
   function renderStar() {
-    if (starred) {
-      return (
-        <img
-          className="profile-starred"
-          onClick={() => props.handleStar(coopId, starrerId)}
-          src={starredImage}
-        />
-      );
-    } else {
-      return (
-        <img
-          className="profile-not-starred"
-          onClick={() => props.handleStar(coopId, starrerId)}
-          src={unstarredImage}
-        />
-      );
-    }
+    let img = props.starred ? starredImage : unstarredImage;
+    return (
+      <img id="star" className="profile-star" onClick={clickStar} src={img} />
+    );
   }
 
   function renderContact() {

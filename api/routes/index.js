@@ -35,7 +35,6 @@ router.get('/getStarred/:starredId', async (req, res) => {
       WHERE starrer_coop_id = $1;`,
       [starredId]
     );
-    console.log(query.rows);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -69,7 +68,7 @@ router.delete('/delete', async (req, res) => {
       AND starrer_coop_id = $2;`,
       [starredId, starrerId]
     );
-    res.send(`Successfully deleted star`);
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
