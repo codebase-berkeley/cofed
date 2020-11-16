@@ -42,7 +42,6 @@ export default function Profile(props) {
     setEmail(props.coop.email);
     setWebsite(props.coop.website);
     setProfilePicture(props.coop.profile_pic);
-    /* setStarred(props.starred); */
   }, [props.coop, props.starrerId]);
 
   if (props.allowEdit) {
