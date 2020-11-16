@@ -15,7 +15,6 @@ function getArrayOfTags(query) {
  *  Returns an array of objects in Array1
  *  That are not in Array2
  */
-
 function diffArray(arr1, arr2) {
   var n = arr1.filter(x => !arr2.includes(x));
   return n;
@@ -36,11 +35,10 @@ router.get('/coop/:CoopID', async (req, res) => {
 
     if (query.rows.length >= 1) {
       query.rows[0]['tags'] = listOfTags;
+      res.send(query.rows[0]);
     } else {
       res.status(404).send({ error: `coop ${id} not found` });
     }
-
-    res.send(query.rows[0]);
   } catch (error) {
     console.log(error.stack);
   }
@@ -102,21 +100,7 @@ router.put('/coop', async (req, res) => {
   deleteArray = diffArray(listOfTagsDatabase, tags);
   addArray = diffArray(tags, listOfTagsDatabase);
 
-  // for (var i = 0; i < deleteArray.length; i++) {
-  //   var tagNameFromArray = deleteArray[i];
-  //   var command = 'SELECT id FROM tags WHERE tag_name = $1';
-  //   var value = [tagNameFromArray];
-
-  //   //find the tag id to delete
-  //   var query = await db.query(command, value);
-  //   var tagId = getArrayOfTags(query)[0];
-
-  //   //delete the tag from the coops_tag table
-  //   command = 'DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id = $2';
-  //   value = [coopId, tagId];
-  //   await db.query(command, value);
-  // }
-
+  //TO DO:
   //for each tag to add:
   //find the tag's id
   // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
@@ -126,21 +110,11 @@ router.put('/coop', async (req, res) => {
   // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
 
   try {
-    //richard version
     await db.query(
       `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
       [coopId, deleteArray]
     );
 
-    // ''t','s''
-    //'t','s'
-
-    //the issue is the deleteArray.join
-    //it doesn't create a comma seperate list of individual strings-> it creates one string
-    //the quote's don't match up (even when they do, the comment above still causes code to not work)
-    // await db.query(
-    //   `DELETE FROM coop_tags WHERE coop_id = 1 AND tag_id IN (SELECT id from tags WHERE tag_name IN ('t','s'));`
-    // );
     await db.query(text, values);
   } catch (err) {
     console.log(err.stack);
