@@ -42,16 +42,15 @@ router.get('/getStarred/:starredId', async (req, res) => {
 });
 
 //post new starred
-router.post('/addStar', async (request, response) => {
-  const { starredId } = req.body.starred_id;
-  const { starrerId } = req.body.starrer_id;
+router.post('/addStar', async (req, res) => {
+  const { starredId, starrerId } = req.body;
   try {
     const query = await db.query(
       `INSERT INTO stars (starred_coop_id, starrer_coop_id)
         VALUES ($1, $2);`,
       [starredId, starrerId]
     );
-    response.send(query.rows);
+    res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
@@ -59,8 +58,7 @@ router.post('/addStar', async (request, response) => {
 
 //delete star
 router.delete('/delete', async (req, res) => {
-  const { starredId } = req.body.starred_id;
-  const { starrerId } = req.body.starrer_id;
+  const { starredId, starrerId } = req.body;
   try {
     const query = await db.query(
       `DELETE FROM stars 

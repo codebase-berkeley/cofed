@@ -66,8 +66,8 @@ export default function FiltersPage() {
       //remove the row from the database
       axios.delete('/api/delete', {
         data: {
-          starred_id: starredId,
-          starrer_id: starrerId,
+          starredId,
+          starrerId,
         },
       });
     } else {
@@ -77,10 +77,8 @@ export default function FiltersPage() {
       setStarredCoops(tempStarredCoops);
       //make a post request
       axios.post('/api/addStar', {
-        data: {
-          starred_id: starredId,
-          starrer_id: starrerId,
-        },
+        starredId,
+        starrerId,
       });
     }
   }
