@@ -230,6 +230,7 @@
   margin: 3px 0px 0px 15px;
   color: #00849c;
   outline: none;
+  width: fit-content;
 }
 
 .profile-name-input {

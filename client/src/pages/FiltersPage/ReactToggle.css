@@ -48,10 +48,6 @@
   transition: all 0.2s ease;
 }
 
-/* .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #d1dbe2;
-} */
-
 .react-toggle--checked .react-toggle-track {
   background-color: #00849c;
 }

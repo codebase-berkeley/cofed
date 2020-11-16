@@ -20,7 +20,7 @@ export default function FiltersPage() {
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [starrerId, setStarrerId] = React.useState(1);
-  const [showOnlyStarred, setShowOnlyStarred] = React.useState(false);
+  const [showStarredOnly, setShowStarredOnly] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -38,11 +38,11 @@ export default function FiltersPage() {
     setCoopShown(res.data[0]);
 
     //get the toggle star info
-    const starred = await axios.get('/api/getStarred/1')
+    const starred = await axios.get('/api/getStarred/1');
     //set the query data as the starred coops
-    let starredIds = starred.data.map((e) => {
-      return e.starred_coop_id
-    })
+    let starredIds = starred.data.map(e => {
+      return e.starred_coop_id;
+    });
     setStarredCoops(starredIds);
   }
 
@@ -54,12 +54,11 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
-  
   function toggleStar(starredId, starrerId) {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred
       //remove the coop from the list of starred
-      console.log("HERE")
+      console.log('HERE');
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
         starredCoops.splice(index, 1);
@@ -86,42 +85,44 @@ export default function FiltersPage() {
   }
 
   function renderListView() {
-    return (
-      <div className="list-mode">
-        {coops.map((coop, index) => (
-          <Card
-            key={index}
-            profile={coop.profile_pic}
-            name={coop.coop_name}
-            location={coop.addr}
-            tags={coop.tags}
-            starred={starredCoops.includes(coop.id)}
-            selected={selectedIndex === index}
-            onClick={() => renderProfile(coop, index)}
-          />
-        ))}
-      </div>
-    );
+    if (showStarredOnly) {
+      return (
+        <div className="list-mode">
+          {coops
+            .filter(coop => starredCoops.includes(coop.id))
+            .map((coop, index) => (
+              <Card
+                key={index}
+                profile={coop.profile_pic}
+                name={coop.coop_name}
+                location={coop.addr}
+                tags={coop.tags}
+                starred={starredCoops.includes(coop.id)}
+                selected={selectedIndex === index}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
+        </div>
+      );
+    } else {
+      return (
+        <div className="list-mode">
+          {coops.map((coop, index) => (
+            <Card
+              key={index}
+              profile={coop.profile_pic}
+              name={coop.coop_name}
+              location={coop.addr}
+              tags={coop.tags}
+              starred={starredCoops.includes(coop.id)}
+              selected={selectedIndex === index}
+              onClick={() => renderProfile(coop, index)}
+            />
+          ))}
+        </div>
+      );
+    }
   }
-
-  /* function renderStarredListView() {
-    return (
-      <div className="list-mode">
-        {coops.filter((coop, index) => (
-          <Card
-            key={index}
-            profile={coop.profile_pic}
-            name={coop.coop_name}
-            location={coop.addr}
-            tags={coop.tags}
-            starred={starredCoops.includes(coop.id)}
-            selected={selectedIndex === index}
-            onClick={() => renderProfile(coop, index)}
-          />
-        ))}
-      </div>
-    );
-  } */
 
   function renderMapView() {
     return (
@@ -229,7 +230,7 @@ export default function FiltersPage() {
   ];
 
   function handleToggle() {
-    showOnlyStarred ? setShowOnlyStarred(false):setShowOnlyStarred(true);
+    showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
   return (
