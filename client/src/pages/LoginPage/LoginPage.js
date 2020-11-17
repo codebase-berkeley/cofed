@@ -3,15 +3,25 @@ import GoogleLogo from '../../assets/GoogleLogo.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.css';
-
+import axios from 'axios';
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
 
   function handleSubmit() {
-    console.log(emailInput, pwInput);
+    checkLogin();
     setEmailInput('');
     setPwInput('');
+  }
+
+  async function checkLogin() {
+    const res = await axios.post('/api/authen', {
+      email: emailInput,
+      pass: pwInput,
+    });
+    if (!res.data) {
+      console.log('error!');
+    }
   }
 
   return (
@@ -57,11 +67,7 @@ export default function LoginPage() {
           </Link>
         </div>
         <Link to="/register">
-          <button
-            className="loginPageButton"
-            type="button"
-            onClick={handleSubmit}
-          >
+          <button className="loginPageButton" type="button">
             Create Account
           </button>
         </Link>

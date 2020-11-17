@@ -7,35 +7,67 @@ import plusSign from '../../assets/plus-sign.svg';
 import NavBar from '../../components/Navbar/Navbar';
 import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
 
-  const [name, setName] = React.useState('');
-  const [location, setLocation] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [tags, setTags] = React.useState('');
-  const [mission, setMission] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [instaLink, setInstaLink] = React.useState('');
-  const [fbLink, setFbLink] = React.useState('');
-  const [website, setWebsite] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [profilePicture, setProfilePicture] = React.useState('');
+  const [name, setName] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+  const [phone, setPhone] = React.useState(null);
+  const [tags, setTags] = React.useState(null);
+  const [mission, setMission] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [instaLink, setInstaLink] = React.useState(null);
+  const [fbLink, setFbLink] = React.useState(null);
+  const [website, setWebsite] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [profilePicture, setProfilePicture] = React.useState(null);
+
+  const CoopId = '1';
+
+  async function putData() {
+    await axios.put('/api/coop', {
+      id: CoopId,
+      name: name,
+      addr: location,
+      phone: phone,
+      mission: mission,
+      description: description,
+      insta: instaLink,
+      fb: fbLink,
+      web: website,
+      email: email,
+      photo: profilePicture,
+      tags: tags,
+    });
+  }
 
   React.useEffect(() => {
-    setName(props.coop.name);
-    setLocation(props.coop.location.address);
-    setPhone(props.coop.phone);
-    setTags(props.coop.tags);
-    setMission(props.coop.mission);
-    setDescription(props.coop.description);
-    setFbLink(props.coop.fbLink);
-    setInstaLink(props.coop.instaLink);
-    setEmail(props.coop.email);
-    setWebsite(props.coop.website);
-    setProfilePicture(props.coop.profilePicture);
-  }, [props.coop]);
+    async function fetchData() {
+      const res = await axios.get('/api/coop/' + CoopId);
+      setProfileVariables(res.data);
+    }
+    fetchData();
+  }, []);
+
+  if (!name) {
+    return <div>Loading...</div>;
+  }
+
+  function setProfileVariables(res) {
+    setLocation(res['addr']);
+    setPhone(res['phone_number']);
+    setTags(res['tags']);
+    setMission(res['mission_statement']);
+    setDescription(res['description_text']);
+    setFbLink(res['fb_link']);
+    setInstaLink(res['insta_link']);
+    setEmail(res['email']);
+    setWebsite(res['website']);
+    setProfilePicture(res['profile_pic']);
+    setName(res['coop_name']);
+  }
 
   if (props.allowEdit) {
     return (
@@ -57,6 +89,9 @@ export default function Profile(props) {
   }
 
   function toggleEdit() {
+    if (editMode) {
+      putData();
+    }
     setEditMode(!editMode);
   }
 
@@ -201,12 +236,14 @@ export default function Profile(props) {
           className="profile-small-input"
           type="text"
           placeholder="Enter facebok link:"
+          value={fbLink}
           onChange={e => setFbLink(e.target.value)}
         />
         <input
           className="profile-small-input"
           type="text"
           placeholder="Enter instagram link:"
+          value={instaLink}
           onChange={e => setInstaLink(e.target.value)}
         />
       </div>
@@ -225,6 +262,7 @@ export default function Profile(props) {
             className="profile-name-input"
             type="text"
             placeholder="Enter name:"
+            value={name}
             onChange={e => setName(e.target.value)}
           />
 
@@ -232,6 +270,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter location:"
+            value={location}
             onChange={e => setLocation(e.target.value)}
           />
 
@@ -239,6 +278,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter website link:"
+            value={website}
             onChange={e => setWebsite(e.target.value)}
           />
 
@@ -246,6 +286,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter email address:"
+            value={email}
             onChange={e => setEmail(e.target.value)}
           />
 
@@ -253,6 +294,7 @@ export default function Profile(props) {
             className="profile-small-input"
             type="text"
             placeholder="Enter phone number:"
+            value={phone}
             onChange={e => setPhone(e.target.value)}
           />
         </div>
