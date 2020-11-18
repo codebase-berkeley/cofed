@@ -208,11 +208,30 @@ export default function FiltersPage() {
     setOther([]);
   }
 
-  const roleOptions = [
+  var listOfTags = ['tag 1', 'tag 2', 'tag 3'];
+
+  function makeDictionary(tag) {
+    var dict = {
+      value: tag,
+      label: tag,
+    };
+    return dict;
+  }
+
+  const roleOptions = listOfTags.map(tag => makeDictionary(tag));
+
+  /* const roleOptions = [
     { value: 'cooperative', label: 'Cooperative' },
     { value: 'distributor', label: 'Distributor' },
     { value: 'producer', label: 'Producer' },
-  ];
+  ]; */
+
+  // const target = [
+  //   { value: 'tag 1', label: 'tag 1' },
+  //   { value: 'tag 2', label: 'tag 2' },
+  //   { value: 'tag 3', label: 'tag 3' },
+  // ];
+
   const locationOptions = [
     { value: 'Alabama', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },

@@ -51,7 +51,8 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
 
-INSERT INTO coops (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link)
+INSERT INTO coops
+    (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link)
 VALUES
     ('test@gmail.com', 'password', 'Test', '123456789',
         'Berkeley, CA', 37.8715, -123.2730, 'test.com', 'test', 'test', 'test', 'test',
@@ -60,7 +61,8 @@ VALUES
         'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
         'test2');
 
-INSERT INTO tags (tag_name)
+INSERT INTO tags
+    (tag_name)
 VALUES
     ('f'),
     ('s'),
@@ -68,11 +70,25 @@ VALUES
     ('NOOT IN COOP 1 TAG'),
     ('NO COOP 1 TAG');
 
-INSERT INTO coop_tags (coop_id, tag_id)
-VALUES 
+INSERT INTO coop_tags
+    (coop_id, tag_id)
+VALUES
     (1, 1),
     (1, 2),
     (1, 3),
     (2, 4),
     (2, 5),
-    (2, 3);
+    (2, 3),
+    (2, 1),
+    (4, 1),
+    (5, 2),
+    (6, 1);
+
+INSERT INTO tags
+    (tag_name)
+VALUES
+    ('TAG 1'),
+    ('TAG 2'),
+    ('TAG 3');
+
+
