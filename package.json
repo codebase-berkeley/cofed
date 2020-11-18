@@ -18,7 +18,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon api/app.js",
     "predb": "psql -f db/cofed.sql -U postgres",
-    "db": "psql postgres",
+    "db": "psql cofed",
     "lint": "eslint --fix client/src api/ db/",
     "lint-check": "eslint client/src api/ db/",
     "postinstall": "cd client && yarn install"

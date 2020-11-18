@@ -1,5 +1,6 @@
 import FiltersPage from './pages/FiltersPage/FiltersPage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import React from 'react';
@@ -37,13 +38,7 @@ function App() {
             <Profile coop={coop} allowEdit={true} allowView={false} />
           )}
         />
-        <Route
-          exact
-          path="/profile"
-          component={() => (
-            <Profile coop={coop} allowEdit={true} allowView={true} />
-          )}
-        />
+        <Route exact path="/profile" component={ProfilePage} />
       </Switch>
     </BrowserRouter>
   );
