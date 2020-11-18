@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './RegisterPage.css';
+import axios from 'axios';
 
 export default function RegisterPage() {
   const [nameInput, setNameInput] = React.useState('');
@@ -8,11 +9,13 @@ export default function RegisterPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
 
-  function createAccount() {
-    console.log(nameInput);
-    console.log(passwordInput);
-    console.log(emailInput);
-    console.log(locationInput);
+  async function createAccount() {
+    await axios.post('/api/coop', {
+      email: emailInput,
+      name: nameInput,
+      addr: locationInput,
+      pass: passwordInput,
+    });
   }
 
   return (
