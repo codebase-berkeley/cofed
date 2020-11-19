@@ -4,12 +4,6 @@ import PropTypes from 'prop-types';
 
 import Select from 'react-select';
 
-function arrayMove(array, from, to) {
-  array = array.slice();
-  array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
-  return array;
-}
-
 const TagStyle = {
   control: (styles, { isFocused }) => ({
     ...styles,
@@ -89,6 +83,12 @@ const TagStyle = {
     },
   }),
 };
+
+function arrayMove(array, from, to) {
+  array = array.slice();
+  array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0]);
+  return array;
+}
 
 export default function MultiSelectSort(props) {
   const onChange = selectedOptions => {

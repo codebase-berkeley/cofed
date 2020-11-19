@@ -1,7 +1,7 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
-
+import qs from 'qs';
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
@@ -34,7 +34,6 @@ export default function FiltersPage() {
 
   async function fetchInitialData() {
     const res = await axios.get('/api/coops');
-    console.log(res);
     setCoops(res.data);
     setCoopShown(res.data[0]);
 
@@ -214,12 +213,13 @@ export default function FiltersPage() {
     setOther([]);
   }
 
-  var listOfTags = ['tag 1', 'tag 2', 'tag 3'];
+  /* var listOfTags = [{'tag 1'}, {'tag 2'}, {'tag 3'}]; */
 
   function makeDictionary(tag) {
     var dict = {
-      value: tag,
-      label: tag,
+      value: tag.tag_name,
+      label: tag.tag_name,
+      id: tag.id,
     };
     return dict;
   }
@@ -239,7 +239,7 @@ export default function FiltersPage() {
   // ];
 
   const locationOptions = [
-    { value: 'Alabama', label: 'Alabama' },
+    { value: '2378648', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },
     { value: 'Arizona', label: 'Arizona' },
     { value: 'Arkansas', label: 'Arkansas' },
@@ -277,8 +277,38 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  function handleToggle() {
+  function handleStarToggle() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
+  }
+
+  function handleChange(setter) {
+    async function helper(x) {
+      //set the value using the setter
+      setter(x);
+
+      if (x == null) {
+        //query for everything
+        const res = await axios.get('/api/coops');
+        setCoops(res.data);
+      } else {
+        const params = {
+          tags: x.map(newArray => newArray.id),
+        };
+        console.log(x.map(newArray => newArray.id));
+        //make the get request
+
+        //goal: ?tags=black&color=yellow
+        const res = await axios.get('/api/filteredCoops', {
+          params,
+          paramsSerializer: params => {
+            return qs.stringify(params, { encode: false });
+          },
+        });
+        console.log(res);
+      }
+    }
+
+    return helper;
   }
 
   return (
@@ -302,7 +332,7 @@ export default function FiltersPage() {
                 className="filter-toggle"
                 defaultChecked={false}
                 icons={false}
-                onChange={handleToggle}
+                onChange={handleStarToggle}
               />
             </label>
             <div className="filter-container">
@@ -311,7 +341,7 @@ export default function FiltersPage() {
                   title="role"
                   options={roleOptions}
                   values={role}
-                  onChange={setRole}
+                  onChange={handleChange(setRole)}
                 />
                 <Filters
                   title="location"

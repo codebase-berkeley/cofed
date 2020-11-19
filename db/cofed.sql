@@ -85,11 +85,11 @@ VALUES
 INSERT INTO tags
     (tag_name)
 VALUES
-    ('f'),
-    ('s'),
-    ('t'),
-    ('NOOT IN COOP 1 TAG'),
-    ('NO COOP 1 TAG');
+    ('Cooperative'),
+    ('Distributor'),
+    ('Producer'),
+    ('Community'),
+    ('Delivery');
 
 INSERT INTO coop_tags
     (coop_id, tag_id)
