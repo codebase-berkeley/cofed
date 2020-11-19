@@ -44,7 +44,18 @@ router.get('/coop/:CoopID', async (req, res) => {
   }
 });
 
-//retrieving ALL co-ops in our coops table
+//retrieving ALL tags in our tags table and returning a list
+router.get('/tags', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT tag_name FROM tags;`);
+    var listOfTags = getArrayOfTags(query);
+    res.send(listOfTags);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+/* //retrieving ALL co-ops in our coops table
 router.get('/coops', async (req, res) => {
   try {
     const query = await db.query(`SELECT * FROM coops;`);
@@ -52,7 +63,27 @@ router.get('/coops', async (req, res) => {
   } catch (error) {
     console.log(error.stack);
   }
+}); */
+
+//retrieve the coops that belong to each tag
+router.get('/coops', async (req, res) => {
+  const { tags } = req.params;
+  // SELECT * coop_id, tag_id, FROM coops,
+  try {
+    const query = await db.query(`SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
+    * FROM coops;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
 });
+
+// SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1
+// select (coop fields),
+// SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
+//        * FROM coops;
+//
+//
 
 //retrieve the co-ops and their starred attribute
 router.get('/getStarred/:starredId', async (req, res) => {

@@ -30,9 +30,11 @@ export default function FiltersPage() {
   //tracker for the starred coops, an array of starred coops
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
+  const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
-  async function fetchData() {
+  async function fetchInitialData() {
     const res = await axios.get('/api/coops');
+    console.log(res);
     setCoops(res.data);
     setCoopShown(res.data[0]);
 
@@ -43,10 +45,14 @@ export default function FiltersPage() {
       return e.starred_coop_id;
     });
     setStarredCoops(starredIds);
+
+    //get the tags to put in the filters dropdown
+    const tags = await axios.get('/api/tags');
+    setDropDownOptions(tags.data);
   }
 
   React.useEffect(() => {
-    fetchData();
+    fetchInitialData();
   }, []);
 
   if (!coops) {
@@ -218,7 +224,7 @@ export default function FiltersPage() {
     return dict;
   }
 
-  const roleOptions = listOfTags.map(tag => makeDictionary(tag));
+  const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
 
   /* const roleOptions = [
     { value: 'cooperative', label: 'Cooperative' },
