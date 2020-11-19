@@ -294,17 +294,11 @@ export default function FiltersPage() {
         const params = {
           tags: x.map(newArray => newArray.id),
         };
-        console.log(x.map(newArray => newArray.id));
-        //make the get request
 
-        //goal: ?tags=black&color=yellow
         const res = await axios.get('/api/filteredCoops', {
           params,
-          paramsSerializer: params => {
-            return qs.stringify(params, { encode: false });
-          },
         });
-        console.log(res);
+        setCoops(res.data);
       }
     }
 
