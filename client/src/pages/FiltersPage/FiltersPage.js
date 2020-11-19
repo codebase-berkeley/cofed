@@ -133,7 +133,7 @@ export default function FiltersPage() {
       return (
         <div className="map-mode">
           <Map
-            center={[coops[0].latitude, coops[0].longitude]}
+            center={findMapCenter(coops)}
             zoom={6}
             twoFingerDrag={true}
             provider={mapTilerProvider}
@@ -155,7 +155,7 @@ export default function FiltersPage() {
       return (
         <div className="map-mode">
           <Map
-            center={[coops[0].latitude, coops[0].longitude]}
+            center={findMapCenter(coops)}
             zoom={6}
             twoFingerDrag={true}
             provider={mapTilerProvider}
@@ -171,6 +171,14 @@ export default function FiltersPage() {
           </Map>
         </div>
       );
+    }
+  }
+
+  function findMapCenter(coops) {
+    if (coops.length > 0) {
+      return [coops[0].latitude, coops[0].longitude];
+    } else {
+      return [39.8283, -98.5795];
     }
   }
 
