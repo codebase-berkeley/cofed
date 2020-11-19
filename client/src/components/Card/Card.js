@@ -3,19 +3,36 @@ import PropTypes from 'prop-types';
 import './Card.css';
 import Tag from '../Tag/Tag';
 import classNames from 'classnames';
+import starredImage from '../../assets/starred.svg';
+import unstarredImage from '../../assets/unstarred.svg';
 
 export default function CardComponent(props) {
   const cardContainerClass = classNames('card-container', {
     'card-selected': props.selected,
   });
 
+  function renderStar() {
+    if (props.starred) {
+      return <img className="card-starred" src={starredImage} />;
+    } else {
+      return <img className="card-not-starred" src={unstarredImage} />;
+    }
+  }
+
   return (
     <div onClick={props.onClick}>
       <div className={cardContainerClass}>
         <div className="card-pic-text-container">
-          <img className="card-profile-pic" alt="Image" src={props.profile} />
+          <img
+            className="card-profile-pic"
+            alt="Image"
+            src={props.profile_pic}
+          />
           <div className="card-name-container">
-            <div className="card-co-op-name">{props.name}</div>
+            <div className="card-name-star-wrapper">
+              <div className="card-co-op-name">{props.name}</div>
+              {renderStar()}
+            </div>
             <div className="card-co-op-location">{props.location}</div>
           </div>
         </div>
@@ -28,13 +45,15 @@ export default function CardComponent(props) {
       </div>
     </div>
   );
-}
 
-CardComponent.propTypes = {
-  onClick: PropTypes.func,
-  location: PropTypes.string,
-  name: PropTypes.string,
-  profile: PropTypes.string,
-  tags: PropTypes.array,
-  selected: PropTypes.bool,
-};
+  CardComponent.propTypes = {
+    onClick: PropTypes.func,
+    location: PropTypes.string,
+    name: PropTypes.string,
+    profile: PropTypes.string,
+    tags: PropTypes.array,
+    selected: PropTypes.bool,
+    starred: PropTypes.bool,
+    profile_pic: PropTypes.string,
+  };
+}

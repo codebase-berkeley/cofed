@@ -44,6 +44,64 @@ router.get('/coop/:CoopID', async (req, res) => {
   }
 });
 
+//retrieving ALL co-ops in our coops table
+router.get('/coops', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM coops;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieve the co-ops and their starred attribute
+router.get('/getStarred/:starredId', async (req, res) => {
+  const { starredId } = req.params;
+
+  try {
+    const query = await db.query(
+      `SELECT starred_coop_id 
+      FROM stars 
+      WHERE starrer_coop_id = $1;`,
+      [starredId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//post new starred
+router.post('/addStar', async (req, res) => {
+  const { starredId, starrerId } = req.body;
+  try {
+    const query = await db.query(
+      `INSERT INTO stars (starred_coop_id, starrer_coop_id)
+        VALUES ($1, $2);`,
+      [starredId, starrerId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//delete star
+router.delete('/delete', async (req, res) => {
+  const { starredId, starrerId } = req.body;
+  try {
+    const query = await db.query(
+      `DELETE FROM stars 
+      WHERE starred_coop_id = $1 
+      AND starrer_coop_id = $2;`,
+      [starredId, starrerId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 router.post('/coop', async (req, res) => {
   const { email, name, addr, pass } = req.body;
 
@@ -60,40 +118,40 @@ router.post('/coop', async (req, res) => {
 router.put('/coop', async (req, res) => {
   const coopId = parseInt(req.body.id, 10);
   const {
-    name,
+    coop_name,
     addr,
-    phone,
-    mission,
-    description,
-    insta,
-    fb,
-    web,
+    phone_number,
+    mission_statement,
+    description_text,
+    insta_link,
+    fb_link,
+    website,
     email,
-    photo,
+    profile_pic,
     tags,
   } = req.body;
 
-  const text =
+  const updateQueryText =
     'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
     'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
-  const values = [
+  const updateQueryValues = [
     coopId,
     email,
-    name,
+    coop_name,
     addr,
-    phone,
-    mission,
-    description,
-    insta,
-    fb,
-    web,
-    photo,
+    phone_number,
+    mission_statement,
+    description_text,
+    insta_link,
+    fb_link,
+    website,
+    profile_pic,
   ];
 
   var queryTags = await db.query(
-    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id=' +
-      coopId
+    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
+    [coopId]
   );
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
@@ -110,12 +168,13 @@ router.put('/coop', async (req, res) => {
   // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
 
   try {
+    await db.query(updateQueryText, updateQueryValues);
     await db.query(
       `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
       [coopId, deleteArray]
     );
 
-    await db.query(text, values);
+    res.send(`Successfully updated coop ${coopId}`);
   } catch (err) {
     console.log(err.stack);
   }

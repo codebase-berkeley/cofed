@@ -4,11 +4,13 @@
   "repository": "https://github.com/codebase-berkeley/cofed.git",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/icons": "^4.9.1",
     "axios": "^0.21.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^8.4.2",
+    "react-toggle": "^4.1.1",
     "shards-react": "^1.0.3"
   },
   "scripts": {
@@ -16,7 +18,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon api/app.js",
     "predb": "psql -f db/cofed.sql -U postgres",
-    "db": "psql postgres",
+    "db": "psql cofed",
     "lint": "eslint --fix client/src api/ db/",
     "lint-check": "eslint client/src api/ db/",
     "postinstall": "cd client && yarn install"

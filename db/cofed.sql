@@ -50,7 +50,6 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
--- dummy data below
 
 INSERT INTO coops (email, pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link)
 VALUES

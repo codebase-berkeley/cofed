@@ -1,12 +1,6 @@
 import './FiltersPage.css';
-import tina from '../../assets/tina.png';
-import toad from '../../assets/toad.png';
-import burger from '../../assets/burger.png';
-import onion from '../../assets/onion.png';
-import eggplanted from '../../assets/eggplanted.jpg';
-import cheese from '../../assets/cheese.png';
-import radish from '../../assets/radish.png';
-import heihei from '../../assets/heihei.png';
+import './ReactToggle.css';
+import axios from 'axios';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -15,199 +9,164 @@ import React from 'react';
 import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
+import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
   const [listMode, setListMode] = React.useState(true);
+
+  const [location, setLocation] = React.useState([]);
+  const [role, setRole] = React.useState([]);
+  const [race, setRace] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
+  const [other, setOther] = React.useState([]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [showStarredOnly, setShowStarredOnly] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const coops = [
-    {
-      name: "Bianca's Squash",
-      location: {
-        address: 'Berkeley, CA',
-        lat: 37.7157, // latitude (calculated with Geocoding)
-        lng: -117.1611, // longitude (calculated with Geocoding)
-      },
-      email: 'coopemail@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'black-owned'],
-      mission: 'lorem ipsum',
-      description: 'lorem upsum',
-      profilePicture: tina,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Richard's Mushrooms",
-      location: {
-        address: 'Seattle, WA',
-        lat: 47.6062, // latitude (calculated with Geocoding)
-        lng: -122.3321, // longitude (calculated with Geocoding)
-      },
-      email: 'coopemail@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'vegan', 'fair trade'],
-      mission: 'To promote the welfare of the mushroom kingdom.',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      profilePicture: toad,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Claire's Radishes",
-      location: {
-        address: 'Berkeley, CA',
-        lat: 37.8715, // latitude (calculated with Geocoding)
-        lng: -122.273, // longitude (calculated with Geocoding)
-      },
-      email: 'claireradishes@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://loveradish.co.uk/',
-      tags: ['radish', 'Distributor', 'Asian-Owned', 'vegetables', 'crunchy'],
-      mission:
-        'To distribute radishes to as many people as possible. Expose the spicy, crunchiness to the world.',
-      description: 'Radishes are life',
-      profilePicture: radish,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Jane's Onions",
-      location: {
-        address: 'Cupertino, CA',
-        lat: 37.323, // latitude (calculated with Geocoding)
-        lng: -122.0322, // longitude (calculated with Geocoding)
-      },
-      email: 'coopemail@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'black-owned'],
-      mission: 'To season the world with the rise of organic onions.',
-      description:
-        'Loveliness in the form of onions. Fragrant, crunchy, and delightful onions grown and harvested with love.',
-      profilePicture: onion,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Ranon's Cheese",
-      location: {
-        address: 'Bangkok, TH',
-        lat: 13.7563, // latitude (calculated with Geocoding)
-        lng: 100.5018, // longitude (calculated with Geocoding)
-      },
-      email: 'ranonscheese@gmail.com',
-      phone: '+66856783344',
-      website: 'https://www.ranonsthaicheese.coop/',
-      tags: ['organic', 'international'],
-      mission:
-        'Provide the best cheese from humanely raised, rescued Thai cows.',
-      description:
-        'Only the best Thai cheese! From only the best and happiest Thai cows!',
-      profilePicture: cheese,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Eric's Eggplants",
-      location: {
-        address: 'North Potomac, MD',
-        lat: 39.0978, // latitude (calculated with Geocoding)
-        lng: -77.2348, // longitude (calculated with Geocoding)
-      },
-      email: 'ericEggplants@gmail.com',
-      phone: '555-555-5555',
-      website: 'https://www.cofed.coop/',
-      tags: ['organic', 'eggplants', 'non-GMO'],
-      mission: 'Raise organic eggplants without harming chickenplants',
-      description:
-        'We are a chicken-friendly institution. We are proud to say that no chickenplants are ever harmed on under our watch',
-      profilePicture: eggplanted,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Isabel's Burgers",
-      location: {
-        address: 'Auckland, NZ',
-        lat: -36.8771, // latitude (calculated with Geocoding)
-        lng: 174.914565, // longitude (calculated with Geocoding)
-      },
-      email: 'isabel@burgers.com',
-      phone: '555-555-5555',
-      website: 'https://www.isabelsburgers.org/',
-      tags: ['burgers', 'startup', 'non-GMO', 'food distributor'],
-      mission: 'To promote and make known the universal appeal of burgers.',
-      description:
-        "Isabel's burgers is a startup food distributor operating locally in Auckland, New Zealand. We service restaurants, retail stores, and educational institutions. We focus on burgers, but also deliver and distribute a range of other non-GMO foods. We are able to offer vegan options for all our burgers, including those made with synthetic meats.",
-      profilePicture: burger,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-    {
-      name: "Zaid's Chickens",
-      location: {
-        address: 'Tracy, CA',
-        lat: 37.6915, // latitude (calculated with Geocoding)
-        lng: -121.4348, // longitude (calculated with Geocoding)
-      },
-      email: 'yummychicken@gmail.com',
-      phone: '209-555-5555',
-      website: 'https://www.chicken.coop/',
-      tags: ['meat', 'chickens', 'non-GMO', 'poultry', 'cooperative'],
-      mission: 'Coop with Coops',
-      description:
-        "Our chickens are grass-fed and produce the highest quality Grade AA eggs. Our quality of meat can't be beat!",
-      profilePicture: heihei,
-      instagram: 'https://instagram.com',
-      facebook: 'https://facebook.com',
-    },
-  ];
+  const [coops, setCoops] = React.useState([]); //all coops
+  //tracker for the starred coops, an array of starred coops
+  const [starredCoops, setStarredCoops] = React.useState([]);
+  const [coopShown, setCoopShown] = React.useState([]);
 
-  function renderListView() {
-    return (
-      <div className="list-mode">
-        {coops.map((coop, index) => (
-          <Card
-            key={index}
-            profile={coop.profilePicture}
-            name={coop.name}
-            location={coop.location.address}
-            tags={coop.tags}
-            selected={selectedIndex === index}
-            onClick={() => renderProfile(coop, index)}
-          />
-        ))}
-      </div>
-    );
+  async function fetchData() {
+    const res = await axios.get('/api/coops');
+    setCoops(res.data);
+    setCoopShown(res.data[0]);
+
+    //get the toggle star info
+    const starred = await axios.get('/api/getStarred/1');
+    //set the query data as the starred coops
+    let starredIds = starred.data.map(e => {
+      return e.starred_coop_id;
+    });
+    setStarredCoops(starredIds);
   }
 
-  function renderMapView() {
-    return (
-      <div className="map-mode">
-        <Map
-          center={[coops[0].location.lat, coops[0].location.lng]}
-          zoom={6}
-          twoFingerDrag={true}
-          provider={mapTilerProvider}
-        >
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (!coops) {
+    return <div>Loading...</div>;
+  }
+
+  function toggleStar(starredId, starrerId) {
+    if (starredCoops.includes(starredId)) {
+      //if the coop is already starred
+      //remove the coop from the list of starred
+      const tempStarredCoops = [...starredCoops];
+      const index = starredCoops.indexOf(starredId);
+      if (index > -1) {
+        tempStarredCoops.splice(index, 1);
+      }
+      setStarredCoops(tempStarredCoops);
+      //remove the row from the database
+      axios.delete('/api/delete', {
+        data: {
+          starredId,
+          starrerId,
+        },
+      });
+    } else {
+      //if the coop isn't starred yet
+      //add the coop from the list of starred
+      const tempStarredCoops = [...starredCoops, starredId];
+      setStarredCoops(tempStarredCoops);
+      //make a post request
+      axios.post('/api/addStar', {
+        starredId,
+        starrerId,
+      });
+    }
+  }
+
+  function renderListView() {
+    if (showStarredOnly) {
+      return (
+        <div className="list-mode">
+          {coops
+            .filter(coop => starredCoops.includes(coop.id))
+            .map((coop, index) => (
+              <Card
+                key={index}
+                profile={coop.profile_pic}
+                name={coop.coop_name}
+                location={coop.addr}
+                tags={coop.tags}
+                starred={starredCoops.includes(coop.id)}
+                selected={selectedIndex === index}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
+        </div>
+      );
+    } else {
+      return (
+        <div className="list-mode">
           {coops.map((coop, index) => (
-            <Marker
-              payload={index}
+            <Card
               key={index}
-              anchor={[coop.location.lat, coop.location.lng]}
+              profile={coop.profile_pic}
+              name={coop.coop_name}
+              location={coop.addr}
+              tags={coop.tags}
+              starred={starredCoops.includes(coop.id)}
+              selected={selectedIndex === index}
               onClick={() => renderProfile(coop, index)}
             />
           ))}
-        </Map>
-      </div>
-    );
+        </div>
+      );
+    }
+  }
+
+  function renderMapView() {
+    if (showStarredOnly) {
+      return (
+        <div className="map-mode">
+          <Map
+            center={[coops[0].latitude, coops[0].longitude]}
+            zoom={6}
+            twoFingerDrag={true}
+            provider={mapTilerProvider}
+          >
+            {coops
+              .filter(coop => starredCoops.includes(coop.id))
+              .map((coop, index) => (
+                <Marker
+                  payload={index}
+                  key={index}
+                  anchor={[coop.latitude, coop.longitude]}
+                  onClick={() => renderProfile(coop, index)}
+                />
+              ))}
+          </Map>
+        </div>
+      );
+    } else {
+      return (
+        <div className="map-mode">
+          <Map
+            center={[coops[0].latitude, coops[0].longitude]}
+            zoom={6}
+            twoFingerDrag={true}
+            provider={mapTilerProvider}
+          >
+            {coops.map((coop, index) => (
+              <Marker
+                payload={index}
+                key={index}
+                anchor={[coop.latitude, coop.longitude]}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
+          </Map>
+        </div>
+      );
+    }
   }
 
   function renderListButton() {
@@ -237,17 +196,9 @@ export default function FiltersPage() {
   }
 
   function renderProfile(coop, index) {
-    setCoop(coop);
+    setCoopShown(coop);
     setSelectedIndex(index);
   }
-
-  const [location, setLocation] = React.useState([]);
-  const [role, setRole] = React.useState([]);
-  const [race, setRace] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
-  const [other, setOther] = React.useState([]);
-  const [coop, setCoop] = React.useState(coops[0]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   function reset() {
     setRole([]);
@@ -301,6 +252,10 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
+  function handleToggle() {
+    showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
+  }
+
   return (
     <div className="FiltersPage">
       <NavBar username="Rad Radishes" />
@@ -316,6 +271,15 @@ export default function FiltersPage() {
                 Reset
               </button>
             </div>
+            <label className="filter-toggle-div">
+              <p className="starred-only-text">Show starred only</p>
+              <Toggle
+                className="filter-toggle"
+                defaultChecked={false}
+                icons={false}
+                onChange={handleToggle}
+              />
+            </label>
             <div className="filter-container">
               <div className="filter-scroll">
                 <Filters
@@ -359,7 +323,16 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coop && <Profile allowView={true} allowEdit={false} coop={coop} />}
+            {coops && (
+              <Profile
+                allowView={true}
+                allowEdit={false}
+                coop={coopShown}
+                starred={starredCoops.includes(coopShown.id)}
+                handleStar={toggleStar}
+                starrerId={1}
+              />
+            )}
           </div>
         </div>
       </div>

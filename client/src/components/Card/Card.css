@@ -58,3 +58,22 @@
   font-size: 17px;
   font-weight: 300;
 }
+
+.card-name-star-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.card-starred {
+  width: 1em;
+  height: 1em;
+  fill: #ffc011;
+  padding: 0.3em 0.1em 0.5em 0.35em;
+}
+
+.card-not-starred {
+  width: 1em;
+  height: 1em;
+  fill: #81a1b7;
+  padding: 0.3em 0.1em 0.5em 0.35em;
+}
