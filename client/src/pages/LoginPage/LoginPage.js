@@ -9,19 +9,18 @@ export default function LoginPage() {
   const [pwInput, setPwInput] = React.useState('');
 
   function handleSubmit() {
-    checkLogin();
+    verify();
     setEmailInput('');
     setPwInput('');
   }
 
-  async function checkLogin() {
-    const res = await axios.post('/api/authen', {
-      email: emailInput,
-      pass: pwInput,
+  async function verify() {
+    await axios.post('/api/login', {
+      data: {
+        email: emailInput,
+        pass: pwInput,
+      },
     });
-    if (!res.data) {
-      console.log('error!');
-    }
   }
 
   return (

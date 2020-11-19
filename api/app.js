@@ -1,6 +1,7 @@
 const express = require('express');
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const passport = require('passport');
 
 require('dotenv').config();
 
@@ -17,6 +18,16 @@ app.use('/auth', authRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+
+app.configure(function () {
+  app.use(express.static('public'));
+  app.use(express.cookieParser());
+  app.use(express.bodyParser());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(app.router);
 });
 
 module.exports = app;
