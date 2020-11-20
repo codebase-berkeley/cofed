@@ -31,11 +31,14 @@ export default function FiltersPage() {
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
-  async function fetchInitialData() {
+
+  async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
     setCoops(res.data);
     setCoopShown(res.data[0]);
+  }
 
+  async function fetchInitialData() {
     //get the toggle star info
     const starred = await axios.get('/api/getStarred/1');
     //set the query data as the starred coops
@@ -50,6 +53,7 @@ export default function FiltersPage() {
   }
 
   React.useEffect(() => {
+    fetchAllCoops();
     fetchInitialData();
   }, []);
 
@@ -212,6 +216,7 @@ export default function FiltersPage() {
     setRace([]);
     setProducts([]);
     setOther([]);
+    fetchAllCoops();
   }
 
   function makeDictionary(tag) {
@@ -265,15 +270,24 @@ export default function FiltersPage() {
   ];
 
   function handleStarToggle() {
+    setSelectedIndex(null);
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
+
+    if (!showStarredOnly) {
+      const newArray = coops.filter(coop => starredCoops.includes(coop.id)).slice()
+      console.log("newArray:", newArray);
+      setCoopShown(newArray[0]);
+    } else {
+      setCoopShown(coops[0]);
+    }
   }
 
   function handleChange(setter) {
     async function helper(x) {
+      setSelectedIndex(null);
       setter(x);
       if (x == null || x.length == 0) {
-        const res = await axios.get('/api/coops');
-        setCoops(res.data);
+        fetchAllCoops();
       } else {
         const params = {
           tags: x.map(newArray => newArray.id),
@@ -283,6 +297,7 @@ export default function FiltersPage() {
           params,
         });
         setCoops(res.data);
+        setCoopShown(res.data[0]);
       }
     }
 
@@ -356,7 +371,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coops && (
+            {coopShown && (
               <Profile
                 allowView={true}
                 allowEdit={false}
