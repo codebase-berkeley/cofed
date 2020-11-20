@@ -48,7 +48,6 @@ router.get('/coop/:CoopID', async (req, res) => {
 router.get('/tags', async (req, res) => {
   try {
     const query = await db.query(`SELECT * FROM tags;`);
-    // var listOfTags = getArrayOfTags(query);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -57,7 +56,6 @@ router.get('/tags', async (req, res) => {
 
 //retrieve all coops with their tag
 router.get('/coops', async (req, res) => {
-  // SELECT * coop_id, tag_id, FROM coops,
   try {
     const query = await db.query(`SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
     * FROM coops;`);
@@ -186,15 +184,6 @@ router.put('/coop', async (req, res) => {
 
   deleteArray = diffArray(listOfTagsDatabase, tags);
   addArray = diffArray(tags, listOfTagsDatabase);
-
-  //TO DO:
-  //for each tag to add:
-  //find the tag's id
-  // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
-  //find the overall id
-  // - new_id = SELECT id FROM coop_tags ORDER BY id DESC LIMIT 1;
-  //insert new row into coop_tags
-  // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
 
   try {
     await db.query(updateQueryText, updateQueryValues);

@@ -59,15 +59,12 @@ export default function FiltersPage() {
 
   function toggleStar(starredId, starrerId) {
     if (starredCoops.includes(starredId)) {
-      //if the coop is already starred
-      //remove the coop from the list of starred
       const tempStarredCoops = [...starredCoops];
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
         tempStarredCoops.splice(index, 1);
       }
       setStarredCoops(tempStarredCoops);
-      //remove the row from the database
       axios.delete('/api/delete', {
         data: {
           starredId,
@@ -75,11 +72,8 @@ export default function FiltersPage() {
         },
       });
     } else {
-      //if the coop isn't starred yet
-      //add the coop from the list of starred
       const tempStarredCoops = [...starredCoops, starredId];
       setStarredCoops(tempStarredCoops);
-      //make a post request
       axios.post('/api/addStar', {
         starredId,
         starrerId,
@@ -220,8 +214,6 @@ export default function FiltersPage() {
     setOther([]);
   }
 
-  /* var listOfTags = [{'tag 1'}, {'tag 2'}, {'tag 3'}]; */
-
   function makeDictionary(tag) {
     var dict = {
       value: tag.tag_name,
@@ -232,18 +224,6 @@ export default function FiltersPage() {
   }
 
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
-
-  /* const roleOptions = [
-    { value: 'cooperative', label: 'Cooperative' },
-    { value: 'distributor', label: 'Distributor' },
-    { value: 'producer', label: 'Producer' },
-  ]; */
-
-  // const target = [
-  //   { value: 'tag 1', label: 'tag 1' },
-  //   { value: 'tag 2', label: 'tag 2' },
-  //   { value: 'tag 3', label: 'tag 3' },
-  // ];
 
   const locationOptions = [
     { value: '2378648', label: 'Alabama' },
@@ -290,12 +270,8 @@ export default function FiltersPage() {
 
   function handleChange(setter) {
     async function helper(x) {
-      //set the value using the setter
       setter(x);
-
-      console.log(x);
       if (x == null || x.length == 0) {
-        //query for everything
         const res = await axios.get('/api/coops');
         setCoops(res.data);
       } else {
