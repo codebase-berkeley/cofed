@@ -1,7 +1,6 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
-import qs from 'qs';
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';

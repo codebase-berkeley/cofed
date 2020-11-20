@@ -57,8 +57,6 @@ router.get('/tags', async (req, res) => {
 
 //retrieve all coops with their tag
 router.get('/coops', async (req, res) => {
-  const { tags } = req.params;
-
   // SELECT * coop_id, tag_id, FROM coops,
   try {
     const query = await db.query(`SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
@@ -72,9 +70,6 @@ router.get('/coops', async (req, res) => {
 //retrieve all coops with their tag
 router.get('/filteredCoops', async (req, res) => {
   const tagParams = req.query.tags;
-  console.log(req.tags);
-  console.log(req.query);
-  console.log('tagParams:', tagParams);
 
   try {
     const query = await db.query(
