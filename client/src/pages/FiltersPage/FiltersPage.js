@@ -293,7 +293,8 @@ export default function FiltersPage() {
       //set the value using the setter
       setter(x);
 
-      if (x == null) {
+      console.log(x);
+      if (x == null || x.length == 0) {
         //query for everything
         const res = await axios.get('/api/coops');
         setCoops(res.data);
