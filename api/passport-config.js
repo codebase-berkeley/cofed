@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const db = require('../../db/index');
+const db = require('../db/index');
 const bcrypt = require('bcrypt');
 
 passport.serializeUser(function (user, done) {
@@ -37,10 +37,11 @@ passport.use(
           //get the query result
           const user = result.rows[0];
           console.log('===== USER =====');
-          console.log(user);
+          console.log(user.pass);
           //compare the password in the DATABASE with the ENTERED password
           bcrypt.compare(password, user.pass, (err, res) => {
             //if successful return the user
+            console.log('Password = ' + password);
             if (res) {
               return done(null, user);
             } else {

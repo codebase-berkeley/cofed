@@ -8,6 +8,19 @@ const passport = require('passport');
  * grab just the values of each dictionary,
  *  and flatten the resulting array
  */
+function isAuthenticated(req, res, next) {
+  // do any checks you want to in here
+
+  // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
+  // you can do this however you want with whatever variables you set up
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.status(404).send({ error: `user not logged in` });
+  }
+  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+}
+
 function getArrayOfTags(query) {
   return query.rows.map(Object.values).flat();
 }
@@ -21,142 +34,100 @@ function diffArray(arr1, arr2) {
   return n;
 }
 
-router.get(
-  '/coop/:CoopID',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    try {
-      const id = req.params['CoopID'];
-      var command =
-        'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1';
-      var values = [id];
+router.get('/coop/:CoopID', isAuthenticated, async (req, res) => {
+  try {
+    const id = req.params['CoopID'];
+    var command =
+      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1';
+    var values = [id];
 
-      const queryTags = await db.query(command, values);
-      const listOfTags = getArrayOfTags(queryTags);
+    const queryTags = await db.query(command, values);
+    const listOfTags = getArrayOfTags(queryTags);
 
-      var command = 'SELECT * FROM coops WHERE id = $1';
-      const query = await db.query(command, values);
+    var command = 'SELECT * FROM coops WHERE id = $1';
+    const query = await db.query(command, values);
 
-      if (query.rows.length >= 1) {
-        query.rows[0]['tags'] = listOfTags;
-        res.send(query.rows[0]);
-      } else {
-        res.status(404).send({ error: `coop ${id} not found` });
-      }
-    } catch (error) {
-      console.log(error.stack);
+    if (query.rows.length >= 1) {
+      query.rows[0]['tags'] = listOfTags;
+      res.send(query.rows[0]);
+    } else {
+      res.status(404).send({ error: `coop ${id} not found` });
     }
+  } catch (error) {
+    console.log(error.stack);
   }
-);
+});
 
 //retrieving ALL co-ops in our coops table
-router.get(
-  '/coops',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    try {
-      const query = await db.query(`SELECT * FROM coops;`);
-      res.send(query.rows);
-    } catch (error) {
-      console.log(error.stack);
-    }
+router.get('/coops', isAuthenticated, async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM coops;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
   }
-);
+});
 
 //retrieve the co-ops and their starred attribute
-router.get(
-  '/getStarred/:starredId',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    const { starredId } = req.params;
+router.get('/getStarred/:starredId', isAuthenticated, async (req, res) => {
+  const { starredId } = req.params;
 
-    try {
-      const query = await db.query(
-        `SELECT starred_coop_id 
+  try {
+    const query = await db.query(
+      `SELECT starred_coop_id 
       FROM stars 
       WHERE starrer_coop_id = $1;`,
-        [starredId]
-      );
-      res.send(query.rows);
-    } catch (error) {
-      console.log(error.stack);
-    }
+      [starredId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
   }
-);
+});
 
 //post new starred
-router.post(
-  '/addStar',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    const { starredId, starrerId } = req.body;
-    try {
-      const query = await db.query(
-        `INSERT INTO stars (starred_coop_id, starrer_coop_id)
+router.post('/addStar', isAuthenticated, async (req, res) => {
+  const { starredId, starrerId } = req.body;
+  try {
+    const query = await db.query(
+      `INSERT INTO stars (starred_coop_id, starrer_coop_id)
         VALUES ($1, $2);`,
-        [starredId, starrerId]
-      );
-      res.send(query.rows);
-    } catch (error) {
-      console.log(error.stack);
-    }
+      [starredId, starrerId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
   }
-);
+});
 
 //delete star
-router.delete(
-  '/delete',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    const { starredId, starrerId } = req.body;
-    try {
-      const query = await db.query(
-        `DELETE FROM stars 
+router.delete('/delete', isAuthenticated, async (req, res) => {
+  const { starredId, starrerId } = req.body;
+  try {
+    const query = await db.query(
+      `DELETE FROM stars 
       WHERE starred_coop_id = $1 
       AND starrer_coop_id = $2;`,
-        [starredId, starrerId]
-      );
-      res.send(query.rows);
-    } catch (error) {
-      console.log(error.stack);
-    }
+      [starredId, starrerId]
+    );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
   }
-);
+});
 
-router.post(
-  '/coop',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    const { email, name, addr, pass } = req.body;
+router.post('/coop', isAuthenticated, async (req, res) => {
+  const { email, name, addr, pass } = req.body;
 
-    const text =
-      'INSERT INTO coops( email, pass, coop_name, addr) VALUES($1, $2, $3, $4)';
-    const values = [email, pass, name, addr];
-    try {
-      await db.query(text, values);
-    } catch (err) {
-      console.log(err.stack);
-    }
+  const text =
+    'INSERT INTO coops( email, pass, coop_name, addr) VALUES($1, $2, $3, $4)';
+  const values = [email, pass, name, addr];
+  try {
+    await db.query(text, values);
+  } catch (err) {
+    console.log(err.stack);
   }
-);
+});
 
 router.put(
   '/coop',

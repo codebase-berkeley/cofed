@@ -1,12 +1,15 @@
 import CofedLogo from '../../assets/CoFEDlogo.png';
 import GoogleLogo from '../../assets/GoogleLogo.png';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './LoginPage.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+const passport = require('passport');
+
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
+  const [redirect, setRedirect] = React.useState(null);
 
   function handleSubmit() {
     verify();
@@ -15,12 +18,15 @@ export default function LoginPage() {
   }
 
   async function verify() {
-    await axios.post('/api/login', {
-      data: {
-        email: emailInput,
-        pass: pwInput,
-      },
-    });
+    try {
+      await axios.post('/auth/login', {
+        username: emailInput,
+        password: pwInput,
+        done: passport.serializeUser,
+      });
+    } catch (err) {
+      console.log(err.stack);
+    }
   }
 
   return (
@@ -55,15 +61,13 @@ export default function LoginPage() {
       </div>
       <div className="loginButtons">
         <div className="login">
-          <Link to="/">
-            <button
-              className="loginPageButton"
-              type="button"
-              onClick={handleSubmit}
-            >
-              Login
-            </button>
-          </Link>
+          <button
+            className="loginPageButton"
+            type="button"
+            onClick={handleSubmit}
+          >
+            Login
+          </button>
         </div>
         <Link to="/register">
           <button className="loginPageButton" type="button">
