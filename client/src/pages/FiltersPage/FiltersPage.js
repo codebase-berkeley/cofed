@@ -31,7 +31,6 @@ export default function FiltersPage() {
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
-
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
     setCoops(res.data);
@@ -269,142 +268,127 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-
   function handleStarToggle() {
     setSelectedIndex(null);
-    // showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
-    showStarredOnly = !showStarredOnly;
+    showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
 
-    // if (!showStarredOnly) {
-    //   const newArray = coops.filter(coop => starredCoops.includes(coop.id)).slice()
-    //   console.log("newArray:", newArray);
-    //   setCoopShown(newArray[0]);
-    // } else {
-    //   setCoopShown(coops[0]);
-
+    if (!showStarredOnly) {
+      const newArray = coops
+        .filter(coop => starredCoops.includes(coop.id))
+        .slice();
+      console.log('newArray:', newArray);
+      setCoopShown(newArray[0]);
+    } else {
+      setCoopShown(coops[0]);
+    }
     //
     // helperFunction = handleChange(useless function)
     // helperFunction(role) to make get request
   }
-}
 
-function handleChange(setter) {
-  async function helper(x) {
-    setSelectedIndex(null);
-    setter(x);
-    if (x == null || x.length == 0) {
-      fetchAllCoops();
-    } else {
-      const params = {
-        tags: x.map(newArray => newArray.id),
-      };
+  function handleChange(setter) {
+    async function helper(x) {
+      setSelectedIndex(null);
+      setter(x);
+      if (x == null || x.length == 0) {
+        fetchAllCoops();
+      } else {
+        const params = {
+          tags: x.map(newArray => newArray.id),
+        };
 
-      //if showStarredOnly:
-      //      - starred only get request
-      //else:
-      //      - get all get request
+        const res = await axios.get('/api/filteredCoops', {
+          params,
+        });
 
-      //res.data
-
-      const res = await axios.get('/api/filteredCoops', {
-        params,
-      });
-
-
-      setCoops(res.data);
-      setCoopShown(res.data[0]);
+        setCoops(res.data);
+        setCoopShown(res.data[0]);
+      }
     }
+
+    return helper;
   }
 
-  return helper;
-}
-
-// - handleChange, all coops: setCoopShown to first coops[0], DONE by fetchALlCoops
-// - handleChange, filteredCoops shown: setCoopShown is EITHER first filtered coops OR first out of starred filtered coops
-// - handleChange, 
-//
-//
-
-return (
-  <div className="FiltersPage">
-    <NavBar username="Rad Radishes" />
-    <div className="container">
-      <div className="content">
-        <div className="left-content">
-          <div className="view-mode">
-            {renderListButton()} {renderMapButton()}
-          </div>
-          <div className="filter-reset">
-            <div className="filter-title">Filters</div>
-            <button className="reset" type="button" onClick={reset}>
-              Reset
+  return (
+    <div className="FiltersPage">
+      <NavBar username="Rad Radishes" />
+      <div className="container">
+        <div className="content">
+          <div className="left-content">
+            <div className="view-mode">
+              {renderListButton()} {renderMapButton()}
+            </div>
+            <div className="filter-reset">
+              <div className="filter-title">Filters</div>
+              <button className="reset" type="button" onClick={reset}>
+                Reset
               </button>
-          </div>
-          <label className="filter-toggle-div">
-            <p className="starred-only-text">Show starred only</p>
-            <Toggle
-              className="filter-toggle"
-              defaultChecked={false}
-              icons={false}
-              onChange={handleStarToggle}
-            />
-          </label>
-          <div className="filter-container">
-            <div className="filter-scroll">
-              <Filters
-                title="role"
-                options={roleOptions}
-                values={role}
-                onChange={handleChange(setRole)}
+            </div>
+            <label className="filter-toggle-div">
+              <p className="starred-only-text">Show starred only</p>
+              <Toggle
+                className="filter-toggle"
+                defaultChecked={false}
+                icons={false}
+                onChange={handleStarToggle}
               />
-              <Filters
-                title="location"
-                options={locationOptions}
-                values={location}
-                onChange={setLocation}
-              />
-              <Filters
-                title="race"
-                options={raceOptions}
-                values={race}
-                onChange={setRace}
-              />
-              <Filters
-                title="products"
-                options={productOptions}
-                values={products}
-                onChange={setProducts}
-              />
-              <Filters
-                title="other"
-                options={otherOptions}
-                values={other}
-                onChange={setOther}
-              />
+            </label>
+            <div className="filter-container">
+              <div className="filter-scroll">
+                <Filters
+                  title="role"
+                  options={roleOptions}
+                  values={role}
+                  onChange={handleChange(setRole)}
+                />
+                <Filters
+                  title="location"
+                  options={locationOptions}
+                  values={location}
+                  onChange={setLocation}
+                />
+                <Filters
+                  title="race"
+                  options={raceOptions}
+                  values={race}
+                  onChange={setRace}
+                />
+                <Filters
+                  title="products"
+                  options={productOptions}
+                  values={products}
+                  onChange={setProducts}
+                />
+                <Filters
+                  title="other"
+                  options={otherOptions}
+                  values={other}
+                  onChange={setOther}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="content">
-        <div className="centre-content">
-          {listMode ? renderListView() : renderMapView()}
+        <div className="content">
+          <div className="centre-content">
+            {listMode ? renderListView() : renderMapView()}
+          </div>
         </div>
-      </div>
-      <div className="content">
-        <div className="right-content">
-          {coopShown && (
-            <Profile
-              allowView={true}
-              allowEdit={false}
-              coop={coopShown}
-              starred={starredCoops.includes(coopShown.id)}
-              handleStar={toggleStar}
-              starrerId={1}
-            />
-          )}
+        <div className="content">
+          <div className="right-content">
+            {coopShown && (
+              <Profile
+                allowView={true}
+                allowEdit={false}
+                coop={coopShown}
+                starred={starredCoops.includes(coopShown.id)}
+                handleStar={toggleStar}
+                starrerId={1}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
