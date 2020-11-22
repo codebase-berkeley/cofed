@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 
 router.post('/register', async (req, res) => {
   try {
-    const { email, name, location, password } = req.body;
+    const { email, name, addr, password } = req.body;
     const email_query = await db.query(
       `SELECT id FROM coops WHERE email = $1;`,
       [email]
@@ -28,14 +28,14 @@ router.post('/register', async (req, res) => {
     //checks to ensure the email does not currently exist in the database
     if (email_query.rows.length == 0) {
       //generate salt
-      let salt = await bcrypt.genSalt(saltFactor);
+      // let salt = await bcrypt.genSalt(saltFactor);
       //hash password
-      let hashedPass = await bcrypt.hash(password, salt);
+      let hashedPass = await bcrypt.hash(password, saltFactor);
       //store co-op name, salt, hashed password, location
-      const insert_query = db.query(
+      const insert_query = await db.query(
         `INSERT INTO coops (email, hashed_pass, coop_name, addr)
         VALUES ($1, $2, $3, $4)`,
-        [email, hashedPass, name, location]
+        [email, hashedPass, name, addr]
       );
       res.send(insert_query.rows);
     } else {

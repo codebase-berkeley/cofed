@@ -4,8 +4,8 @@ const db = require('../db/index');
 const bcrypt = require('bcrypt');
 const saltFactor = 10;
 
-passport.serializeUser(function (user, done) {
-  done(null, user);
+passport.serializeUser(function (userId, done) {
+  done(null, userId);
 });
 
 passport.deserializeUser(function (id, done) {

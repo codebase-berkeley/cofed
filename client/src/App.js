@@ -33,7 +33,7 @@ function App() {
         <Route exact path="/register" component={RegisterPage} />
         <Route
           exact
-          path="/createprofile"
+          path="/profilepage"
           component={() => (
             <Profile coop={coop} allowEdit={true} allowView={false} />
           )}
