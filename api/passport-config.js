@@ -2,7 +2,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../db/index');
 const bcrypt = require('bcrypt');
-const saltFactor = 10;
 
 passport.serializeUser(function (userId, done) {
   done(null, userId);
