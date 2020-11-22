@@ -34,10 +34,12 @@ export default function FiltersPage() {
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
     setCoops(res.data);
-    setCoopShown(res.data[0]);
   }
 
   async function fetchInitialData() {
+    const res = await axios.get('/api/coops');
+    setCoops(res.data);
+    setCoopShown(res.data[0]);
     //get the toggle star info
     const starred = await axios.get('/api/getStarred/1');
     //set the query data as the starred coops
@@ -52,7 +54,6 @@ export default function FiltersPage() {
   }
 
   React.useEffect(() => {
-    fetchAllCoops();
     fetchInitialData();
   }, []);
 
@@ -174,7 +175,7 @@ export default function FiltersPage() {
     if (coops.length > 0) {
       return [coops[0].latitude, coops[0].longitude];
     } else {
-      return [39.8283, -98.5795];
+      return [39.8283, -98.5795]; // this is the center of the US
     }
   }
 
@@ -219,7 +220,7 @@ export default function FiltersPage() {
   }
 
   function makeDictionary(tag) {
-    var dict = {
+    const dict = {
       value: tag.tag_name,
       label: tag.tag_name,
       id: tag.id,
@@ -230,7 +231,7 @@ export default function FiltersPage() {
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
 
   const locationOptions = [
-    { value: '2378648', label: 'Alabama' },
+    { value: 'Alabama', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },
     { value: 'Arizona', label: 'Arizona' },
     { value: 'Arkansas', label: 'Arkansas' },
@@ -271,25 +272,12 @@ export default function FiltersPage() {
   function handleStarToggle() {
     setSelectedIndex(null);
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
-
-    if (!showStarredOnly) {
-      const newArray = coops
-        .filter(coop => starredCoops.includes(coop.id))
-        .slice();
-      console.log('newArray:', newArray);
-      setCoopShown(newArray[0]);
-    } else {
-      setCoopShown(coops[0]);
-    }
-    //
-    // helperFunction = handleChange(useless function)
-    // helperFunction(role) to make get request
   }
 
-  function handleChange(setter) {
+  function onChange(event) {
     async function helper(x) {
       setSelectedIndex(null);
-      setter(x);
+      event(x);
       if (x == null || x.length == 0) {
         fetchAllCoops();
       } else {
@@ -302,7 +290,6 @@ export default function FiltersPage() {
         });
 
         setCoops(res.data);
-        setCoopShown(res.data[0]);
       }
     }
 
@@ -339,7 +326,7 @@ export default function FiltersPage() {
                   title="role"
                   options={roleOptions}
                   values={role}
-                  onChange={handleChange(setRole)}
+                  onChange={onChange(setRole)}
                 />
                 <Filters
                   title="location"
