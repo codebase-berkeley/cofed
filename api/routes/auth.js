@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
       let hashedPass = await bcrypt.hash(password, salt);
       //store co-op name, salt, hashed password, location
       const insert_query = db.query(
-        `INSERT INTO coops (email, pass, coop_name, salt, addr)
+        `INSERT INTO coops (email, hashed_pass, coop_name, salt, addr)
         VALUES ($1, $2, $3, $4, $5)`,
         [email, hashedPass, name, salt, location]
       );

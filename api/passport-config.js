@@ -20,39 +20,33 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(
-  new LocalStrategy(function (username, password, done) {
+  new LocalStrategy(async function (username, password, done) {
     //get the password associated with the ENTERED username
-    db.query(
-      `SELECT pass 
+    let query = await db.query(
+      `SELECT hashed_pass 
         FROM coops 
         WHERE email = $1;`,
-      [username],
-      (err, result) => {
-        //result is the password from the DATABASE
-        if (err) {
-          return done(err);
-        }
-        //if the username exists in the database
-        if (result.rows.length > 0) {
-          //get the query result
-          const user = result.rows[0];
-          console.log('===== USER =====');
-          console.log(user.pass);
-          //compare the password in the DATABASE with the ENTERED password
-          bcrypt.compare(password, user.pass, (err, res) => {
-            //if successful return the user
-            console.log('Password = ' + password);
-            if (res) {
-              return done(null, user);
-            } else {
-              return done(null, false);
-            }
-          });
-        } else {
-          done(null, false);
-        }
-      }
-    );
+      [username])
+    //result is the password from the DATABASE
+    if (query.rows.length > 0) {
+      //get the query result
+      const user = query.rows[0];
+      //compare the password in the DATABASE with the ENTERED password
+      const passwordMatch = await bcrypt.compare(password, user.hashed_pass)
+      //if successful return the user
+      console.log('===== MATCH? =====');
+      console.log(passwordMatch)
+      if (passwordMatch) {
+        console.log('===== HERE =====');
+        return done(null, user);
+      } else {
+        console.log('PASSWORD = ' + password);
+        console.log('INCORRECT PASS: ' + user.hashed_pass);
+        return done(null, false);
+      };
+    } else {
+      done(null, false);
+    }
   })
 );
 

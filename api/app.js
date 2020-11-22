@@ -12,9 +12,9 @@ const port = 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes - may need to add more
-app.use('/api', indexRouter);
-app.use('/auth', authRouter);
+// // Routes - may need to add more
+// app.use('/api', indexRouter);
+// app.use('/auth', authRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
@@ -38,5 +38,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Routes - may need to add more
+app.use('/api', indexRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;
