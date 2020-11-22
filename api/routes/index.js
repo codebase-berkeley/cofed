@@ -10,7 +10,6 @@ const passport = require('passport');
  */
 function isAuthenticated(req, res, next) {
   // do any checks you want to in here
-
   // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
   // you can do this however you want with whatever variables you set up
   if (req.isAuthenticated()) {
@@ -61,6 +60,7 @@ router.get('/coop/:CoopID', isAuthenticated, async (req, res) => {
 //retrieving ALL co-ops in our coops table
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
+    console.log('WITHIN GET REQUEST');
     const query = await db.query(`SELECT * FROM coops;`);
     res.send(query.rows);
   } catch (error) {
