@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const saltFactor = 10;
 
 passport.serializeUser(function (user, done) {
-  //done(null, user.id);
   done(null, user);
 });
 
@@ -37,8 +36,8 @@ passport.use(
       //compare the password in the DATABASE with the ENTERED password
       // you should be hashing it when you're putting it INTO the database, not when you're pulling it out. so you might need to modify your register logic -richard
       // in fact, just delete the INSERT INTO lines in cofed.sql and make your own users
-      let hashpass1 = await bcrypt.hash(user.hashed_pass, saltFactor);
-      const passwordMatch = await bcrypt.compare(password, hashpass1);
+      let hashpass = user.hashed_pass; //await bcrypt.hash(user.hashed_pass, saltFactor);
+      const passwordMatch = await bcrypt.compare(password, hashpass);
       //if successful return the user
       if (passwordMatch) {
         console.log('===== MATCHED PASSWORD =====');

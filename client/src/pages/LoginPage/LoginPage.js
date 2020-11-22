@@ -4,7 +4,6 @@ import React from 'react';
 import './LoginPage.css';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-const passport = require('passport');
 
 export default function LoginPage() {
   const [emailInput, setEmailInput] = React.useState('');
@@ -22,7 +21,6 @@ export default function LoginPage() {
       await axios.post('/auth/login', {
         username: emailInput,
         password: pwInput,
-        done: passport.serializeUser,
       });
       setRedirect(true);
     } catch (err) {

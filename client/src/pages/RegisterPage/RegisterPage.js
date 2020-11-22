@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './RegisterPage.css';
 import axios from 'axios';
+const bcrypt = require('bcrypt');
+const saltFactor = 10;
 
 export default function RegisterPage() {
   const [nameInput, setNameInput] = React.useState('');
@@ -10,11 +12,12 @@ export default function RegisterPage() {
   const [locationInput, setLocationInput] = React.useState('');
 
   async function createAccount() {
+    let hashedPass = bcrypt.hash(passwordInput, saltFactor);
     await axios.post('/api/coop', {
       email: emailInput,
       name: nameInput,
       addr: locationInput,
-      pass: passwordInput,
+      pass: hashedPass,
     });
   }
 

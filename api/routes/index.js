@@ -60,7 +60,6 @@ router.get('/coop/:CoopID', isAuthenticated, async (req, res) => {
 //retrieving ALL co-ops in our coops table
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
-    console.log('WITHIN GET REQUEST');
     const query = await db.query(`SELECT * FROM coops;`);
     res.send(query.rows);
   } catch (error) {
@@ -117,11 +116,11 @@ router.delete('/delete', isAuthenticated, async (req, res) => {
 });
 
 router.post('/coop', isAuthenticated, async (req, res) => {
-  const { email, name, addr, pass } = req.body;
+  const { email, name, addr, hashed_pass } = req.body;
 
   const text =
     'INSERT INTO coops( email, pass, coop_name, addr) VALUES($1, $2, $3, $4)';
-  const values = [email, pass, name, addr];
+  const values = [email, hashed_pass, name, addr];
   try {
     await db.query(text, values);
   } catch (err) {

@@ -33,9 +33,9 @@ router.post('/register', async (req, res) => {
       let hashedPass = await bcrypt.hash(password, salt);
       //store co-op name, salt, hashed password, location
       const insert_query = db.query(
-        `INSERT INTO coops (email, hashed_pass, coop_name, salt, addr)
-        VALUES ($1, $2, $3, $4, $5)`,
-        [email, hashedPass, name, salt, location]
+        `INSERT INTO coops (email, hashed_pass, coop_name, addr)
+        VALUES ($1, $2, $3, $4)`,
+        [email, hashedPass, name, location]
       );
       res.send(insert_query.rows);
     } else {
@@ -57,6 +57,11 @@ router.post('/login', passport.authenticate('local'), async (req, res) => {
     console.log('LOGIN SUCCESSFUL');
     return res.redirect('/');
   });
+});
+
+router.post('/logout', async (req, res) => {
+  req.logout();
+  return res.redirect('/login');
 });
 
 module.exports = router;
