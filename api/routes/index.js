@@ -1,7 +1,6 @@
 const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
-const passport = require('passport');
 
 /** Returns an array of tags given a SQL query
  * map through an array,
@@ -33,11 +32,11 @@ function diffArray(arr1, arr2) {
   return n;
 }
 
-router.get('/coop/:CoopID', isAuthenticated, async (req, res) => {
+router.get('/coop', isAuthenticated, async (req, res) => {
   try {
-    const id = req.params['CoopID'];
+    const id = req.user.id;
     var command =
-      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= $1';
+      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1';
     var values = [id];
 
     const queryTags = await db.query(command, values);
@@ -68,15 +67,15 @@ router.get('/coops', isAuthenticated, async (req, res) => {
 });
 
 //retrieve the co-ops and their starred attribute
-router.get('/getStarred/:starredId', isAuthenticated, async (req, res) => {
-  const { starredId } = req.params;
+router.get('/getStarred', isAuthenticated, async (req, res) => {
+  const starrerId = req.user.id;
 
   try {
     const query = await db.query(
       `SELECT starred_coop_id 
       FROM stars 
       WHERE starrer_coop_id = $1;`,
-      [starredId]
+      [starrerId]
     );
     res.send(query.rows);
   } catch (error) {
@@ -86,7 +85,8 @@ router.get('/getStarred/:starredId', isAuthenticated, async (req, res) => {
 
 //post new starred
 router.post('/addStar', isAuthenticated, async (req, res) => {
-  const { starredId, starrerId } = req.body;
+  const { starredId } = req.body;
+  const starrerId = req.user.id;
   try {
     const query = await db.query(
       `INSERT INTO stars (starred_coop_id, starrer_coop_id)
@@ -101,7 +101,8 @@ router.post('/addStar', isAuthenticated, async (req, res) => {
 
 //delete star
 router.delete('/delete', isAuthenticated, async (req, res) => {
-  const { starredId, starrerId } = req.body;
+  const { starredId } = req.body;
+  const starrerId = req.user.id;
   try {
     const query = await db.query(
       `DELETE FROM stars 
@@ -128,89 +129,69 @@ router.post('/coop', isAuthenticated, async (req, res) => {
   }
 });
 
-router.put(
-  '/coop',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/Login',
-  }),
-  async (req, res) => {
-    const coopId = parseInt(req.body.id, 10);
-    const {
-      coop_name,
-      addr,
-      phone_number,
-      mission_statement,
-      description_text,
-      insta_link,
-      fb_link,
-      website,
-      email,
-      profile_pic,
-      tags,
-    } = req.body;
+router.put('/coop', isAuthenticated, async (req, res) => {
+  const coopId = req.user.id;
+  const {
+    coop_name,
+    addr,
+    phone_number,
+    mission_statement,
+    description_text,
+    insta_link,
+    fb_link,
+    website,
+    email,
+    profile_pic,
+    tags,
+  } = req.body;
 
-    const updateQueryText =
-      'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
-      'phone_number = $5, mission_statement = $6, description_text = $7,' +
-      'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
-    const updateQueryValues = [
-      coopId,
-      email,
-      coop_name,
-      addr,
-      phone_number,
-      mission_statement,
-      description_text,
-      insta_link,
-      fb_link,
-      website,
-      profile_pic,
-    ];
+  const updateQueryText =
+    'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
+    'phone_number = $5, mission_statement = $6, description_text = $7,' +
+    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
+  const updateQueryValues = [
+    coopId,
+    email,
+    coop_name,
+    addr,
+    phone_number,
+    mission_statement,
+    description_text,
+    insta_link,
+    fb_link,
+    website,
+    profile_pic,
+  ];
 
-    var queryTags = await db.query(
-      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
-      [coopId]
+  var queryTags = await db.query(
+    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
+    [coopId]
+  );
+  var listOfTagsDatabase = getArrayOfTags(queryTags);
+
+  deleteArray = diffArray(listOfTagsDatabase, tags);
+  addArray = diffArray(tags, listOfTagsDatabase);
+
+  //TO DO:
+  //for each tag to add:
+  //find the tag's id
+  // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
+  //find the overall id
+  // - new_id = SELECT id FROM coop_tags ORDER BY id DESC LIMIT 1;
+  //insert new row into coop_tags
+  // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
+
+  try {
+    await db.query(updateQueryText, updateQueryValues);
+    await db.query(
+      `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
+      [coopId, deleteArray]
     );
-    var listOfTagsDatabase = getArrayOfTags(queryTags);
 
-    deleteArray = diffArray(listOfTagsDatabase, tags);
-    addArray = diffArray(tags, listOfTagsDatabase);
-
-    //TO DO:
-    //for each tag to add:
-    //find the tag's id
-    // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
-    //find the overall id
-    // - new_id = SELECT id FROM coop_tags ORDER BY id DESC LIMIT 1;
-    //insert new row into coop_tags
-    // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
-
-    try {
-      await db.query(updateQueryText, updateQueryValues);
-      await db.query(
-        `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
-        [coopId, deleteArray]
-      );
-
-      res.send(`Successfully updated coop ${coopId}`);
-    } catch (err) {
-      console.log(err.stack);
-    }
+    res.send(`Successfully updated coop ${coopId}`);
+  } catch (err) {
+    console.log(err.stack);
   }
-);
-
-// router.post('/authen', async (req, res) => {
-//   const { email, pass } = req.body;
-//   const text = 'SELECT id FROM coops WHERE email = $1 AND pass = $2';
-//   const values = [email, pass];
-
-//   try {
-//     const query = await db.query(text, values);
-//     res.send(query.rows[0]);
-//   } catch (err) {
-//     console.log(err.stack);
-//   }
-// });
+});
 
 module.exports = router;

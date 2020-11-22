@@ -49,19 +49,17 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', passport.authenticate('local'), async (req, res) => {
-  req.login(req.user, function (err) {
-    if (err) {
-      return res.redirect('/login');
-    }
-    console.log('LOGIN SUCCESSFUL');
-    return res.redirect('/');
-  });
-});
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+  })
+);
 
 router.post('/logout', async (req, res) => {
   req.logout();
-  return res.redirect('/login');
+  res.send('Logged Out');
+  // return res.redirect('/login');
 });
 
 module.exports = router;

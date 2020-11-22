@@ -1,6 +1,7 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -21,6 +22,7 @@ export default function FiltersPage() {
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
+  const [redirect, setRedirect] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -32,12 +34,17 @@ export default function FiltersPage() {
   const [coopShown, setCoopShown] = React.useState([]);
 
   async function fetchData() {
-    const res = await axios.get('/api/coops');
-    setCoops(res.data);
-    setCoopShown(res.data[0]);
+    try {
+      const res = await axios.get('/api/coops');
+      setCoops(res.data);
+      setCoopShown(res.data[0]);
+    } catch (err) {
+      setRedirect(true);
+      console.log(err.stack);
+    }
 
     //get the toggle star info
-    const starred = await axios.get('/api/getStarred/1');
+    const starred = await axios.get('/api/getStarred');
     //set the query data as the starred coops
     let starredIds = starred.data.map(e => {
       return e.starred_coop_id;
@@ -53,7 +60,7 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
-  function toggleStar(starredId, starrerId) {
+  function toggleStar(starredId) {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred
       //remove the coop from the list of starred
@@ -67,7 +74,6 @@ export default function FiltersPage() {
       axios.delete('/api/delete', {
         data: {
           starredId,
-          starrerId,
         },
       });
     } else {
@@ -78,7 +84,6 @@ export default function FiltersPage() {
       //make a post request
       axios.post('/api/addStar', {
         starredId,
-        starrerId,
       });
     }
   }
@@ -256,6 +261,9 @@ export default function FiltersPage() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
   return (
     <div className="FiltersPage">
       <NavBar username="Rad Radishes" />
@@ -330,7 +338,6 @@ export default function FiltersPage() {
                 coop={coopShown}
                 starred={starredCoops.includes(coopShown.id)}
                 handleStar={toggleStar}
-                starrerId={1}
               />
             )}
           </div>

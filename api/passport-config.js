@@ -8,16 +8,22 @@ passport.serializeUser(function (userId, done) {
   done(null, userId);
 });
 
-passport.deserializeUser(function (id, done) {
-  db.query(
-    `SELECT * 
-          FROM coops 
-          WHERE id = $1;`,
-    [id],
-    (err, user) => {
-      done(err, user);
+passport.deserializeUser(async function (id, done) {
+  try {
+    const query = await db.query(
+      `SELECT * 
+        FROM coops 
+        WHERE id = $1;`,
+      [id]
+    );
+    if (query.rows.length > 0) {
+      return done(null, query.rows[0]);
+    } else {
+      return done(null, null);
     }
-  );
+  } catch (err) {
+    return done(err, null);
+  }
 });
 
 passport.use(
