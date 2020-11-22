@@ -50,10 +50,12 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', passport.authenticate('local'), async (req, res) => {
-  req.login(user, function (err) {
+  req.login(req.user, function (err) {
+    // CHECK OUT https://runkit.com/embed/p6lra8udllac for how to use bcrypt.compare
     if (err) {
       return res.redirect('/login');
     }
+    console.log('LOGIN SUCCESSFUL');
     return res.redirect('/');
   });
 });
