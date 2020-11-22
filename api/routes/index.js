@@ -94,6 +94,16 @@ router.get('/filteredCoops', async (req, res) => {
   }
 });
 
+//retrieving ALL tags in our tags table and returning a list
+router.get('/tags', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM tags;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
 //retrieve the co-ops and their starred attribute
 router.get('/getStarred/:starredId', async (req, res) => {
   const { starredId } = req.params;
@@ -196,7 +206,6 @@ router.put('/coop', async (req, res) => {
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
   deleteArray = diffArray(listOfTagsDatabase, tags);
-  addArray = diffArray(tags, listOfTagsDatabase);
 
   try {
     await db.query(updateQueryText, updateQueryValues);

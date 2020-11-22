@@ -320,3 +320,44 @@
   fill: grey;
   cursor: pointer;
 }
+
+.profile-edit-tags-button {
+  background-color: #81a1b7;
+  color: #f8f9fb;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  border-radius: 20px;
+  border-width: 0px;
+  padding: 4px 22px;
+  margin-top: 10px;
+  margin-left: 7px;
+  font-size: 12px;
+}
+
+.profile-modal-tags {
+  outline: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+}
+
+.Modal {
+  outline: none;
+}
+
+.profile-edit-tags-container {
+  border-radius: 10px;
+  border: 1px solid #81a1b7;
+  height: 100%;
+  margin: 15px;
+  padding: 15px;
+  overflow-y: hidden;
+  background: #f8f9fb;
+  width: 25vw;
+  align-self: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

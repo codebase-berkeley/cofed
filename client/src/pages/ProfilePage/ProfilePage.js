@@ -3,9 +3,41 @@ import Tag from '../../components/Tag/Tag';
 import Profile from '../../components/Profile/Profile';
 import plusSign from '../../assets/plus-sign.svg';
 import axios from 'axios';
+import { Modal } from '@material-ui/core';
+import Filters from '../../components/Filter/Filter';
 
 export default function ProfilePage() {
   const [coop, setCoop] = React.useState(null);
+
+  const [name, setName] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+  const [phone, setPhone] = React.useState(null);
+  const [tags, setTags] = React.useState(null);
+  const [mission, setMission] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [instaLink, setInstaLink] = React.useState(null);
+  const [fbLink, setFbLink] = React.useState(null);
+  const [website, setWebsite] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [profilePicture, setProfilePicture] = React.useState(null);
+
+  // TODO: Fix this after authentication implemented
+  const CoopId = '1';
+
+  function setProfileVariables(coop) {
+    setCoop(coop);
+    setLocation(coop['addr']);
+    setPhone(coop['phone_number']);
+    setTags(coop['tags']);
+    setMission(coop['mission_statement']);
+    setDescription(coop['description_text']);
+    setFbLink(coop['fb_link']);
+    setInstaLink(coop['insta_link']);
+    setEmail(coop['email']);
+    setWebsite(coop['website']);
+    setProfilePicture(coop['profile_pic']);
+    setName(coop['coop_name']);
+  }
 
   function handleDelete(tagIndex) {
     const newTags = tags.filter((tag, i) => i !== tagIndex);
@@ -19,6 +51,110 @@ export default function ProfilePage() {
     }
     fetchData();
   }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  /* const roleOptions = [
+    { value: 'cooperative', label: 'Cooperative' },
+    { value: 'distributor', label: 'Distributor' },
+    { value: 'producer', label: 'Producer' },
+  ]; */
+  const locationOptions = [
+    { value: 'Alabama', label: 'Alabama' },
+    { value: 'Alaska', label: 'Alaska' },
+    { value: 'Arizona', label: 'Arizona' },
+    { value: 'Arkansas', label: 'Arkansas' },
+    { value: 'California', label: 'California' },
+    { value: 'Colorado', label: 'Colorado' },
+    { value: 'Connecticut', label: 'Connecticut' },
+    { value: 'Delaware', label: 'Delaware' },
+    { value: 'District of Columbia', label: 'District of Columbia' },
+    { value: 'Florida', label: 'Florida' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Hawaii', label: 'Hawaii' },
+    { value: 'Idaho', label: 'Idaho' },
+  ];
+  const raceOptions = [
+    { value: 'black', label: 'Black-owned' },
+    { value: 'native', label: 'Native-owned' },
+    { value: 'asian', label: 'Asian-owned' },
+    { value: 'pacificIslander', label: 'Pacific Islander-owned' },
+    { value: 'hispanicOrLatinx', label: 'Hispanic or Latinx-owned' },
+  ];
+  const productOptions = [
+    { value: 'fruits', label: 'Fruits' },
+    { value: 'vegetables', label: 'Vegetables' },
+    { value: 'natural', label: 'Natural Goods' },
+    { value: 'wholefoods', label: 'Wholefoods' },
+    { value: 'dairy', label: 'Dairy' },
+    { value: 'brew', label: 'Brew' },
+    { value: 'fish', label: 'Fish' },
+    { value: 'meats', label: 'Meats' },
+  ];
+  const otherOptions = [
+    { value: 'nonGMO', label: 'Verified Non-GMO' },
+    { value: 'startup', label: 'Startup' },
+    { value: 'queer', label: 'Queer-owned' },
+    { value: 'nonprofit', label: 'Non-profit' },
+  ];
+
+  const [tagsRole, setTagsRole] = React.useState([
+    { value: 'nonGMO', label: 'Verified Non-GMO' },
+    { value: 'startup', label: 'Startup' },
+    { value: 'queer', label: 'Queer-owned' },
+    { value: 'nonprofit', label: 'Non-profit' },
+  ]);
+  const [tagsLocation, setTagsLocation] = React.useState([]);
+  const [tagsRace, setTagsRace] = React.useState([]);
+  const [tagsProducts, setTagsProducts] = React.useState([]);
+  const [tagsOther, setTagsOther] = React.useState([]);
+
+  const body = (
+    <div>
+      <h2 id="simple-modal-title"></h2>
+      <div className="profile-edit-tags-container">
+        <div className="filter-scroll">
+          <Filters
+            title="role"
+            options={roleOptions}
+            values={tagsRole}
+            onChange={setTagsRole}
+          />
+          <Filters
+            title="location"
+            options={locationOptions}
+            values={tagsLocation}
+            onChange={setTagsLocation}
+          />
+          <Filters
+            title="race"
+            options={raceOptions}
+            values={tagsRace}
+            onChange={setTagsRace}
+          />
+          <Filters
+            title="products"
+            options={productOptions}
+            values={tagsProducts}
+            onChange={setTagsProducts}
+          />
+          <Filters
+            title="other"
+            options={otherOptions}
+            values={tagsOther}
+            onChange={setTagsOther}
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   function renderEdit() {
     return (
@@ -35,6 +171,16 @@ export default function ProfilePage() {
                   onDelete={handleDelete}
                 />
               ))}
+            <button onClick={handleOpen} className="profile-edit-tags-button">
+              Edit tags
+            </button>
+            <Modal
+              className="profile-modal-tags"
+              open={open}
+              onClose={handleClose}
+            >
+              {body}
+            </Modal>
           </div>
         </div>
         <div className="profile-descriptions">
@@ -138,21 +284,6 @@ export default function ProfilePage() {
     );
   }
 
-  const [name, setName] = React.useState(null);
-  const [location, setLocation] = React.useState(null);
-  const [phone, setPhone] = React.useState(null);
-  const [tags, setTags] = React.useState(null);
-  const [mission, setMission] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
-  const [instaLink, setInstaLink] = React.useState(null);
-  const [fbLink, setFbLink] = React.useState(null);
-  const [website, setWebsite] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [profilePicture, setProfilePicture] = React.useState(null);
-
-  // TODO: Fix this after authentication implemented
-  const CoopId = '1';
-
   async function putData() {
     const data = {
       id: CoopId,
@@ -174,21 +305,6 @@ export default function ProfilePage() {
 
   if (!coop) {
     return <div>Loading...</div>;
-  }
-
-  function setProfileVariables(coop) {
-    setCoop(coop);
-    setLocation(coop['addr']);
-    setPhone(coop['phone_number']);
-    setTags(coop['tags']);
-    setMission(coop['mission_statement']);
-    setDescription(coop['description_text']);
-    setFbLink(coop['fb_link']);
-    setInstaLink(coop['insta_link']);
-    setEmail(coop['email']);
-    setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
-    setName(coop['coop_name']);
   }
 
   return (
