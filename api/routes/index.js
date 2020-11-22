@@ -2,31 +2,24 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 
-/** Returns an array of tags given a SQL query
- * map through an array,
- * grab just the values of each dictionary,
- *  and flatten the resulting array
- */
 function isAuthenticated(req, res, next) {
-  // do any checks you want to in here
-  // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
-  // you can do this however you want with whatever variables you set up
   if (req.isAuthenticated()) {
     return next();
   } else {
     res.status(404).send({ error: `user not logged in` });
   }
-  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
 }
 
+/** Returns an array of tags given a SQL query
+ * map through an array, grab just the values of each dictionary,
+ * and flatten the resulting array
+ */
 function getArrayOfTags(query) {
   return query.rows.map(Object.values).flat();
 }
 
 /** Returns the difference between two arrays
- *  Returns an array of objects in Array1
- *  That are not in Array2
- */
+ *  Returns an array of objects in Array1 that are not in Array2 */
 function diffArray(arr1, arr2) {
   var n = arr1.filter(x => !arr2.includes(x));
   return n;

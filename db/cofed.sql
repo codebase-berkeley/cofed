@@ -51,17 +51,6 @@ GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
 
-
--- INSERT INTO coops
---     (email, hashed_pass, coop_name, phone_number, addr, latitude, longitude, website, mission_statement, description_text, profile_pic, insta_link, fb_link)
--- VALUES
---     ('test@gmail.com', 'password', 'Test', '123456789',
---         'Berkeley, CA', 37.8715, -123.2730, 'test.com', 'test', 'test', 'test', 'test',
---         'test'),
---     ('test2@gmail.com', 'password2', 'Test2', '123456789',
---         'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
---         'test2');
-
 INSERT INTO tags
     (tag_name)
 VALUES

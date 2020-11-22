@@ -9,14 +9,10 @@ export default function NavBar(props) {
   const [redirect, setRedirect] = React.useState(false);
 
   async function logout() {
-    console.log('WITHIN LOGOUT');
     try {
       await axios.post('/auth/logout');
-      console.log('LOGGING OUT');
       setRedirect(true);
-      console.log('LOGGED OUT');
     } catch (err) {
-      console.log('CAUGHT ERROR');
       console.log(err.stack);
       setRedirect(false);
     }

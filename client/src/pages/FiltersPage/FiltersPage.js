@@ -28,8 +28,7 @@ export default function FiltersPage() {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const [coops, setCoops] = React.useState([]); //all coops
-  //tracker for the starred coops, an array of starred coops
+  const [coops, setCoops] = React.useState([]);
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
 
@@ -62,26 +61,22 @@ export default function FiltersPage() {
 
   function toggleStar(starredId) {
     if (starredCoops.includes(starredId)) {
-      //if the coop is already starred
-      //remove the coop from the list of starred
+      //if the coop is already starred remove the coop from the list of starred
       const tempStarredCoops = [...starredCoops];
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
         tempStarredCoops.splice(index, 1);
       }
       setStarredCoops(tempStarredCoops);
-      //remove the row from the database
       axios.delete('/api/delete', {
         data: {
           starredId,
         },
       });
     } else {
-      //if the coop isn't starred yet
-      //add the coop from the list of starred
+      //add the coop from the list of starred if the coop isn't starred yet
       const tempStarredCoops = [...starredCoops, starredId];
       setStarredCoops(tempStarredCoops);
-      //make a post request
       axios.post('/api/addStar', {
         starredId,
       });

@@ -27,29 +27,19 @@ passport.deserializeUser(async function (id, done) {
 
 passport.use(
   new LocalStrategy(async function (username, password, done) {
-    //get the password associated with the ENTERED username
     let query = await db.query(
       `SELECT hashed_pass, id  
         FROM coops 
         WHERE email = $1;`,
       [username]
     );
-    //result is the password from the DATABASE
     if (query.rows.length > 0) {
-      //get the query result
       const user = query.rows[0];
-      //compare the password in the DATABASE with the ENTERED password
-      // you should be hashing it when you're putting it INTO the database, not when you're pulling it out. so you might need to modify your register logic -richard
-      // in fact, just delete the INSERT INTO lines in cofed.sql and make your own users
-      let hashpass = user.hashed_pass; //await bcrypt.hash(user.hashed_pass, saltFactor);
+      let hashpass = user.hashed_pass;
       const passwordMatch = await bcrypt.compare(password, hashpass);
-      //if successful return the user
       if (passwordMatch) {
-        console.log('===== MATCHED PASSWORD =====');
         return done(null, user.id);
       } else {
-        console.log('PASSWORD = ' + password);
-        console.log('INCORRECT PASS: ' + user.hashed_pass);
         return done(null, false);
       }
     } else {
