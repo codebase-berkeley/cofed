@@ -39,7 +39,10 @@ export default function FiltersPage() {
   async function fetchInitialData() {
     const res = await axios.get('/api/coops');
     setCoops(res.data);
-    setCoopShown(res.data[0]);
+    if (res.data.length !== 0) {
+      setCoopShown(res.data[0]);
+    }
+
     //get the toggle star info
     const starred = await axios.get('/api/getStarred/1');
     //set the query data as the starred coops
@@ -274,15 +277,15 @@ export default function FiltersPage() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
-  function onChange(event) {
-    async function helper(x) {
+  function handleChange(setter) {
+    async function onChange(event) {
       setSelectedIndex(null);
-      event(x);
-      if (x == null || x.length == 0) {
+      setter(event);
+      if (event == null || event.length == 0) {
         fetchAllCoops();
       } else {
         const params = {
-          tags: x.map(newArray => newArray.id),
+          tags: event.map(newArray => newArray.id),
         };
 
         const res = await axios.get('/api/filteredCoops', {
@@ -293,7 +296,7 @@ export default function FiltersPage() {
       }
     }
 
-    return helper;
+    return onChange;
   }
 
   return (
@@ -326,7 +329,7 @@ export default function FiltersPage() {
                   title="role"
                   options={roleOptions}
                   values={role}
-                  onChange={onChange(setRole)}
+                  onChange={handleChange(setRole)}
                 />
                 <Filters
                   title="location"

@@ -3,7 +3,6 @@ import Tag from '../../components/Tag/Tag';
 import Profile from '../../components/Profile/Profile';
 import plusSign from '../../assets/plus-sign.svg';
 import axios from 'axios';
-import { Modal } from '@material-ui/core';
 
 export default function ProfilePage() {
   const [coop, setCoop] = React.useState(null);

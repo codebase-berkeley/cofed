@@ -71,8 +71,21 @@ router.get('/filteredCoops', async (req, res) => {
 
   try {
     const query = await db.query(
-      `SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
-    * FROM coops WHERE ARRAY(SELECT tag_id FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) @> $1;`,
+      `SELECT 
+          ARRAY(
+            SELECT tag_name 
+            FROM coop_tags 
+            JOIN tags ON coop_tags.tag_id = tags.id
+            WHERE coop_tags.coop_id= coops.id)
+          AS tags,
+          * FROM coops WHERE ARRAY(
+              SELECT tag_id 
+              FROM coop_tags 
+              JOIN tags 
+              ON coop_tags.tag_id = tags.id 
+              WHERE coop_tags.coop_id= coops.id
+              )
+             @> $1;`,
       [tagParams]
     );
     res.send(query.rows);
