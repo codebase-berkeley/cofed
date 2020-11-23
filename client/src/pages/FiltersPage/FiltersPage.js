@@ -39,7 +39,6 @@ export default function FiltersPage() {
       setCoopShown(res.data[0]);
     } catch (err) {
       setRedirect(true);
-      console.log(err.stack);
     }
 
     //get the toggle star info

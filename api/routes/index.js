@@ -109,19 +109,6 @@ router.delete('/delete', isAuthenticated, async (req, res) => {
   }
 });
 
-router.post('/coop', isAuthenticated, async (req, res) => {
-  const { email, name, addr, hashed_pass } = req.body;
-
-  const text =
-    'INSERT INTO coops( email, hashed_pass, coop_name, addr) VALUES($1, $2, $3, $4)';
-  const values = [email, hashed_pass, name, addr];
-  try {
-    await db.query(text, values);
-  } catch (err) {
-    console.log(err.stack);
-  }
-});
-
 router.put('/coop', isAuthenticated, async (req, res) => {
   const coopId = req.user.id;
   const {

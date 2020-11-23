@@ -9,11 +9,11 @@ require('../passport-config');
 router.post('/register', async (req, res) => {
   try {
     const { email, name, addr, password } = req.body;
-    const email_query = await db.query(
+    const emailQuery = await db.query(
       `SELECT id FROM coops WHERE email = $1;`,
       [email]
     );
-    if (email_query.rows.length == 0) {
+    if (emailQuery.rows.length == 0) {
       let hashedPass = await bcrypt.hash(password, SALT_FACTOR);
       const insert_query = await db.query(
         `INSERT INTO coops (email, hashed_pass, coop_name, addr)

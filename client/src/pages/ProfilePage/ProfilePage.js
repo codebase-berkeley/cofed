@@ -32,7 +32,6 @@ export default function ProfilePage() {
         setProfileVariables(res.data);
       } catch (err) {
         setRedirect(true);
-        console.log(err.stack);
       }
     }
     fetchData();

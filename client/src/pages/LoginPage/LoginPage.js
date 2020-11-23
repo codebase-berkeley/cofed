@@ -24,7 +24,6 @@ export default function LoginPage() {
       });
       setRedirect(true);
     } catch (err) {
-      console.log(err.stack);
       setRedirect(false);
     }
   }
