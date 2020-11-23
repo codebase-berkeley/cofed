@@ -1,7 +1,6 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
-
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
@@ -30,11 +29,19 @@ export default function FiltersPage() {
   //tracker for the starred coops, an array of starred coops
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
+  const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
-  async function fetchData() {
+  async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
     setCoops(res.data);
-    setCoopShown(res.data[0]);
+  }
+
+  async function fetchInitialData() {
+    const res = await axios.get('/api/coops');
+    setCoops(res.data);
+    if (res.data.length !== 0) {
+      setCoopShown(res.data[0]);
+    }
 
     //get the toggle star info
     const starred = await axios.get('/api/getStarred/1');
@@ -43,10 +50,14 @@ export default function FiltersPage() {
       return e.starred_coop_id;
     });
     setStarredCoops(starredIds);
+
+    //get the tags to put in the filters dropdown
+    const tags = await axios.get('/api/tags');
+    setDropDownOptions(tags.data);
   }
 
   React.useEffect(() => {
-    fetchData();
+    fetchInitialData();
   }, []);
 
   if (!coops) {
@@ -55,15 +66,12 @@ export default function FiltersPage() {
 
   function toggleStar(starredId, starrerId) {
     if (starredCoops.includes(starredId)) {
-      //if the coop is already starred
-      //remove the coop from the list of starred
       const tempStarredCoops = [...starredCoops];
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
         tempStarredCoops.splice(index, 1);
       }
       setStarredCoops(tempStarredCoops);
-      //remove the row from the database
       axios.delete('/api/delete', {
         data: {
           starredId,
@@ -71,11 +79,8 @@ export default function FiltersPage() {
         },
       });
     } else {
-      //if the coop isn't starred yet
-      //add the coop from the list of starred
       const tempStarredCoops = [...starredCoops, starredId];
       setStarredCoops(tempStarredCoops);
-      //make a post request
       axios.post('/api/addStar', {
         starredId,
         starrerId,
@@ -128,7 +133,7 @@ export default function FiltersPage() {
       return (
         <div className="map-mode">
           <Map
-            center={[coops[0].latitude, coops[0].longitude]}
+            center={findMapCenter(coops)}
             zoom={6}
             twoFingerDrag={true}
             provider={mapTilerProvider}
@@ -150,7 +155,7 @@ export default function FiltersPage() {
       return (
         <div className="map-mode">
           <Map
-            center={[coops[0].latitude, coops[0].longitude]}
+            center={findMapCenter(coops)}
             zoom={6}
             twoFingerDrag={true}
             provider={mapTilerProvider}
@@ -166,6 +171,14 @@ export default function FiltersPage() {
           </Map>
         </div>
       );
+    }
+  }
+
+  function findMapCenter(coops) {
+    if (coops.length > 0) {
+      return [coops[0].latitude, coops[0].longitude];
+    } else {
+      return [39.8283, -98.5795]; // this is the center of the US
     }
   }
 
@@ -206,13 +219,20 @@ export default function FiltersPage() {
     setRace([]);
     setProducts([]);
     setOther([]);
+    fetchAllCoops();
   }
 
-  const roleOptions = [
-    { value: 'cooperative', label: 'Cooperative' },
-    { value: 'distributor', label: 'Distributor' },
-    { value: 'producer', label: 'Producer' },
-  ];
+  function makeDictionary(tag) {
+    const dict = {
+      value: tag.tag_name,
+      label: tag.tag_name,
+      id: tag.id,
+    };
+    return dict;
+  }
+
+  const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
+
   const locationOptions = [
     { value: 'Alabama', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },
@@ -252,8 +272,31 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  function handleToggle() {
+  function handleStarToggle() {
+    setSelectedIndex(null);
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
+  }
+
+  function handleChange(setter) {
+    async function onChange(event) {
+      setSelectedIndex(null);
+      setter(event);
+      if (event == null || event.length == 0) {
+        fetchAllCoops();
+      } else {
+        const params = {
+          tags: event.map(newArray => newArray.id),
+        };
+
+        const res = await axios.get('/api/filteredCoops', {
+          params,
+        });
+
+        setCoops(res.data);
+      }
+    }
+
+    return onChange;
   }
 
   return (
@@ -277,7 +320,7 @@ export default function FiltersPage() {
                 className="filter-toggle"
                 defaultChecked={false}
                 icons={false}
-                onChange={handleToggle}
+                onChange={handleStarToggle}
               />
             </label>
             <div className="filter-container">
@@ -286,7 +329,7 @@ export default function FiltersPage() {
                   title="role"
                   options={roleOptions}
                   values={role}
-                  onChange={setRole}
+                  onChange={handleChange(setRole)}
                 />
                 <Filters
                   title="location"
@@ -323,7 +366,7 @@ export default function FiltersPage() {
         </div>
         <div className="content">
           <div className="right-content">
-            {coops && (
+            {coopShown && (
               <Profile
                 allowView={true}
                 allowEdit={false}
