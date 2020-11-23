@@ -24,6 +24,19 @@ export default function ProfilePage() {
   // TODO: Fix this after authentication implemented
   const CoopId = '1';
 
+  // TODO:
+  // LOGIC:
+  // 1) query for the list of all tags and put them into the Filter modal
+  //      - should be done for us in profile-filter-branch
+  // 2) find a way to set default tags in the Filter modal
+  //      - Stack overflow: How to set a default in React-select
+  // 3) figure out how to output the set of tags
+  //      - should just be the role's array?
+  // 4_ Write the SQL backend for adding tags
+  //      - logic is already 70% written
+  //
+  //Front end bug: center the modal, get rid of the blue box?
+
   function setProfileVariables(coop) {
     setCoop(coop);
     setLocation(coop['addr']);
@@ -177,7 +190,6 @@ export default function ProfilePage() {
               className="profile-modal-tags"
               open={open}
               onClose={handleClose}
-              style={{ overflow: "scroll" }}
             >
               {body}
             </Modal>
