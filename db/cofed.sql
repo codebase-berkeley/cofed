@@ -21,8 +21,7 @@ CREATE TABLE coops
     description_text VARCHAR,
     profile_pic VARCHAR,
     insta_link VARCHAR,
-    fb_link VARCHAR,
-    salt VARCHAR
+    fb_link VARCHAR
 );
 
 CREATE TABLE stars

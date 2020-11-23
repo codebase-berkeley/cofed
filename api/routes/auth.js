@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const saltFactor = 10;
+const SALT_FACTOR = 10;
 const passport = require('passport');
 require('../passport-config');
 
@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
       [email]
     );
     if (email_query.rows.length == 0) {
-      let hashedPass = await bcrypt.hash(password, saltFactor);
+      let hashedPass = await bcrypt.hash(password, SALT_FACTOR);
       const insert_query = await db.query(
         `INSERT INTO coops (email, hashed_pass, coop_name, addr)
         VALUES ($1, $2, $3, $4)`,
