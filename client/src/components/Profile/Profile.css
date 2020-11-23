@@ -339,12 +339,8 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   outline: none;
-}
-
-.Modal {
-  outline: none;
+  align-self: center;
 }
 
 .profile-edit-tags-container {
@@ -353,11 +349,17 @@
   height: 100%;
   margin: 15px;
   padding: 15px;
-  overflow-y: hidden;
   background: #f8f9fb;
   width: 25vw;
+  max-height: 65vh;
   align-self: center;
   align-items: center;
   display: flex;
   justify-content: center;
+  overflow-y: scroll;
+  flex-direction: column;
+}
+
+.profile-filter-scroll {
+  height: 99%;
 }

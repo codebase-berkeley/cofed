@@ -61,11 +61,11 @@ export default function ProfilePage() {
     setOpen(false);
   };
 
-  /* const roleOptions = [
+  const roleOptions = [
     { value: 'cooperative', label: 'Cooperative' },
     { value: 'distributor', label: 'Distributor' },
     { value: 'producer', label: 'Producer' },
-  ]; */
+  ];
   const locationOptions = [
     { value: 'Alabama', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },
@@ -118,9 +118,8 @@ export default function ProfilePage() {
 
   const body = (
     <div>
-      <h2 id="simple-modal-title"></h2>
       <div className="profile-edit-tags-container">
-        <div className="filter-scroll">
+        <div className="profile-filter-scroll">
           <Filters
             title="role"
             options={roleOptions}
@@ -178,6 +177,7 @@ export default function ProfilePage() {
               className="profile-modal-tags"
               open={open}
               onClose={handleClose}
+              style={{ overflow: "scroll" }}
             >
               {body}
             </Modal>
