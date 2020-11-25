@@ -49,10 +49,50 @@ router.get('/coop', isAuthenticated, async (req, res) => {
   }
 });
 
-//retrieving ALL co-ops in our coops table
+//retrieving ALL tags in our tags table and returning a list
+router.get('/tags', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM tags;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieve all coops with their tag
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
-    const query = await db.query(`SELECT * FROM coops;`);
+    const query = await db.query(`SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
+    * FROM coops;`);
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieve all coops with their tag
+router.get('/filteredCoops', async (req, res) => {
+  const tagParams = req.query.tags;
+
+  try {
+    const query = await db.query(
+      `SELECT 
+          ARRAY(
+            SELECT tag_name 
+            FROM coop_tags 
+            JOIN tags ON coop_tags.tag_id = tags.id
+            WHERE coop_tags.coop_id= coops.id)
+          AS tags,
+          * FROM coops WHERE ARRAY(
+              SELECT tag_id 
+              FROM coop_tags 
+              JOIN tags 
+              ON coop_tags.tag_id = tags.id 
+              WHERE coop_tags.coop_id= coops.id
+              )
+             @> $1;`,
+      [tagParams]
+    );
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -151,15 +191,6 @@ router.put('/coop', isAuthenticated, async (req, res) => {
 
   deleteArray = diffArray(listOfTagsDatabase, tags);
   addArray = diffArray(tags, listOfTagsDatabase);
-
-  //TO DO:
-  //for each tag to add:
-  //find the tag's id
-  // - tag_id = SELECT id FROM tags WHERE tag_name = 'THE FOURTH TAG'
-  //find the overall id
-  // - new_id = SELECT id FROM coop_tags ORDER BY id DESC LIMIT 1;
-  //insert new row into coop_tags
-  // - INSERT INTO coop_tags VALUES (new_id, coop_id, tag_id);
 
   try {
     await db.query(updateQueryText, updateQueryValues);

@@ -65,6 +65,38 @@ VALUES
     (1, 1),
     (1, 2),
     (1, 3),
-    (2, 4),
+    (2, 1),
+    (3, 3),
+    (3, 4),
+    (4, 1),
+    (5, 2);
+
+
+INSERT INTO tags
+    (tag_name)
+VALUES
+    ('Cooperative'),
+    ('Distributor'),
+    ('Producer'),
+    ('Community'),
+    ('Delivery');
+
+INSERT INTO coop_tags
+    (coop_id, tag_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 1),
+    (3, 2),
+    (4, 1),
     (2, 5),
-    (2, 3);
+    (5, 4),
+    (5, 3),
+    (6, 2),
+    (6, 1),
+    (6, 5),
+    (6, 4),
+    (7, 3);
+
+
+

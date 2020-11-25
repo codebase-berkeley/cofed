@@ -4,6 +4,7 @@
   "repository": "https://github.com/codebase-berkeley/cofed.git",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "axios": "^0.21.0",
     "bcrypt": "^5.0.0",
@@ -14,6 +15,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.4.2",
+    "qs": "^6.9.4",
     "react-toggle": "^4.1.1",
     "shards-react": "^1.0.3"
   },
