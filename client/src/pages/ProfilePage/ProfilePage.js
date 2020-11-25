@@ -64,8 +64,8 @@ export default function ProfilePage() {
       setProfileVariables(res.data);
 
       //get the tags to put in the filters dropdown
-      const tags = await axios.get('/api/tags');
-      setDropDownOptions(tags.data);
+      const allTags = await axios.get('/api/tags');
+      setDropDownOptions(allTags.data);
     }
     fetchData();
   }, []);
@@ -144,7 +144,7 @@ export default function ProfilePage() {
             options={roleOptions}
             values={tagsRole}
             onChange={setTagsRole}
-            defaultValue={tags}
+            defaultValue={[roleOptions[1], roleOptions[2]]}
           />
           <Filters
             title="location"

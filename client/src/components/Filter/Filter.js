@@ -103,6 +103,7 @@ export default function MultiSelectSort(props) {
     <div className="Filters">
       <div className="select-title">{props.title}</div>
       <Select
+        defaultValue={props.defaultValue}
         axis="xy"
         onSortEnd={onSortEnd}
         distance={4}
@@ -123,4 +124,5 @@ MultiSelectSort.propTypes = {
   values: PropTypes.array,
   title: PropTypes.string,
   options: PropTypes.array,
+  defaultValue: PropTypes.array,
 };
