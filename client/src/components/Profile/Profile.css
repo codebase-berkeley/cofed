@@ -341,6 +341,7 @@
   justify-content: center;
   outline: none;
   align-self: center;
+  fill: #f8f9fb;
 }
 
 .profile-edit-tags-container {

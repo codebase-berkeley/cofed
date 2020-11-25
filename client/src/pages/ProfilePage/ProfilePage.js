@@ -12,7 +12,7 @@ export default function ProfilePage() {
   const [name, setName] = React.useState(null);
   const [location, setLocation] = React.useState(null);
   const [phone, setPhone] = React.useState(null);
-  const [tags, setTags] = React.useState(null);
+  const [tags, setTags] = React.useState([]);
   const [mission, setMission] = React.useState(null);
   const [description, setDescription] = React.useState(null);
   const [instaLink, setInstaLink] = React.useState(null);
@@ -118,7 +118,7 @@ export default function ProfilePage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  const [tagsRole, setTagsRole] = React.useState([]);
+  const [tagsRole, setTagsRole] = React.useState(tags);
   const [tagsLocation, setTagsLocation] = React.useState([]);
   const [tagsRace, setTagsRace] = React.useState([]);
   const [tagsProducts, setTagsProducts] = React.useState([]);
@@ -133,18 +133,38 @@ export default function ProfilePage() {
     return dict;
   }
 
+  function makeTagDictionary(tag) {
+    const dict = {
+      value: tag.tag_name,
+      label: tag.tag_name,
+    };
+    return dict;
+  }
+
+  function getDefaultTags() {
+    console.log(tags);
+    console.log(tags == null);
+    if (tags == null) {
+      return [];
+    }
+    return [{ 1: '1' }];
+    // return tags.map(tag => makeTagDictionary(tag));
+  }
+
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
+  var defaultTags = getDefaultTags();
 
   const body = (
     <div>
+      Select Tags
       <div className="profile-edit-tags-container">
         <div className="profile-filter-scroll">
           <Filters
             title="role"
             options={roleOptions}
-            values={tagsRole}
+            // values={tagsRole}
             onChange={setTagsRole}
-            defaultValue={[roleOptions[1], roleOptions[2]]}
+            defaultValue={defaultTags}
           />
           <Filters
             title="location"
@@ -172,6 +192,8 @@ export default function ProfilePage() {
           />
         </div>
       </div>
+      {/* change the tags variable in the front end */}
+      <button onClick={() => console.log(tagsRole)}>Edit</button>
     </div>
   );
 
