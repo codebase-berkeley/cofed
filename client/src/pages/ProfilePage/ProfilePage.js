@@ -144,6 +144,7 @@ export default function ProfilePage() {
             options={roleOptions}
             values={tagsRole}
             onChange={setTagsRole}
+            defaultValue={tags}
           />
           <Filters
             title="location"
