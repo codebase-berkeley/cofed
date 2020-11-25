@@ -24,10 +24,11 @@ export default function ProfilePage() {
   // TODO: Fix this after authentication implemented
   const CoopId = '1';
 
+  //options for the filters
+  const [dropDownOptions, setDropDownOptions] = React.useState([]);
+
   // TODO:
   // LOGIC:
-  // 1) query for the list of all tags and put them into the Filter modal
-  //      - should be done for us in profile-filter-branch
   // 2) find a way to set default tags in the Filter modal
   //      - Stack overflow: How to set a default in React-select
   // 3) figure out how to output the set of tags
@@ -61,6 +62,10 @@ export default function ProfilePage() {
     async function fetchData() {
       const res = await axios.get('/api/coop/' + CoopId);
       setProfileVariables(res.data);
+
+      //get the tags to put in the filters dropdown
+      const tags = await axios.get('/api/tags');
+      setDropDownOptions(tags.data);
     }
     fetchData();
   }, []);
@@ -74,11 +79,6 @@ export default function ProfilePage() {
     setOpen(false);
   };
 
-  const roleOptions = [
-    { value: 'cooperative', label: 'Cooperative' },
-    { value: 'distributor', label: 'Distributor' },
-    { value: 'producer', label: 'Producer' },
-  ];
   const locationOptions = [
     { value: 'Alabama', label: 'Alabama' },
     { value: 'Alaska', label: 'Alaska' },
@@ -118,16 +118,22 @@ export default function ProfilePage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
 
-  const [tagsRole, setTagsRole] = React.useState([
-    { value: 'nonGMO', label: 'Verified Non-GMO' },
-    { value: 'startup', label: 'Startup' },
-    { value: 'queer', label: 'Queer-owned' },
-    { value: 'nonprofit', label: 'Non-profit' },
-  ]);
+  const [tagsRole, setTagsRole] = React.useState([]);
   const [tagsLocation, setTagsLocation] = React.useState([]);
   const [tagsRace, setTagsRace] = React.useState([]);
   const [tagsProducts, setTagsProducts] = React.useState([]);
   const [tagsOther, setTagsOther] = React.useState([]);
+
+  function makeDictionary(tag) {
+    const dict = {
+      value: tag.tag_name,
+      label: tag.tag_name,
+      id: tag.id,
+    };
+    return dict;
+  }
+
+  const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
 
   const body = (
     <div>
