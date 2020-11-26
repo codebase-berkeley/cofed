@@ -42,7 +42,9 @@ export default function FiltersPage() {
     try {
       const res = await axios.get('/api/coops');
       setCoops(res.data);
-      setCoopShown(res.data[0]);
+      if (res.data.length !== 0) {
+        setCoopShown(res.data[0]);
+      }
     } catch (err) {
       setRedirect(true);
     }
