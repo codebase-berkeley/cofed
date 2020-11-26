@@ -62,6 +62,7 @@ export default function ProfilePage() {
     async function fetchData() {
       const res = await axios.get('/api/coop/' + CoopId);
       setProfileVariables(res.data);
+      setDefaultTags(res.data);
 
       //get the tags to put in the filters dropdown
       const allTags = await axios.get('/api/tags');
@@ -133,26 +134,24 @@ export default function ProfilePage() {
     return dict;
   }
 
+  function setDefaultTags(coop) {
+    setTagsRole(coop['tags'].map(tag => makeTagDictionary(tag)));
+  }
+
   function makeTagDictionary(tag) {
+    console.log(tag);
     const dict = {
-      value: tag.tag_name,
-      label: tag.tag_name,
+      value: tag,
+      label: tag,
     };
     return dict;
   }
 
-  function getDefaultTags() {
-    console.log(tags);
-    console.log(tags == null);
-    if (tags == null) {
-      return [];
-    }
-    return [{ 1: '1' }];
-    // return tags.map(tag => makeTagDictionary(tag));
+  function dictValue(dict) {
+    return dict['value'];
   }
 
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
-  var defaultTags = getDefaultTags();
 
   const body = (
     <div>
@@ -162,9 +161,8 @@ export default function ProfilePage() {
           <Filters
             title="role"
             options={roleOptions}
-            // values={tagsRole}
+            values={tagsRole}
             onChange={setTagsRole}
-            defaultValue={defaultTags}
           />
           <Filters
             title="location"
@@ -193,7 +191,9 @@ export default function ProfilePage() {
         </div>
       </div>
       {/* change the tags variable in the front end */}
-      <button onClick={() => console.log(tagsRole)}>Edit</button>
+      <button onClick={() => setTags(tagsRole.map(dict => dictValue(dict)))}>
+        Edit
+      </button>
     </div>
   );
 
