@@ -58,5 +58,3 @@ VALUES
     ('Producer'),
     ('Community'),
     ('Delivery');
-
-
