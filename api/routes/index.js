@@ -205,14 +205,28 @@ router.put('/coop', async (req, res) => {
   );
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
-  deleteArray = diffArray(listOfTagsDatabase, tags);
+  // const pg = require('pg');
+  // const format = require('pg-format');
+
+  // let query1 = format(`INSERT INTO coop_tags (coop_id, tag_id) VALUES %d %d`, namesToIds)
+  // await db.query(), [
+  //   coopId,
+  //   namesToTags,
+  // ]);
 
   try {
-    await db.query(updateQueryText, updateQueryValues);
-    await db.query(
-      `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
-      [coopId, deleteArray]
+    var namesToIds = await db.query(
+      'SELECT id from tags WHERE tag_name = ANY ($1)',
+      [tags]
     );
+    //namesToIds.rows --> array of dictionaries [{id: 1}, {id: 6}]
+
+    await db.query(updateQueryText, updateQueryValues);
+
+    await db.query(`DELETE FROM coop_tags WHERE coop_id = $1;`, [
+      coopId,
+      deleteArray,
+    ]);
 
     res.send(`Successfully updated coop ${coopId}`);
   } catch (err) {
