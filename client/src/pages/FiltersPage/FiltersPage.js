@@ -1,6 +1,8 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
@@ -20,13 +22,13 @@ export default function FiltersPage() {
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
+  const [redirect, setRedirect] = React.useState(false);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
   }
 
-  const [coops, setCoops] = React.useState([]); //all coops
-  //tracker for the starred coops, an array of starred coops
+  const [coops, setCoops] = React.useState([]);
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
@@ -37,14 +39,18 @@ export default function FiltersPage() {
   }
 
   async function fetchInitialData() {
-    const res = await axios.get('/api/coops');
-    setCoops(res.data);
-    if (res.data.length !== 0) {
-      setCoopShown(res.data[0]);
+    try {
+      const res = await axios.get('/api/coops');
+      setCoops(res.data);
+      if (res.data.length !== 0) {
+        setCoopShown(res.data[0]);
+      }
+    } catch (err) {
+      setRedirect(true);
     }
 
     //get the toggle star info
-    const starred = await axios.get('/api/getStarred/1');
+    const starred = await axios.get('/api/getStarred');
     //set the query data as the starred coops
     let starredIds = starred.data.map(e => {
       return e.starred_coop_id;
@@ -64,8 +70,9 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
-  function toggleStar(starredId, starrerId) {
+  function toggleStar(starredId) {
     if (starredCoops.includes(starredId)) {
+      //if the coop is already starred remove the coop from the list of starred
       const tempStarredCoops = [...starredCoops];
       const index = starredCoops.indexOf(starredId);
       if (index > -1) {
@@ -75,15 +82,14 @@ export default function FiltersPage() {
       axios.delete('/api/delete', {
         data: {
           starredId,
-          starrerId,
         },
       });
     } else {
+      //add the coop from the list of starred if the coop isn't starred yet
       const tempStarredCoops = [...starredCoops, starredId];
       setStarredCoops(tempStarredCoops);
       axios.post('/api/addStar', {
         starredId,
-        starrerId,
       });
     }
   }
@@ -277,6 +283,10 @@ export default function FiltersPage() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
+
   function handleChange(setter) {
     async function onChange(event) {
       setSelectedIndex(null);
@@ -373,7 +383,6 @@ export default function FiltersPage() {
                 coop={coopShown}
                 starred={starredCoops.includes(coopShown.id)}
                 handleStar={toggleStar}
-                starrerId={1}
               />
             )}
           </div>
