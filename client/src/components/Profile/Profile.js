@@ -49,6 +49,7 @@ export default function Profile(props) {
   function toggleEdit() {
     if (editMode) {
       props.putData();
+      console.log(props);
     }
     setEditMode(!editMode);
   }

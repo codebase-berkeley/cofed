@@ -1,5 +1,4 @@
-ssDROP
-DATABASE
+DROP DATABASE
 IF EXISTS cofed;
 
 CREATE DATABASE cofed;
@@ -105,8 +104,6 @@ VALUES
     (3, 1),
     (3, 2),
     (4, 1),
-    (2, 5),
-    (5, 4),
     (5, 3),
     (6, 2),
     (6, 1),

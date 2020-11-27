@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../../db/index');
+const { reset } = require('nodemon');
 const router = express.Router();
 
 /** Returns an array of tags given a SQL query
@@ -221,14 +222,27 @@ router.put('/coop', async (req, res) => {
     );
     //namesToIds.rows --> array of dictionaries [{id: 1}, {id: 6}]
 
+    //goal: array of arrays [ [coopId, 1] ,  [coopId, 6] ]
+    namesToIds = namesToIds.rows.map(dict => [coopId, dict['id']]);
+
     await db.query(updateQueryText, updateQueryValues);
 
-    await db.query(`DELETE FROM coop_tags WHERE coop_id = $1;`, [
-      coopId,
-      deleteArray,
-    ]);
+    await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
 
-    res.send(`Successfully updated coop ${coopId}`);
+    const format = require('pg-format');
+    const query1 = format(
+      `INSERT INTO coop_tags (coop_id, tag_id) VALUES %L`,
+      namesToIds
+    );
+
+    // res.send(query1);
+
+    // const queryHardCode = `INSERT INTO coop_tags (coop_id, tag_id) VALUES (1,1), (1,4)`;
+
+    await db.query(query1);
+
+    // let { rows } = await client.query(query1);
+    res.send(rows);
   } catch (err) {
     console.log(err.stack);
   }

@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
+  var [dummyChange, setDummyChange] = React.useState(1);
 
   // TODO: Fix this after authentication implemented
   const CoopId = '1';
@@ -39,7 +40,8 @@ export default function ProfilePage() {
   //Front end bug: center the modal, get rid of the blue box?
 
   function setProfileVariables(coop) {
-    setCoop(coop);
+    const tempCoop = coop;
+    setCoop(tempCoop);
     setLocation(coop['addr']);
     setPhone(coop['phone_number']);
     setTags(coop['tags']);
@@ -335,13 +337,14 @@ export default function ProfilePage() {
       description_text: description,
       insta_link: instaLink,
       fb_link: fbLink,
-      website,
-      email,
+      website: website,
+      email: email,
       profile_pic: profilePicture,
-      tags,
+      tags: tags,
     };
     await axios.put('/api/coop', data);
     setProfileVariables(data);
+    console.log(description);
   }
 
   if (!coop) {
