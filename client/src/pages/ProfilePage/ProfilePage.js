@@ -22,21 +22,6 @@ export default function ProfilePage() {
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
 
-  const [name, setName] = React.useState(null);
-  const [location, setLocation] = React.useState(null);
-  const [phone, setPhone] = React.useState(null);
-  const [tags, setTags] = React.useState([]);
-  const [mission, setMission] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
-  const [instaLink, setInstaLink] = React.useState(null);
-  const [fbLink, setFbLink] = React.useState(null);
-  const [website, setWebsite] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [profilePicture, setProfilePicture] = React.useState(null);
-
-  // TODO: Fix this after authentication implemented
-  const CoopId = '1';
-
   //options for the filters
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
@@ -52,8 +37,7 @@ export default function ProfilePage() {
   //Front end bug: center the modal, get rid of the blue box?
 
   function setProfileVariables(coop) {
-    const tempCoop = coop;
-    setCoop(tempCoop);
+    setCoop(coop);
     setLocation(coop['addr']);
     setPhone(coop['phone_number']);
     setTags(coop['tags']);
