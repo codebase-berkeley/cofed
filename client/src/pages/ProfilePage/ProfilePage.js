@@ -348,7 +348,7 @@ export default function ProfilePage() {
     };
     await axios.put('/api/coop', data);
     setProfileVariables(data);
-    console.log(description);
+    console.log('HELLO');
   }
 
   if (!coop) {

@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../../db/index');
 const { reset } = require('nodemon');
 const router = express.Router();
+const format = require('pg-format');
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -200,43 +201,25 @@ router.put('/coop', isAuthenticated, async (req, res) => {
   );
   var listOfTagsDatabase = getArrayOfTags(queryTags);
 
-  // const pg = require('pg');
-  // const format = require('pg-format');
-
-  // let query1 = format(`INSERT INTO coop_tags (coop_id, tag_id) VALUES %d %d`, namesToIds)
-  // await db.query(), [
-  //   coopId,
-  //   namesToTags,
-  // ]);
-
   try {
-    var namesToIds = await db.query(
-      'SELECT id from tags WHERE tag_name = ANY ($1)',
-      [tags]
-    );
-    //namesToIds.rows --> array of dictionaries [{id: 1}, {id: 6}]
-
-    //goal: array of arrays [ [coopId, 1] ,  [coopId, 6] ]
-    namesToIds = namesToIds.rows.map(dict => [coopId, dict['id']]);
-
     await db.query(updateQueryText, updateQueryValues);
 
     await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
 
-    const format = require('pg-format');
-    const query1 = format(
-      `INSERT INTO coop_tags (coop_id, tag_id) VALUES %L`,
-      namesToIds
+    var namesToIds = await db.query(
+      'SELECT id from tags WHERE tag_name = ANY ($1)',
+      [tags]
     );
+    namesToIds = namesToIds.rows.map(dict => [coopId, dict['id']]);
+    if (namesToIds.length > 0) {
+      const query1 = format(
+        `INSERT INTO coop_tags (coop_id, tag_id) VALUES %L`,
+        namesToIds
+      );
+      await db.query(query1);
+    }
 
-    // res.send(query1);
-
-    // const queryHardCode = `INSERT INTO coop_tags (coop_id, tag_id) VALUES (1,1), (1,4)`;
-
-    await db.query(query1);
-
-    // let { rows } = await client.query(query1);
-    res.send(rows);
+    res.send(`Successfully updated coop ${coopId}`);
   } catch (err) {
     console.log(err.stack);
   }
