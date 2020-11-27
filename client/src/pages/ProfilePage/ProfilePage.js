@@ -5,9 +5,22 @@ import plusSign from '../../assets/plus-sign.svg';
 import axios from 'axios';
 import { Modal } from '@material-ui/core';
 import Filters from '../../components/Filter/Filter';
+import { Redirect } from 'react-router-dom';
 
 export default function ProfilePage() {
   const [coop, setCoop] = React.useState(null);
+  const [redirect, setRedirect] = React.useState(false);
+  const [name, setName] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+  const [phone, setPhone] = React.useState(null);
+  const [tags, setTags] = React.useState(null);
+  const [mission, setMission] = React.useState(null);
+  const [description, setDescription] = React.useState(null);
+  const [instaLink, setInstaLink] = React.useState(null);
+  const [fbLink, setFbLink] = React.useState(null);
+  const [website, setWebsite] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [profilePicture, setProfilePicture] = React.useState(null);
 
   const [name, setName] = React.useState(null);
   const [location, setLocation] = React.useState(null);
@@ -61,13 +74,17 @@ export default function ProfilePage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const res = await axios.get('/api/coop/' + CoopId);
-      setProfileVariables(res.data);
-      setDefaultTags(res.data);
+      try {
+        const res = await axios.get('/api/coop');
+        setProfileVariables(res.data);
+        setDefaultTags(res.data);
 
-      //get the tags to put in the filters dropdown
-      const allTags = await axios.get('/api/tags');
-      setDropDownOptions(allTags.data);
+        //get the tags to put in the filters dropdown
+        const allTags = await axios.get('/api/tags');
+        setDropDownOptions(allTags.data);
+      } catch (err) {
+        setRedirect(true);
+      }
     }
     fetchData();
   }, []);
@@ -198,6 +215,10 @@ export default function ProfilePage() {
     </div>
   );
 
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
+
   function renderEdit() {
     return (
       <>
@@ -211,6 +232,7 @@ export default function ProfilePage() {
                   text={text}
                   index={index}
                   onDelete={handleDelete}
+                  r
                 />
               ))}
             <button onClick={handleOpen} className="profile-edit-tags-button">
@@ -328,7 +350,6 @@ export default function ProfilePage() {
 
   async function putData() {
     const data = {
-      id: CoopId,
       coop_name: name,
       addr: location,
       phone_number: phone,

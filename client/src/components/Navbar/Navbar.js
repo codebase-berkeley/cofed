@@ -1,14 +1,25 @@
 import React from 'react';
 import logo from '../../assets/CoFEDlogo.png';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Navbar.css';
-
-function logout() {
-  console.log('Logged Out');
-}
+import axios from 'axios';
 
 export default function NavBar(props) {
+  const [redirect, setRedirect] = React.useState(false);
+
+  async function logout() {
+    try {
+      await axios.post('/auth/logout');
+      setRedirect(true);
+    } catch (err) {
+      setRedirect(false);
+    }
+  }
+
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
   return (
     <div className="navbar">
       <Link to="/">

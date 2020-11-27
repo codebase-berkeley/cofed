@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './RegisterPage.css';
 import axios from 'axios';
 
@@ -8,14 +8,20 @@ export default function RegisterPage() {
   const [passwordInput, setPasswordInput] = React.useState('');
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
+  const [redirect, setRedirect] = React.useState(false);
 
   async function createAccount() {
-    await axios.post('/api/coop', {
+    await axios.post('/auth/register', {
       email: emailInput,
       name: nameInput,
       addr: locationInput,
-      pass: passwordInput,
+      password: passwordInput,
     });
+    setRedirect(true);
+  }
+
+  if (redirect) {
+    return <Redirect to="/login" />;
   }
 
   return (
@@ -63,7 +69,7 @@ export default function RegisterPage() {
           <span className="terms-and-cond">Terms and Conditions</span>
         </a>
       </p>
-      <Link to="/createprofile">
+      <Link to="/login">
         <button className="accountButton" type="button" onClick={createAccount}>
           Create Account
         </button>

@@ -125,7 +125,7 @@ export default function Profile(props) {
   }
 
   function clickStar() {
-    props.handleStar(props.coop.id, props.starrerId);
+    props.handleStar(props.coop.id);
   }
 
   function renderStar() {
