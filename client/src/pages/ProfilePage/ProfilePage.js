@@ -20,7 +20,6 @@ export default function ProfilePage() {
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
-  var [dummyChange, setDummyChange] = React.useState(1);
 
   // TODO: Fix this after authentication implemented
   const CoopId = '1';
