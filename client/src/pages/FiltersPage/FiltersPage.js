@@ -14,7 +14,7 @@ import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
   const [listMode, setListMode] = React.useState(true);
-
+  const [sortType, setSortType] = React.useState('alphabetical');
   const [location, setLocation] = React.useState([]);
   const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
@@ -23,6 +23,8 @@ export default function FiltersPage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
+  const [myLatitude, setMyLatitude] = React.useState();
+  const [myLongitude, setMyLongitude] = React.useState();
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -38,6 +40,11 @@ export default function FiltersPage() {
     setCoops(res.data);
   }
 
+  async function fetchMyLocation() {
+    const res = await axios.get('/api/coop');
+    setMyLatitude(res.data['latitude']);
+    setMyLongitude(res.data['longitude']);
+  }
   async function fetchInitialData() {
     try {
       const res = await axios.get('/api/coops');
@@ -64,10 +71,53 @@ export default function FiltersPage() {
 
   React.useEffect(() => {
     fetchInitialData();
+    fetchMyLocation();
   }, []);
 
   if (!coops) {
     return <div>Loading...</div>;
+  }
+
+  function findSortType() {
+    if (sortType == 'alphabetical') {
+      console.log('entered findSortType');
+      return sortAlphabetically;
+    } else if (sortType == 'distance') {
+      return sortLocation;
+    }
+  }
+
+  function sortAlphabetically(coop1, coop2) {
+    console.log(coop1['coop_name']);
+    console.log(coop2['coop_name']);
+
+    return coop1['coop_name'] > coop2['coop_name'] ? 1 : -1;
+    // return coop1['coop_name'] - coop2['coop_name'];
+  }
+
+  //hard coding myLat to 100
+  //and myLong to 100
+  function distToMyCoop(coop) {
+    return Math.abs(
+      Math.sqrt((100 - coop['latitude']) ** 2 + (100 - coop['longitude']) ** 2)
+    );
+  }
+
+  function sortLocation(coop1, coop2) {
+    // u can sort distances into an array (maybe map to id) then sort coops by this array basically
+    // coops.sort(function (my_coop, other_coop) {
+    //   list.sort(x)
+    // x (a, b):
+    // - , 0 , +
+    // return Math.abs(
+    //   Math.sqrt(
+    //     (coops[0].latitude - coop1.latitude) ** 2 +
+    //       (coop[0].longitude - coop1.longitude) ** 2
+    //   )
+    // );
+    coops.map(coop => distToMyCoop(coop));
+    return sort;
+    // Math.abs( Math.sqrt( (100 - coop[latitude])**2 + (100 - coop[longitude] **2 ) )
   }
 
   function toggleStar(starredId) {
@@ -99,6 +149,7 @@ export default function FiltersPage() {
       return (
         <div className="list-mode">
           {coops
+            .sort(findSortType())
             .filter(coop => starredCoops.includes(coop.id))
             .map((coop, index) => (
               <Card
@@ -117,7 +168,7 @@ export default function FiltersPage() {
     } else {
       return (
         <div className="list-mode">
-          {coops.map((coop, index) => (
+          {coops.sort(findSortType()).map((coop, index) => (
             <Card
               key={index}
               profile={coop.profile_pic}
@@ -277,6 +328,10 @@ export default function FiltersPage() {
     { value: 'queer', label: 'Queer-owned' },
     { value: 'nonprofit', label: 'Non-profit' },
   ];
+  const sortOptions = [
+    { value: 'alphabetical', label: 'alphabetical' },
+    { value: 'distance', label: 'distance' },
+  ];
 
   function handleStarToggle() {
     setSelectedIndex(null);
@@ -335,6 +390,12 @@ export default function FiltersPage() {
             </label>
             <div className="filter-container">
               <div className="filter-scroll">
+                <Filters
+                  title="sort/filter"
+                  options={sortOptions}
+                  values={sortType}
+                  onChange={handleChange(setSortType)}
+                />
                 <Filters
                   title="role"
                   options={roleOptions}

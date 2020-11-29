@@ -49,12 +49,3 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO root;
 
 GRANT ALL PRIVILEGES ON DATABASE cofed TO root;
-
-INSERT INTO tags
-    (tag_name)
-VALUES
-    ('Cooperative'),
-    ('Distributor'),
-    ('Producer'),
-    ('Community'),
-    ('Delivery');

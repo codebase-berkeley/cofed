@@ -107,7 +107,7 @@ export default function MultiSelectSort(props) {
         onSortEnd={onSortEnd}
         distance={4}
         getHelperDimensions={({ node }) => node.getBoundingClientRect()}
-        isMulti
+        isMulti={props.isMulti}
         styles={TagStyle}
         options={props.options}
         value={props.values}
