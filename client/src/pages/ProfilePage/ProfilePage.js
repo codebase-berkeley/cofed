@@ -39,11 +39,6 @@ export default function ProfilePage() {
     setName(coop['coop_name']);
   }
 
-  function handleDelete(tagIndex) {
-    const newTags = tags.filter((tag, i) => i !== tagIndex);
-    setTags(newTags);
-  }
-
   React.useEffect(() => {
     async function fetchData() {
       try {
@@ -200,13 +195,7 @@ export default function ProfilePage() {
           <div className="profile-tags-container">
             {tags &&
               tags.map((text, index) => (
-                <Tag
-                  key={index}
-                  text={text}
-                  index={index}
-                  onDelete={handleDelete}
-                  r
-                />
+                <Tag key={index} text={text} index={index} />
               ))}
             <button onClick={handleOpen} className="profile-edit-tags-button">
               Edit tags

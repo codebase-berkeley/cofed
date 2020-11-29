@@ -186,11 +186,6 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     profile_pic,
   ];
 
-  var queryTags = await db.query(
-    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
-    [coopId]
-  );
-
   try {
     await db.query(updateQueryText, updateQueryValues);
 
