@@ -22,19 +22,7 @@ export default function ProfilePage() {
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
 
-  //options for the filters
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
-
-  // TODO:
-  // LOGIC:
-  // 2) find a way to set default tags in the Filter modal
-  //      - Stack overflow: How to set a default in React-select
-  // 3) figure out how to output the set of tags
-  //      - should just be the role's array?
-  // 4_ Write the SQL backend for adding tags
-  //      - logic is already 70% written
-  //
-  //Front end bug: center the modal, get rid of the blue box?
 
   function setProfileVariables(coop) {
     setCoop(coop);
@@ -61,9 +49,13 @@ export default function ProfilePage() {
       try {
         const res = await axios.get('/api/coop');
         setProfileVariables(res.data);
+
+        function setDefaultTags(coop) {
+          setTagsRole(coop['tags'].map(tag => makeTagDictionary(tag)));
+        }
+
         setDefaultTags(res.data);
 
-        //get the tags to put in the filters dropdown
         const allTags = await axios.get('/api/tags');
         setDropDownOptions(allTags.data);
       } catch (err) {
@@ -80,6 +72,7 @@ export default function ProfilePage() {
 
   const handleClose = () => {
     setOpen(false);
+    setTags(tagsRole.map(dict => dictValue(dict)));
   };
 
   const locationOptions = [
@@ -136,10 +129,6 @@ export default function ProfilePage() {
     return dict;
   }
 
-  function setDefaultTags(coop) {
-    setTagsRole(coop['tags'].map(tag => makeTagDictionary(tag)));
-  }
-
   function makeTagDictionary(tag) {
     console.log(tag);
     const dict = {
@@ -156,9 +145,10 @@ export default function ProfilePage() {
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
 
   const body = (
-    <div>
-      Select Tags
-      <div className="profile-edit-tags-container">
+    <div className="modal-body">
+      <div className="modal-header">Select Tags</div>
+
+      <div className="profile-edit-tags-dropdowns">
         <div className="profile-filter-scroll">
           <Filters
             title="role"
@@ -192,9 +182,8 @@ export default function ProfilePage() {
           />
         </div>
       </div>
-      {/* change the tags variable in the front end */}
-      <button onClick={() => setTags(tagsRole.map(dict => dictValue(dict)))}>
-        Edit
+      <button onClick={handleClose} className="profile-edit-tags-modal-button">
+        Confirm
       </button>
     </div>
   );
@@ -222,13 +211,15 @@ export default function ProfilePage() {
             <button onClick={handleOpen} className="profile-edit-tags-button">
               Edit tags
             </button>
-            <Modal
-              className="profile-modal-tags"
-              open={open}
-              onClose={handleClose}
-            >
-              {body}
-            </Modal>
+            <div className="modal-popup">
+              <Modal
+                className="profile-modal-tags"
+                open={open}
+                onClose={handleClose}
+              >
+                {body}
+              </Modal>
+            </div>
           </div>
         </div>
         <div className="profile-descriptions">

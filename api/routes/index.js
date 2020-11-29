@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('../../db/index');
-const { reset } = require('nodemon');
 const router = express.Router();
 const format = require('pg-format');
 
@@ -19,14 +18,6 @@ function isAuthenticated(req, res, next) {
 function getArrayOfTags(query) {
   return query.rows.map(Object.values).flat();
 }
-
-/** Returns the difference between two arrays
- *  Returns an array of objects in Array1 that are not in Array2 */
-function diffArray(arr1, arr2) {
-  var n = arr1.filter(x => !arr2.includes(x));
-  return n;
-}
-
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
@@ -199,7 +190,6 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
     [coopId]
   );
-  var listOfTagsDatabase = getArrayOfTags(queryTags);
 
   try {
     await db.query(updateQueryText, updateQueryValues);
