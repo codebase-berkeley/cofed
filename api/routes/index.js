@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
+const format = require('pg-format');
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -17,14 +18,6 @@ function isAuthenticated(req, res, next) {
 function getArrayOfTags(query) {
   return query.rows.map(Object.values).flat();
 }
-
-/** Returns the difference between two arrays
- *  Returns an array of objects in Array1 that are not in Array2 */
-function diffArray(arr1, arr2) {
-  var n = arr1.filter(x => !arr2.includes(x));
-  return n;
-}
-
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
@@ -93,6 +86,16 @@ router.get('/filteredCoops', async (req, res) => {
              @> $1;`,
       [tagParams]
     );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieving ALL tags in our tags table and returning a list
+router.get('/tags', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM tags;`);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -182,25 +185,28 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     website,
     profile_pic,
   ];
-
-  var queryTags = await db.query(
-    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
-    [coopId]
-  );
-  var listOfTagsDatabase = getArrayOfTags(queryTags);
-
-  deleteArray = diffArray(listOfTagsDatabase, tags);
-  addArray = diffArray(tags, listOfTagsDatabase);
-
   try {
+    await db.query('BEGIN');
     await db.query(updateQueryText, updateQueryValues);
-    await db.query(
-      `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
-      [coopId, deleteArray]
-    );
 
+    await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
+
+    var namesToIds = await db.query(
+      'SELECT id from tags WHERE tag_name = ANY ($1)',
+      [tags]
+    );
+    namesToIds = namesToIds.rows.map(dict => [coopId, dict['id']]);
+    if (namesToIds.length > 0) {
+      const queryInsertTags = format(
+        `INSERT INTO coop_tags (coop_id, tag_id) VALUES %L`,
+        namesToIds
+      );
+      await db.query(queryInsertTags);
+    }
+    await db.query('COMMIT');
     res.send(`Successfully updated coop ${coopId}`);
   } catch (err) {
+    await db.query('ROLLBACK');
     console.log(err.stack);
   }
 });

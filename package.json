@@ -15,7 +15,9 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.4.2",
+    "pg-format": "^1.0.4",
     "qs": "^6.9.4",
+    "react-select": "3.0.4",
     "react-toggle": "^4.1.1",
     "shards-react": "^1.0.3"
   },
