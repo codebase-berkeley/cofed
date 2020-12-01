@@ -140,5 +140,5 @@ MultiSelectSort.propTypes = {
   title: PropTypes.string,
   options: PropTypes.array,
   isMulti: PropTypes.bool,
-  defaultValue: PropTypes.object,
+  defaultValue: PropTypes.array,
 };

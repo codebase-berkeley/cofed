@@ -14,7 +14,12 @@ import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
   const [listMode, setListMode] = React.useState(true);
-  const [sortType, setSortType] = React.useState('alphabetical');
+  const [sortType, setSortType] = React.useState([
+    {
+      value: 'alphabetical',
+      label: 'sort: alphabetical',
+    },
+  ]);
   const [location, setLocation] = React.useState([]);
   const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
@@ -72,9 +77,9 @@ export default function FiltersPage() {
   }
 
   function findSortType() {
-    if (sortType == 'alphabetical') {
+    if (sortType['value'] == 'alphabetical') {
       return sortAlphabetically;
-    } else if (sortType == 'distance') {
+    } else if (sortType['value'] == 'distance') {
       return sortAlphabetically; // replace with 'sortLocation' once location option is configured
     }
   }
@@ -384,10 +389,12 @@ export default function FiltersPage() {
                 <Filters
                   options={sortOptions}
                   onChange={setSortType}
-                  defaultValue={{
-                    value: 'alphabetical',
-                    label: 'alphabetical',
-                  }}
+                  defaultValue={[
+                    {
+                      value: 'alphabetical',
+                      label: 'alphabetical',
+                    },
+                  ]}
                 />
                 <Filters
                   isMulti={true}
