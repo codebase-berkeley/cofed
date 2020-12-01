@@ -23,6 +23,7 @@ export default function FiltersPage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
+  const [searchInput, setSearchInput] = React.useState(null);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -70,6 +71,23 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
+  function searchCoops(coop) {
+    if (searchInput == null) return true;
+    else {
+      for (var k in coop) {
+        console.log(coop[k]);
+        if (
+          typeof coop[k] == 'string' &&
+          k != 'hashed_pass' &&
+          coop[k].includes(searchInput)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
   function toggleStar(starredId) {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred remove the coop from the list of starred
@@ -99,6 +117,7 @@ export default function FiltersPage() {
       return (
         <div className="list-mode">
           {coops
+            .filter(searchCoops)
             .filter(coop => starredCoops.includes(coop.id))
             .map((coop, index) => (
               <Card
@@ -117,7 +136,7 @@ export default function FiltersPage() {
     } else {
       return (
         <div className="list-mode">
-          {coops.map((coop, index) => (
+          {coops.filter(searchCoops).map((coop, index) => (
             <Card
               key={index}
               profile={coop.profile_pic}
@@ -335,6 +354,12 @@ export default function FiltersPage() {
             </label>
             <div className="filter-container">
               <div className="filter-scroll">
+                <input
+                  type="text"
+                  className="coops-search-bar"
+                  placeholder="Search..."
+                  onChange={e => setSearchInput(e.target.value)}
+                />
                 <Filters
                   title="role"
                   options={roleOptions}
