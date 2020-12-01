@@ -37,6 +37,7 @@ const TagStyle = {
       ...styles,
       backgroundColor: isDisabled,
       color: isDisabled,
+      textTransform: 'Capitalize',
       fontFamily: 'Montserrat',
       fontWeight: '300',
       textAlign: 'left',
@@ -66,6 +67,18 @@ const TagStyle = {
       fontWeight: 'bold',
       padding: '4px 22px',
       fontSize: '13px',
+    };
+  },
+  singleValue: (styles, { data }) => {
+    return {
+      ...styles,
+
+      color: 'black',
+      textTransform: 'Capitalize',
+      fontFamily: 'Montserrat',
+      fontWeight: 'regular',
+      padding: '10px',
+      fontSize: '18px',
     };
   },
   multiValueLabel: (styles, { data }) => ({
@@ -112,7 +125,9 @@ export default function MultiSelectSort(props) {
         options={props.options}
         value={props.values}
         onChange={onChange}
-        placeholder={'Select ' + props.title + '...'}
+        placeholder={
+          props.isMulti ? 'Select ' + props.title + '...' : 'Sort by...'
+        }
       ></Select>
     </div>
   );
@@ -123,4 +138,5 @@ MultiSelectSort.propTypes = {
   values: PropTypes.array,
   title: PropTypes.string,
   options: PropTypes.array,
+  isMulti: PropTypes.bool,
 };

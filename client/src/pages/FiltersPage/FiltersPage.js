@@ -23,8 +23,6 @@ export default function FiltersPage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
-  const [myLatitude, setMyLatitude] = React.useState();
-  const [myLongitude, setMyLongitude] = React.useState();
   const [searchInput, setSearchInput] = React.useState(null);
 
   function mapTilerProvider(x, y, z, dpr) {
@@ -98,12 +96,12 @@ export default function FiltersPage() {
 
   //hard coding myLat to 100
   //and myLong to 100
-  function distToMyCoop(coop) {
+  /*   function distToMyCoop(coop) {
     return Math.abs(
       Math.sqrt((100 - coop['latitude']) ** 2 + (100 - coop['longitude']) ** 2)
     );
   }
-
+ */
   function sortLocation(coop1, coop2) {
     // u can sort distances into an array (maybe map to id) then sort coops by this array basically
     // coops.sort(function (my_coop, other_coop) {
@@ -218,6 +216,7 @@ export default function FiltersPage() {
           >
             {coops
               .filter(coop => starredCoops.includes(coop.id))
+              .filter(searchCoops)
               .map((coop, index) => (
                 <Marker
                   payload={index}
@@ -238,7 +237,7 @@ export default function FiltersPage() {
             twoFingerDrag={true}
             provider={mapTilerProvider}
           >
-            {coops.map((coop, index) => (
+            {coops.filter(searchCoops).map((coop, index) => (
               <Marker
                 payload={index}
                 key={index}
@@ -417,13 +416,14 @@ export default function FiltersPage() {
                   placeholder="Search..."
                   onChange={e => setSearchInput(e.target.value)}
                 />
+
                 <Filters
-                  title="sort/filter"
                   options={sortOptions}
                   values={sortType}
-                  onChange={handleChange(setSortType)}
+                  onChange={setSortType}
                 />
                 <Filters
+                  isMulti={true}
                   title="role"
                   options={roleOptions}
                   values={role}
@@ -434,24 +434,28 @@ export default function FiltersPage() {
                   options={locationOptions}
                   values={location}
                   onChange={setLocation}
+                  isMulti={true}
                 />
                 <Filters
                   title="race"
                   options={raceOptions}
                   values={race}
                   onChange={setRace}
+                  isMulti={true}
                 />
                 <Filters
                   title="products"
                   options={productOptions}
                   values={products}
                   onChange={setProducts}
+                  isMulti={true}
                 />
                 <Filters
                   title="other"
                   options={otherOptions}
                   values={other}
                   onChange={setOther}
+                  isMulti={true}
                 />
               </div>
             </div>
