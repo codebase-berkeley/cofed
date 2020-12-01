@@ -25,6 +25,7 @@ export default function FiltersPage() {
   const [redirect, setRedirect] = React.useState(false);
   const [myLatitude, setMyLatitude] = React.useState();
   const [myLongitude, setMyLongitude] = React.useState();
+  const [searchInput, setSearchInput] = React.useState(null);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -115,9 +116,25 @@ export default function FiltersPage() {
     //       (coop[0].longitude - coop1.longitude) ** 2
     //   )
     // );
-    coops.map(coop => distToMyCoop(coop));
-    return sort;
+    /* coops.map(coop => distToMyCoop(coop));
+    return sort; */
     // Math.abs( Math.sqrt( (100 - coop[latitude])**2 + (100 - coop[longitude] **2 ) )
+  }
+
+  function searchCoops(coop) {
+    if (searchInput == null) return true;
+    else {
+      for (var k in coop) {
+        if (
+          typeof coop[k] == 'string' &&
+          k != 'hashed_pass' &&
+          coop[k].includes(searchInput)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 
   function toggleStar(starredId) {
@@ -150,6 +167,7 @@ export default function FiltersPage() {
         <div className="list-mode">
           {coops
             .sort(findSortType())
+            .filter(searchCoops)
             .filter(coop => starredCoops.includes(coop.id))
             .map((coop, index) => (
               <Card
@@ -168,18 +186,21 @@ export default function FiltersPage() {
     } else {
       return (
         <div className="list-mode">
-          {coops.sort(findSortType()).map((coop, index) => (
-            <Card
-              key={index}
-              profile={coop.profile_pic}
-              name={coop.coop_name}
-              location={coop.addr}
-              tags={coop.tags}
-              starred={starredCoops.includes(coop.id)}
-              selected={selectedIndex === index}
-              onClick={() => renderProfile(coop, index)}
-            />
-          ))}
+          {coops
+            .sort(findSortType())
+            .filter(searchCoops)
+            .map((coop, index) => (
+              <Card
+                key={index}
+                profile={coop.profile_pic}
+                name={coop.coop_name}
+                location={coop.addr}
+                tags={coop.tags}
+                starred={starredCoops.includes(coop.id)}
+                selected={selectedIndex === index}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
         </div>
       );
     }
@@ -390,6 +411,12 @@ export default function FiltersPage() {
             </label>
             <div className="filter-container">
               <div className="filter-scroll">
+                <input
+                  type="text"
+                  className="coops-search-bar"
+                  placeholder="Search..."
+                  onChange={e => setSearchInput(e.target.value)}
+                />
                 <Filters
                   title="sort/filter"
                   options={sortOptions}
