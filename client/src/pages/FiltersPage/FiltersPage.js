@@ -313,8 +313,8 @@ export default function FiltersPage() {
     { value: 'nonprofit', label: 'Non-profit' },
   ];
   const sortOptions = [
-    { value: 'alphabetical', label: 'alphabetical' },
-    { value: 'distance', label: 'distance' },
+    { value: 'alphabetical', label: 'sort: alphabetical' },
+    { value: 'distance', label: 'sort: distance' },
   ];
 
   function handleStarToggle() {
@@ -383,8 +383,11 @@ export default function FiltersPage() {
 
                 <Filters
                   options={sortOptions}
-                  values={sortType}
                   onChange={setSortType}
+                  defaultValue={{
+                    value: 'alphabetical',
+                    label: 'alphabetical',
+                  }}
                 />
                 <Filters
                   isMulti={true}
