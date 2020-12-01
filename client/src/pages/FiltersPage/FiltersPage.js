@@ -166,14 +166,16 @@ export default function FiltersPage() {
             twoFingerDrag={true}
             provider={mapTilerProvider}
           >
-            {coops.map((coop, index) => (
-              <Marker
-                payload={index}
-                key={index}
-                anchor={[coop.latitude, coop.longitude]}
-                onClick={() => renderProfile(coop, index)}
-              />
-            ))}
+            {coops
+              .filter(coop => coop.addr)
+              .map((coop, index) => (
+                <Marker
+                  payload={index}
+                  key={index}
+                  anchor={[coop.latitude, coop.longitude]}
+                  onClick={() => renderProfile(coop, index)}
+                />
+              ))}
           </Map>
         </div>
       );

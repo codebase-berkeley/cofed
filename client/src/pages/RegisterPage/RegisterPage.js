@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import './RegisterPage.css';
+import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import axios from 'axios';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 export default function RegisterPage() {
   const [nameInput, setNameInput] = React.useState('');
@@ -9,13 +11,24 @@ export default function RegisterPage() {
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
   const [redirect, setRedirect] = React.useState(false);
+  const [latLng, setLatLng] = React.useState(null);
+  const [address, setAddress] = React.useState('');
+
+  let selectLocation = async address => {
+    const results = await geocodeByAddress(address);
+    const coords = await getLatLng(results[0]);
+    setLatLng(coords);
+    setAddress(address);
+  };
 
   async function createAccount() {
     await axios.post('/auth/register', {
       email: emailInput,
       name: nameInput,
-      addr: locationInput,
+      addr: address,
       password: passwordInput,
+      latitude: latLng['lat'],
+      longitude: latLng['lng'],
     });
     setRedirect(true);
   }
@@ -56,11 +69,11 @@ export default function RegisterPage() {
       </div>
       <div className="text-input-set">
         <p className="inputType">Location</p>
-        <input
-          className="register-input-box"
-          type="text"
+        <LocationSearchInput
+          size="big"
           value={locationInput}
           onChange={e => setLocationInput(e.target.value)}
+          handleSelect={selectLocation}
         />
       </div>
       <p className="terms-text">

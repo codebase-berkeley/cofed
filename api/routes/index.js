@@ -166,12 +166,14 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     email,
     profile_pic,
     tags,
+    latitude,
+    longitude,
   } = req.body;
 
   const updateQueryText =
     'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
-    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
+    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11, latitude = $12, longitude = $13 WHERE id = $1';
   const updateQueryValues = [
     coopId,
     email,
@@ -184,6 +186,8 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     fb_link,
     website,
     profile_pic,
+    latitude,
+    longitude,
   ];
   try {
     await db.query('BEGIN');

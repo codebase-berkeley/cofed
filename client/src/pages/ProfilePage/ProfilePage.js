@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Modal } from '@material-ui/core';
 import Filters from '../../components/Filter/Filter';
 import { Redirect } from 'react-router-dom';
+import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 export default function ProfilePage() {
   const [coop, setCoop] = React.useState(null);
@@ -21,6 +23,8 @@ export default function ProfilePage() {
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
+  const [latLng, setLatLng] = React.useState(null);
+  const [address, setAddress] = React.useState('');
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
@@ -54,6 +58,15 @@ export default function ProfilePage() {
     }
     fetchData();
   }, []);
+
+  let selectLocation = async address => {
+    setAddress(address);
+    const results = await geocodeByAddress(address);
+    if (results.length != 0) {
+      const coords = await getLatLng(results[0]);
+      setLatLng(coords);
+    }
+  };
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -218,13 +231,11 @@ export default function ProfilePage() {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-
-          <input
-            className="profile-small-input"
-            type="text"
-            placeholder="Enter location:"
+          <LocationSearchInput
+            size="small"
             value={location}
             onChange={e => setLocation(e.target.value)}
+            handleSelect={selectLocation}
           />
 
           <input
@@ -267,6 +278,9 @@ export default function ProfilePage() {
       website: website,
       email: email,
       profile_pic: profilePicture,
+      addr: address,
+      latitude: latLng['lat'],
+      longitude: latLng['lng'],
       tags: tags,
     };
     await axios.put('/api/coop', data);
@@ -275,6 +289,22 @@ export default function ProfilePage() {
 
   if (!coop) {
     return <div>Loading...</div>;
+  }
+
+  function setProfileVariables(coop) {
+    setCoop(coop);
+    setLocation(coop['addr']);
+    setPhone(coop['phone_number']);
+    setTags(coop['tags']);
+    setMission(coop['mission_statement']);
+    setDescription(coop['description_text']);
+    setFbLink(coop['fb_link']);
+    setInstaLink(coop['insta_link']);
+    setEmail(coop['email']);
+    setWebsite(coop['website']);
+    setProfilePicture(coop['profile_pic']);
+    setName(coop['coop_name']);
+    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }
 
   return (
