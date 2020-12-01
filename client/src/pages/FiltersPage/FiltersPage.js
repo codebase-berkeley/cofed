@@ -39,11 +39,6 @@ export default function FiltersPage() {
     setCoops(res.data);
   }
 
-  async function fetchMyLocation() {
-    const res = await axios.get('/api/coop');
-    setMyLatitude(res.data['latitude']);
-    setMyLongitude(res.data['longitude']);
-  }
   async function fetchInitialData() {
     try {
       const res = await axios.get('/api/coops');
@@ -70,7 +65,6 @@ export default function FiltersPage() {
 
   React.useEffect(() => {
     fetchInitialData();
-    fetchMyLocation();
   }, []);
 
   if (!coops) {
@@ -79,44 +73,14 @@ export default function FiltersPage() {
 
   function findSortType() {
     if (sortType == 'alphabetical') {
-      console.log('entered findSortType');
       return sortAlphabetically;
     } else if (sortType == 'distance') {
-      return sortLocation;
+      return sortAlphabetically; // replace with 'sortLocation' once location option is configured
     }
   }
 
   function sortAlphabetically(coop1, coop2) {
-    console.log(coop1['coop_name']);
-    console.log(coop2['coop_name']);
-
     return coop1['coop_name'] > coop2['coop_name'] ? 1 : -1;
-    // return coop1['coop_name'] - coop2['coop_name'];
-  }
-
-  //hard coding myLat to 100
-  //and myLong to 100
-  /*   function distToMyCoop(coop) {
-    return Math.abs(
-      Math.sqrt((100 - coop['latitude']) ** 2 + (100 - coop['longitude']) ** 2)
-    );
-  }
- */
-  function sortLocation(coop1, coop2) {
-    // u can sort distances into an array (maybe map to id) then sort coops by this array basically
-    // coops.sort(function (my_coop, other_coop) {
-    //   list.sort(x)
-    // x (a, b):
-    // - , 0 , +
-    // return Math.abs(
-    //   Math.sqrt(
-    //     (coops[0].latitude - coop1.latitude) ** 2 +
-    //       (coop[0].longitude - coop1.longitude) ** 2
-    //   )
-    // );
-    /* coops.map(coop => distToMyCoop(coop));
-    return sort; */
-    // Math.abs( Math.sqrt( (100 - coop[latitude])**2 + (100 - coop[longitude] **2 ) )
   }
 
   function searchCoops(coop) {
