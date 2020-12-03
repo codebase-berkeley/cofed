@@ -15,7 +15,7 @@ export default function ProfilePage() {
   const [name, setName] = React.useState(null);
   const [location, setLocation] = React.useState(null);
   const [phone, setPhone] = React.useState(null);
-  const [tags, setTags] = React.useState(null);
+  const [tags, setTags] = React.useState([]);
   const [mission, setMission] = React.useState(null);
   const [description, setDescription] = React.useState(null);
   const [instaLink, setInstaLink] = React.useState(null);
@@ -118,18 +118,21 @@ export default function ProfilePage() {
             options={roleOptions}
             values={tagsRole}
             onChange={setTagsRole}
+            isMulti={true}
           />
           <Filters
             title="location"
             options={locationOptions}
             values={tagsLocation}
             onChange={setTagsLocation}
+            isMulti={true}
           />
           <Filters
             title="race"
             options={raceOptions}
             values={tagsRace}
             onChange={setTagsRace}
+            isMulti={true}
           />
         </div>
       </div>

@@ -91,10 +91,9 @@ export default function FiltersPage() {
   function searchCoops(coop) {
     if (searchInput === null) return true;
     else {
-      for (var k in coop) {
+      for (let k in coop) {
         if (
           typeof coop[k] === 'string' &&
-          k != 'hashed_pass' &&
           coop[k].toLowerCase().includes(searchInput.toLowerCase())
         ) {
           return true;

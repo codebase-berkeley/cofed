@@ -25,14 +25,14 @@ function getArrayOfTags(query) {
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
-    var command =
+    const commandForTags =
       'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1';
-    var values = [id];
+    const values = [id];
 
-    const queryTags = await db.query(command, values);
+    const queryTags = await db.query(commandForTags, values);
     const listOfTags = getArrayOfTags(queryTags);
 
-    var command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
+    const command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
     const query = await db.query(command, values);
 
     if (query.rows.length >= 1) {
