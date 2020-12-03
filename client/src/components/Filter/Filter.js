@@ -126,7 +126,6 @@ export default function MultiSelectSort(props) {
         options={props.options}
         value={props.values}
         onChange={onChange}
-        defaultValue={props.defaultValue}
         placeholder={
           props.isMulti ? 'Select ' + props.title + '...' : 'Sort by...'
         }
