@@ -14,7 +14,12 @@ import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
   const [listMode, setListMode] = React.useState(true);
-
+  const [sortType, setSortType] = React.useState([
+    {
+      value: 'alphabetical',
+      label: 'sort: alphabetical',
+    },
+  ]);
   const [location, setLocation] = React.useState([]);
   const [role, setRole] = React.useState([]);
   const [race, setRace] = React.useState([]);
@@ -23,6 +28,7 @@ export default function FiltersPage() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
+  const [searchInput, setSearchInput] = React.useState(null);
 
   function mapTilerProvider(x, y, z, dpr) {
     return `https://c.tile.openstreetmap.org/${z}/${x}/${y}.png`;
@@ -70,6 +76,33 @@ export default function FiltersPage() {
     return <div>Loading...</div>;
   }
 
+  function findSortType() {
+    if (sortType['value'] === 'alphabetical') {
+      return sortAlphabetically;
+    } else if (sortType['value'] === 'distance') {
+      return sortAlphabetically; // replace with 'sortLocation' once location option is configured
+    }
+  }
+
+  function sortAlphabetically(coop1, coop2) {
+    return coop1['coop_name'] > coop2['coop_name'] ? 1 : -1;
+  }
+
+  function searchCoops(coop) {
+    if (searchInput === null) return true;
+    else {
+      for (let k in coop) {
+        if (
+          typeof coop[k] === 'string' &&
+          coop[k].toLowerCase().includes(searchInput.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
   function toggleStar(starredId) {
     if (starredCoops.includes(starredId)) {
       //if the coop is already starred remove the coop from the list of starred
@@ -99,6 +132,8 @@ export default function FiltersPage() {
       return (
         <div className="list-mode">
           {coops
+            .sort(findSortType())
+            .filter(searchCoops)
             .filter(coop => starredCoops.includes(coop.id))
             .map((coop, index) => (
               <Card
@@ -117,18 +152,21 @@ export default function FiltersPage() {
     } else {
       return (
         <div className="list-mode">
-          {coops.map((coop, index) => (
-            <Card
-              key={index}
-              profile={coop.profile_pic}
-              name={coop.coop_name}
-              location={coop.addr}
-              tags={coop.tags}
-              starred={starredCoops.includes(coop.id)}
-              selected={selectedIndex === index}
-              onClick={() => renderProfile(coop, index)}
-            />
-          ))}
+          {coops
+            .sort(findSortType())
+            .filter(searchCoops)
+            .map((coop, index) => (
+              <Card
+                key={index}
+                profile={coop.profile_pic}
+                name={coop.coop_name}
+                location={coop.addr}
+                tags={coop.tags}
+                starred={starredCoops.includes(coop.id)}
+                selected={selectedIndex === index}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
         </div>
       );
     }
@@ -146,6 +184,7 @@ export default function FiltersPage() {
           >
             {coops
               .filter(coop => starredCoops.includes(coop.id))
+              .filter(searchCoops)
               .map((coop, index) => (
                 <Marker
                   payload={index}
@@ -166,16 +205,14 @@ export default function FiltersPage() {
             twoFingerDrag={true}
             provider={mapTilerProvider}
           >
-            {coops
-              .filter(coop => coop.addr)
-              .map((coop, index) => (
-                <Marker
-                  payload={index}
-                  key={index}
-                  anchor={[coop.latitude, coop.longitude]}
-                  onClick={() => renderProfile(coop, index)}
-                />
-              ))}
+            {coops.filter(searchCoops).map((coop, index) => (
+              <Marker
+                payload={index}
+                key={index}
+                anchor={[coop.latitude, coop.longitude]}
+                onClick={() => renderProfile(coop, index)}
+              />
+            ))}
           </Map>
         </div>
       );
@@ -279,6 +316,10 @@ export default function FiltersPage() {
     { value: 'queer', label: 'Queer-owned' },
     { value: 'nonprofit', label: 'Non-profit' },
   ];
+  const sortOptions = [
+    { value: 'alphabetical', label: 'sort: alphabetical' },
+    { value: 'distance', label: 'sort: distance' },
+  ];
 
   function handleStarToggle() {
     setSelectedIndex(null);
@@ -293,7 +334,7 @@ export default function FiltersPage() {
     async function onChange(event) {
       setSelectedIndex(null);
       setter(event);
-      if (event == null || event.length == 0) {
+      if (event === null || event.length === 0) {
         fetchAllCoops();
       } else {
         const params = {
@@ -337,7 +378,25 @@ export default function FiltersPage() {
             </label>
             <div className="filter-container">
               <div className="filter-scroll">
+                <input
+                  type="text"
+                  className="coops-search-bar"
+                  placeholder="Search..."
+                  onChange={e => setSearchInput(e.target.value)}
+                />
+
                 <Filters
+                  options={sortOptions}
+                  onChange={setSortType}
+                  defaultValue={[
+                    {
+                      value: 'alphabetical',
+                      label: 'alphabetical',
+                    },
+                  ]}
+                />
+                <Filters
+                  isMulti={true}
                   title="role"
                   options={roleOptions}
                   values={role}
@@ -348,24 +407,28 @@ export default function FiltersPage() {
                   options={locationOptions}
                   values={location}
                   onChange={setLocation}
+                  isMulti={true}
                 />
                 <Filters
                   title="race"
                   options={raceOptions}
                   values={race}
                   onChange={setRace}
+                  isMulti={true}
                 />
                 <Filters
                   title="products"
                   options={productOptions}
                   values={products}
                   onChange={setProducts}
+                  isMulti={true}
                 />
                 <Filters
                   title="other"
                   options={otherOptions}
                   values={other}
                   onChange={setOther}
+                  isMulti={true}
                 />
               </div>
             </div>
