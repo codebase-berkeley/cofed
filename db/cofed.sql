@@ -35,7 +35,8 @@ CREATE TABLE stars
 CREATE TABLE tags
 (
     id SERIAL PRIMARY KEY,
-    tag_name VARCHAR
+    tag_name VARCHAR,
+    category_id SERIAL REFERENCES categories(id),
 );
 
 CREATE TABLE coop_tags
@@ -43,6 +44,13 @@ CREATE TABLE coop_tags
     id SERIAL PRIMARY KEY,
     coop_id SERIAL REFERENCES coops (id),
     tag_id SERIAL REFERENCES tags (id)
+);
+
+
+CREATE TABLE categories
+(
+    id SERIAL PRIMARY KEY,
+    category_name VARCHAR,
 );
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO root;
@@ -84,7 +92,6 @@ VALUES
     (3, 4),
     (4, 1),
     (5, 2);
-
 
 INSERT INTO tags
     (tag_name)
