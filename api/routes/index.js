@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
+const format = require('pg-format');
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
   'latitude, longitude, website, mission_statement, ' +
@@ -21,14 +22,6 @@ function isAuthenticated(req, res, next) {
 function getArrayOfTags(query) {
   return query.rows.map(Object.values).flat();
 }
-
-/** Returns the difference between two arrays
- *  Returns an array of objects in Array1 that are not in Array2 */
-function diffArray(arr1, arr2) {
-  var n = arr1.filter(x => !arr2.includes(x));
-  return n;
-}
-
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
@@ -69,8 +62,8 @@ router.get('/coops', isAuthenticated, async (req, res) => {
   try {
     const query = await db.query(
       'SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags, ' +
-        coop_fields +
-        ' FROM coops;'
+      coop_fields +
+      ' FROM coops;'
     );
     res.send(query.rows);
   } catch (error) {
@@ -91,8 +84,8 @@ router.get('/filteredCoops', async (req, res) => {
             JOIN tags ON coop_tags.tag_id = tags.id
             WHERE coop_tags.coop_id= coops.id)
           AS tags, ` +
-        coop_fields +
-        ` FROM coops WHERE ARRAY(
+      coop_fields +
+      ` FROM coops WHERE ARRAY(
               SELECT tag_id 
               FROM coop_tags 
               JOIN tags 
@@ -102,6 +95,16 @@ router.get('/filteredCoops', async (req, res) => {
              @> $1;`,
       [tagParams]
     );
+    res.send(query.rows);
+  } catch (error) {
+    console.log(error.stack);
+  }
+});
+
+//retrieving ALL tags in our tags table and returning a list
+router.get('/tags', async (req, res) => {
+  try {
+    const query = await db.query(`SELECT * FROM tags;`);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -172,12 +175,14 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     email,
     profile_pic,
     tags,
+    latitude,
+    longitude,
   } = req.body;
 
   const updateQueryText =
     'UPDATE coops SET email = $2, coop_name = $3, addr = $4, ' +
     'phone_number = $5, mission_statement = $6, description_text = $7,' +
-    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11 WHERE id = $1';
+    'insta_link = $8, fb_link = $9, website = $10, profile_pic = $11, latitude = $12, longitude = $13 WHERE id = $1';
   const updateQueryValues = [
     coopId,
     email,
@@ -190,26 +195,31 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     fb_link,
     website,
     profile_pic,
+    latitude,
+    longitude,
   ];
-
-  var queryTags = await db.query(
-    'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1',
-    [coopId]
-  );
-  var listOfTagsDatabase = getArrayOfTags(queryTags);
-
-  deleteArray = diffArray(listOfTagsDatabase, tags);
-  addArray = diffArray(tags, listOfTagsDatabase);
-
   try {
+    await db.query('BEGIN');
     await db.query(updateQueryText, updateQueryValues);
-    await db.query(
-      `DELETE FROM coop_tags WHERE coop_id = $1 AND tag_id IN (SELECT id from tags WHERE tag_name = ANY ($2));`,
-      [coopId, deleteArray]
-    );
 
+    await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
+
+    var namesToIds = await db.query(
+      'SELECT id from tags WHERE tag_name = ANY ($1)',
+      [tags]
+    );
+    namesToIds = namesToIds.rows.map(dict => [coopId, dict['id']]);
+    if (namesToIds.length > 0) {
+      const queryInsertTags = format(
+        `INSERT INTO coop_tags (coop_id, tag_id) VALUES %L`,
+        namesToIds
+      );
+      await db.query(queryInsertTags);
+    }
+    await db.query('COMMIT');
     res.send(`Successfully updated coop ${coopId}`);
   } catch (err) {
+    await db.query('ROLLBACK');
     console.log(err.stack);
   }
 });

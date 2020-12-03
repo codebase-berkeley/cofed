@@ -194,7 +194,7 @@
   color: #00849c;
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 85%;
   flex-wrap: wrap;
 }
 
@@ -319,4 +319,90 @@
   height: 1em;
   fill: grey;
   cursor: pointer;
+}
+
+.profile-edit-tags-button {
+  background-color: #81a1b7;
+  color: #f8f9fb;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  border-radius: 20px;
+  border-width: 0px;
+  padding: 4px 22px;
+  margin-top: 10px;
+  margin-left: 7px;
+  font-size: 12px;
+}
+
+.profile-edit-tags-modal-button {
+  background-color: #81a1b7;
+  color: #f8f9fb;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  border-radius: 20px;
+  border-width: 0px;
+  padding: 4px 22px;
+  margin-top: 10px;
+  margin-left: 7px;
+  font-size: 20px;
+}
+
+.profile-modal-tags {
+  outline: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  outline: none;
+  align-self: center;
+  fill: #f8f9fb;
+}
+
+.profile-edit-tags-dropdowns {
+  border-radius: 10px;
+  border: 1px solid #81a1b7;
+  height: fit-content;
+  margin: 15px;
+  padding: 30px;
+  background: #f8f9fb;
+  width: 80vw;
+  height: 60vh;
+  align-self: flex-start;
+  align-items: flex-start;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: visible;
+  justify-content: center;
+  flex-direction: row;
+}
+.profile-filter-scroll {
+  flex-direction: row;
+  display: flex;
+  width: 99%;
+  overflow: visible;
+  overflow-y: visible;
+}
+
+.modal-popup {
+  overflow: visible;
+}
+
+.modal-header {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  color: #81a1b7;
+  font-size: 30px;
+}
+
+.modal-body {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fb;
+  outline: none;
+  height: 80vh;
+  overflow: auto;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #81a1b7;
 }

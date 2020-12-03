@@ -8,7 +8,7 @@ require('../passport-config');
 
 router.post('/register', async (req, res) => {
   try {
-    const { email, name, addr, password } = req.body;
+    const { email, name, addr, password, latitude, longitude } = req.body;
     const emailQuery = await db.query(
       `SELECT id FROM coops WHERE email = $1;`,
       [email]
@@ -16,9 +16,9 @@ router.post('/register', async (req, res) => {
     if (emailQuery.rows.length == 0) {
       let hashedPass = await bcrypt.hash(password, SALT_FACTOR);
       const insert_query = await db.query(
-        `INSERT INTO coops (email, hashed_pass, coop_name, addr)
-        VALUES ($1, $2, $3, $4)`,
-        [email, hashedPass, name, addr]
+        `INSERT INTO coops (email, hashed_pass, coop_name, addr, latitude, longitude)
+        VALUES ($1, $2, $3, $4, $5, $6)`,
+        [email, hashedPass, name, addr, latitude, longitude]
       );
       res.send(insert_query.rows);
     } else {

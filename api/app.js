@@ -17,7 +17,11 @@ app.listen(port, () => {
 });
 
 app.use(
-  session({ resave: false, saveUninitialized: false, secret: 'keyboard cat' })
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SESSION_ID,
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
