@@ -1,6 +1,10 @@
 const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
+const coop_fields =
+  'id, email, coop_name, phone_number, addr, ' +
+  'latitude, longitude, website, mission_statement, ' +
+  'description_text, profile_pic, insta_link, fb_link';
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

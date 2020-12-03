@@ -77,9 +77,9 @@ export default function FiltersPage() {
   }
 
   function findSortType() {
-    if (sortType['value'] == 'alphabetical') {
+    if (sortType['value'] === 'alphabetical') {
       return sortAlphabetically;
-    } else if (sortType['value'] == 'distance') {
+    } else if (sortType['value'] === 'distance') {
       return sortAlphabetically; // replace with 'sortLocation' once location option is configured
     }
   }
@@ -89,13 +89,13 @@ export default function FiltersPage() {
   }
 
   function searchCoops(coop) {
-    if (searchInput == null) return true;
+    if (searchInput === null) return true;
     else {
       for (var k in coop) {
         if (
-          typeof coop[k] == 'string' &&
+          typeof coop[k] === 'string' &&
           k != 'hashed_pass' &&
-          coop[k].includes(searchInput)
+          coop[k].toLowerCase().includes(searchInput.toLowerCase())
         ) {
           return true;
         }
@@ -335,7 +335,7 @@ export default function FiltersPage() {
     async function onChange(event) {
       setSelectedIndex(null);
       setter(event);
-      if (event == null || event.length == 0) {
+      if (event === null || event.length === 0) {
         fetchAllCoops();
       } else {
         const params = {
