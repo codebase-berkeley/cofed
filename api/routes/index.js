@@ -67,8 +67,11 @@ router.get('/tags', async (req, res) => {
 //retrieve all coops with their tag
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
-    const query = await db.query('SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags, '
-      + coop_fields + ' FROM coops;');
+    const query = await db.query(
+      'SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags, ' +
+        coop_fields +
+        ' FROM coops;'
+    );
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -88,7 +91,8 @@ router.get('/filteredCoops', async (req, res) => {
             JOIN tags ON coop_tags.tag_id = tags.id
             WHERE coop_tags.coop_id= coops.id)
           AS tags, ` +
-      coop_fields + ` FROM coops WHERE ARRAY(
+        coop_fields +
+        ` FROM coops WHERE ARRAY(
               SELECT tag_id 
               FROM coop_tags 
               JOIN tags 
