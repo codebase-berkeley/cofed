@@ -5,15 +5,15 @@ import plusSign from '../../assets/plus-sign.svg';
 import axios from 'axios';
 import { Modal } from '@material-ui/core';
 import Filters from '../../components/Filter/Filter';
-import { Redirect } from 'react-router-dom';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { UserContext } from '../../Context';
 
 export default function ProfilePage() {
+  const { user, setUser } = React.useContext(UserContext);
+
   const [coop, setCoop] = React.useState(null);
-  const [redirect, setRedirect] = React.useState(false);
   const [name, setName] = React.useState(null);
-  const [location, setLocation] = React.useState(null);
   const [phone, setPhone] = React.useState(null);
   const [tags, setTags] = React.useState([]);
   const [mission, setMission] = React.useState(null);
@@ -30,7 +30,7 @@ export default function ProfilePage() {
 
   function setProfileVariables(coop) {
     setCoop(coop);
-    setLocation(coop['addr']);
+    setAddress(coop['addr']);
     setPhone(coop['phone_number']);
     setTags(coop['tags']);
     setMission(coop['mission_statement']);
@@ -47,13 +47,11 @@ export default function ProfilePage() {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('/api/coop');
-        setProfileVariables(res.data);
-
+        setProfileVariables(user);
         const allTags = await axios.get('/api/tags');
         setDropDownOptions(allTags.data);
       } catch (err) {
-        setRedirect(true);
+        console.log(err);
       }
     }
     fetchData();
@@ -75,7 +73,8 @@ export default function ProfilePage() {
 
   const handleClose = () => {
     setOpen(false);
-    setTags(tagsRole.map(dictValue));
+    if (tagsRole) setTags(tagsRole.map(dictValue));
+    else setTags([]);
   };
 
   const [tagsRole, setTagsRole] = React.useState(tags);
@@ -141,10 +140,6 @@ export default function ProfilePage() {
       </button>
     </div>
   );
-
-  if (redirect) {
-    return <Redirect to="/login" />;
-  }
 
   function renderEdit() {
     return (
@@ -236,8 +231,8 @@ export default function ProfilePage() {
           />
           <LocationSearchInput
             size="small"
-            value={location}
-            onChange={e => setLocation(e.target.value)}
+            value={address}
+            onChange={e => setAddress(e.target.value)}
             handleSelect={selectLocation}
           />
 
@@ -272,7 +267,7 @@ export default function ProfilePage() {
   async function putData() {
     const data = {
       coop_name: name,
-      addr: location,
+      addr: address,
       phone_number: phone,
       mission_statement: mission,
       description_text: description,
@@ -288,6 +283,7 @@ export default function ProfilePage() {
     };
     await axios.put('/api/coop', data);
     setProfileVariables(data);
+    setUser(data);
   }
 
   if (!coop) {
@@ -296,7 +292,7 @@ export default function ProfilePage() {
 
   function setProfileVariables(coop) {
     setCoop(coop);
-    setLocation(coop['addr']);
+    setAddress(coop['addr']);
     setPhone(coop['phone_number']);
     setTags(coop['tags']);
     setMission(coop['mission_statement']);

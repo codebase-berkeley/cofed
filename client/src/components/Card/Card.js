@@ -23,11 +23,7 @@ export default function CardComponent(props) {
     <div onClick={props.onClick}>
       <div className={cardContainerClass}>
         <div className="card-pic-text-container">
-          <img
-            className="card-profile-pic"
-            alt="Image"
-            src={props.profile_pic}
-          />
+          <img className="card-profile-pic" src={props.profile_pic} />
           <div className="card-name-container">
             <div className="card-name-star-wrapper">
               <div className="card-co-op-name">{props.name}</div>

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlacesAutocomplete from 'react-places-autocomplete';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+} from 'react-places-autocomplete';
 import './LocationSearchInput.css';
 
 class LocationSearchInput extends React.Component {
@@ -19,6 +21,15 @@ class LocationSearchInput extends React.Component {
   handleSelect = address => {
     this.setState({ address });
     this.props.handleSelect(address);
+  };
+
+  geocodeFilter = async address => {
+    try {
+      await geocodeByAddress(address);
+      return true;
+    } catch (err) {
+      return false;
+    }
   };
 
   render() {
@@ -51,7 +62,7 @@ class LocationSearchInput extends React.Component {
             />
             <div className={dropdownClassName}>
               {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion, i) => {
+              {suggestions.filter(this.geocodeFilter).map((suggestion, i) => {
                 const className = suggestion.active
                   ? 'suggestion-item--active'
                   : 'suggestion-item';

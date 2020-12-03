@@ -1,25 +1,23 @@
 import React from 'react';
 import logo from '../../assets/CoFEDlogo.png';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Navbar.css';
 import axios from 'axios';
+import { UserContext } from '../../Context';
 
 export default function NavBar(props) {
-  const [redirect, setRedirect] = React.useState(false);
+  const { setUser } = React.useContext(UserContext);
 
   async function logout() {
     try {
       await axios.post('/auth/logout');
-      setRedirect(true);
+      setUser(null);
     } catch (err) {
-      setRedirect(false);
+      console.log(err);
     }
   }
 
-  if (redirect) {
-    return <Redirect to="/login" />;
-  }
   return (
     <div className="navbar">
       <Link to="/">

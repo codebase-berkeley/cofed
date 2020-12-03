@@ -1,7 +1,7 @@
 import './FiltersPage.css';
 import './ReactToggle.css';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { UserContext } from '../../Context';
 
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
@@ -13,6 +13,7 @@ import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
+  const { setUser } = React.useContext(UserContext);
   const [listMode, setListMode] = React.useState(true);
   const [sortType, setSortType] = React.useState([
     {
@@ -27,7 +28,6 @@ export default function FiltersPage() {
   const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
-  const [redirect, setRedirect] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState(null);
 
   function mapTilerProvider(x, y, z, dpr) {
@@ -52,7 +52,7 @@ export default function FiltersPage() {
         setCoopShown(res.data[0]);
       }
     } catch (err) {
-      setRedirect(true);
+      setUser(null);
     }
 
     //get the toggle star info
@@ -324,10 +324,6 @@ export default function FiltersPage() {
   function handleStarToggle() {
     setSelectedIndex(null);
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
-  }
-
-  if (redirect) {
-    return <Redirect to="/login" />;
   }
 
   function handleChange(setter) {

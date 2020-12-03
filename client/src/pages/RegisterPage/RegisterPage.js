@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './RegisterPage.css';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import axios from 'axios';
@@ -10,31 +10,31 @@ export default function RegisterPage() {
   const [passwordInput, setPasswordInput] = React.useState('');
   const [emailInput, setEmailInput] = React.useState('');
   const [locationInput, setLocationInput] = React.useState('');
-  const [redirect, setRedirect] = React.useState(false);
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
 
   let selectLocation = async address => {
-    const results = await geocodeByAddress(address);
-    const coords = await getLatLng(results[0]);
-    setLatLng(coords);
+    if (address) {
+      const results = await geocodeByAddress(address);
+      const coords = await getLatLng(results[0]);
+      setLatLng(coords);
+    }
     setAddress(address);
   };
 
   async function createAccount() {
-    await axios.post('/auth/register', {
-      email: emailInput,
-      name: nameInput,
-      addr: address,
-      password: passwordInput,
-      latitude: latLng['lat'],
-      longitude: latLng['lng'],
-    });
-    setRedirect(true);
-  }
-
-  if (redirect) {
-    return <Redirect to="/login" />;
+    try {
+      await axios.post('/auth/register', {
+        email: emailInput,
+        name: nameInput,
+        addr: address,
+        password: passwordInput,
+        latitude: latLng['lat'],
+        longitude: latLng['lng'],
+      });
+    } catch (err) {
+      alert('could not register account');
+    }
   }
 
   return (
