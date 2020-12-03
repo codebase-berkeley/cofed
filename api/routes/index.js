@@ -7,6 +7,8 @@ const coop_fields =
   'latitude, longitude, website, mission_statement, ' +
   'description_text, profile_pic, insta_link, fb_link';
 
+//group by category --> use array "aggregator" to combine coops
+
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
