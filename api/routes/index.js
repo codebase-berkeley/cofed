@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 const coop_fields =
-  'id, email, coop_name, phone_number, addr, ' +
+  'id, email, hashed_pass, coop_name, phone_number, addr, ' +
   'latitude, longitude, website, mission_statement, ' +
   'description_text, profile_pic, insta_link, fb_link';
 
@@ -39,7 +39,8 @@ router.get('/coop', isAuthenticated, async (req, res) => {
     const queryTags = await db.query(command, values);
     const listOfTags = getArrayOfTags(queryTags);
 
-    var command = 'SELECT * FROM coops WHERE id = $1';
+    // var command = 'SELECT * FROM coops WHERE id = $1';
+    var command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
     const query = await db.query(command, values);
 
     if (query.rows.length >= 1) {
@@ -66,8 +67,8 @@ router.get('/tags', async (req, res) => {
 //retrieve all coops with their tag
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
-    const query = await db.query(`SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags,
-    * FROM coops;`);
+    const query = await db.query('SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags, '
+      + coop_fields + ' FROM coops;');
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -80,14 +81,14 @@ router.get('/filteredCoops', async (req, res) => {
 
   try {
     const query = await db.query(
-      `SELECT 
+      `SELECT
           ARRAY(
             SELECT tag_name 
             FROM coop_tags 
             JOIN tags ON coop_tags.tag_id = tags.id
             WHERE coop_tags.coop_id= coops.id)
-          AS tags,
-          * FROM coops WHERE ARRAY(
+          AS tags, ` +
+      coop_fields + ` FROM coops WHERE ARRAY(
               SELECT tag_id 
               FROM coop_tags 
               JOIN tags 
