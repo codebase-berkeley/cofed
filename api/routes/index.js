@@ -32,7 +32,6 @@ router.get('/coop', isAuthenticated, async (req, res) => {
     const queryTags = await db.query(command, values);
     const listOfTags = getArrayOfTags(queryTags);
 
-    // var command = 'SELECT * FROM coops WHERE id = $1';
     var command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
     const query = await db.query(command, values);
 
@@ -62,8 +61,8 @@ router.get('/coops', isAuthenticated, async (req, res) => {
   try {
     const query = await db.query(
       'SELECT ARRAY(SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id= coops.id) AS tags, ' +
-        coop_fields +
-        ' FROM coops;'
+      coop_fields +
+      ' FROM coops;'
     );
     res.send(query.rows);
   } catch (error) {
@@ -84,8 +83,8 @@ router.get('/filteredCoops', async (req, res) => {
             JOIN tags ON coop_tags.tag_id = tags.id
             WHERE coop_tags.coop_id= coops.id)
           AS tags, ` +
-        coop_fields +
-        ` FROM coops WHERE ARRAY(
+      coop_fields +
+      ` FROM coops WHERE ARRAY(
               SELECT tag_id 
               FROM coop_tags 
               JOIN tags 
