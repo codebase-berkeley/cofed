@@ -2,6 +2,11 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
+const AWS = require('aws-sdk');
+const PORT = 3200;
+// Create S3 service object
+// s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
   'latitude, longitude, website, mission_statement, ' +

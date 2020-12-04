@@ -8,6 +8,7 @@ import Filters from '../../components/Filter/Filter';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { UserContext } from '../../Context';
+import Dropzone from '../../components/Dropzone/Dropzone';
 
 export default function ProfilePage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -25,6 +26,7 @@ export default function ProfilePage() {
   const [profilePicture, setProfilePicture] = React.useState(null);
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
+  // const [imageObject, setImage] = React.useState(null);
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
@@ -42,6 +44,7 @@ export default function ProfilePage() {
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
     setTagsRole(coop['tags'].map(tagNameToDropDownOption));
+    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }
 
   React.useEffect(() => {
@@ -66,16 +69,50 @@ export default function ProfilePage() {
     }
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const [tagsModalOpen, setTagsModalOpen] = React.useState(false);
+  const handleTagsModalOpen = () => {
+    setTagsModalOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleTagsModalClose = () => {
+    setTagsModalOpen(false);
     if (tagsRole) setTags(tagsRole.map(dictValue));
     else setTags([]);
   };
+
+  const [picModalOpen, setPicModalOpen] = React.useState(false);
+  const handlePicModalOpen = () => {
+    setPicModalOpen(true);
+  };
+
+  const handlePicModalClose = () => {
+    setPicModalOpen(false);
+    //retrieve the image from modal
+    // let image = await getImage();
+    // let encoding = "'data:image/jpeg;base64," + encode(image.Body) + "'"
+    //set the image to image returned
+    // setProfilePicture(encoding);
+  };
+
+  // let s3 = new AWS.S3();
+
+  //retreive the image via s3 object
+  // async function getImage() {
+  //   const data = s3
+  //     .getObject({
+  //       Bucket: 'companyimages',
+  //       Key: 'your stored image',
+  //     })
+  //     .promise();
+  //   return data;
+  // }
+
+  //encode the image
+  // function encode(data){
+  //   let buf = Buffer.from(data);
+  //   let base64 = buf.toString('base64');
+  //   return base64
+  //   }
 
   const [tagsRole, setTagsRole] = React.useState(tags);
   const [tagsLocation, setTagsLocation] = React.useState([]);
@@ -106,7 +143,7 @@ export default function ProfilePage() {
 
   const roleOptions = dropDownOptions.map(tagQueryToDropDownOption);
 
-  const body = (
+  const tagsModalBody = (
     <div className="modal-body">
       <div className="modal-header">Select Tags</div>
 
@@ -135,7 +172,23 @@ export default function ProfilePage() {
           />
         </div>
       </div>
-      <button onClick={handleClose} className="profile-edit-tags-modal-button">
+      <button
+        onClick={handleTagsModalClose}
+        className="profile-edit-tags-modal-button"
+      >
+        Confirm
+      </button>
+    </div>
+  );
+
+  const picModalBody = (
+    <div className="modal-body">
+      <div className="modal-header">Select Profile Picture</div>
+      <Dropzone />
+      <button
+        onClick={handlePicModalClose}
+        className="profile-edit-tags-modal-button"
+      >
         Confirm
       </button>
     </div>
@@ -151,16 +204,19 @@ export default function ProfilePage() {
               tags.map((text, index) => (
                 <Tag key={index} text={text} index={index} />
               ))}
-            <button onClick={handleOpen} className="profile-edit-tags-button">
+            <button
+              onClick={handleTagsModalOpen}
+              className="profile-edit-tags-button"
+            >
               Edit tags
             </button>
             <div className="modal-popup">
               <Modal
                 className="profile-modal-tags"
-                open={open}
-                onClose={handleClose}
+                open={tagsModalOpen}
+                onClose={handleTagsModalClose}
               >
-                {body}
+                {tagsModalBody}
               </Modal>
             </div>
           </div>
@@ -219,7 +275,21 @@ export default function ProfilePage() {
       <div className="profile-pic-text-container">
         <div className="profile-pic-container">
           <img className="profile-pic-edit" alt="Image" src={profilePicture} />
-          <img className="profile-edit-pic" alt="Image" src={plusSign} />
+          <img
+            onClick={handlePicModalOpen}
+            className="profile-edit-pic"
+            alt="Image"
+            src={plusSign}
+          />
+        </div>
+        <div className="modal-popup">
+          <Modal
+            className="profile-modal-tags"
+            open={picModalOpen}
+            onClose={handlePicModalClose}
+          >
+            {picModalBody}
+          </Modal>
         </div>
         <div className="profile-edit-profile-text-container">
           <input
@@ -290,7 +360,7 @@ export default function ProfilePage() {
     return <div>Loading...</div>;
   }
 
-  function setProfileVariables(coop) {
+  /*   function setProfileVariables(coop) {
     setCoop(coop);
     setAddress(coop['addr']);
     setPhone(coop['phone_number']);
@@ -304,7 +374,7 @@ export default function ProfilePage() {
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
     setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
-  }
+  } */
 
   return (
     <Profile

@@ -34,15 +34,15 @@ class LocationSearchInput extends React.Component {
 
   render() {
     let locationClassName =
-      this.props.size == 'big'
+      this.props.size === 'big'
         ? 'location-search-input-large'
         : 'location-search-input-small';
     let dropdownClassName =
-      this.props.size == 'big'
+      this.props.size === 'big'
         ? 'autocomplete-dropdown-container-large'
         : 'autocomplete-dropdown-container-small';
     let divClassName =
-      this.props.size == 'big'
+      this.props.size === 'big'
         ? 'autocomplete-wrapper-large'
         : 'autocomplete-wrapper-small';
     return (
