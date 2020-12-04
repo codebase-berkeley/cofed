@@ -30,7 +30,9 @@ router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
     const commandForTags =
-      'SELECT categories.id, array_agg(tags.id) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;';
+      // 'SELECT categories.id, array_agg(tags.id) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;';
+      'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1';
+
     const values = [id];
 
     //ADD CATEGORIES HERE YES //
@@ -61,7 +63,7 @@ router.get('/tags', async (req, res) => {
   try {
     //ADD CATEGORIES HERE//
     const query = await db.query(
-      `SELECT categories.id, array_agg(tags.id) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;`
+      `SELECT categories, array_agg(tags) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;`
     );
     res.send(query.rows);
   } catch (error) {

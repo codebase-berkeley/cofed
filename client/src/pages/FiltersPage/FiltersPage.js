@@ -38,7 +38,7 @@ export default function FiltersPage() {
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
-  //tags.data= [{1: [1,2,3,4,5],}, {2: [6,7,8]}]
+  const [arrayOfFiltersInfo, setArrayOfFiltersInfo] = React.useState([]);
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -65,10 +65,27 @@ export default function FiltersPage() {
     // setStarredCoops(starredIds);
 
     //get the tags to put in the filters dropdown
+    //tags.data = 0: [{categories: "(1,Role)", array_agg: "{"(1,Cooperative,1)","(2,Distributor,1)","(3,Producer,1)"]
     const tags = await axios.get('/api/tags');
-    console.log(tags.data);
-    //tags.data= [{1: [1,2,3,4,5],}, {2: [6,7,8]}]
+    const modTag = tags.data.map(getCategoryInfo);
+    console.log(modTag);
+    // console.log(modTag);
+    // setArrayOfFiltersInfo(d);
     setDropDownOptions(tags.data);
+    setArrayOfFiltersInfo(modTag);
+  }
+
+  function getCategoryInfo(categoryWithTags) {
+    const categoryName = categoryWithTags['categories']
+      .replace(')', '')
+      .replace('(', '')
+      .split(',')[1];
+
+    const options = [
+      { value: 'alphabetical', label: 'sort: alphabetical' },
+      { value: 'distance', label: 'sort: distance' },
+    ];
+    return [categoryName, options];
   }
 
   React.useEffect(() => {
@@ -281,23 +298,32 @@ export default function FiltersPage() {
 
   //THING TO HOLD THE DATA
   //An array of dictionarys where reach dictionary has a name and a arrayOfOptions
+  //                NameAndOptionsArray
   // [{name: roleOptions, arrayOfOptions:valueLabelDicts}
   //   name: raceOptions, arrayOfOptions:valueLabelDicts}]
 
-  //tags.data = [{1: [1,2,3,4,5]}, {2: [6,7,8]}] =
+  //tags.data = 0: [{categories: "(1,Role)", array_agg: "{"(1,Cooperative,1)","(2,Distributor,1)","(3,Producer,1)"]
+
+  //tags.data.map(turnToFilter)
+
   /* for dict in tags.data {
 
       for(let category_id in dict) {
         arrayOfTagIds = dict[category_id]
         arrayOfTagIds.map(makeDictionary) --> but each "tag" needs to be a dictionary with a name and id, NOT JUST A NUMBER
+        
+        var d = {name: category_id
+                arrayOfOptions: arrayOfTagsIds}
+
+        NameAndOptionsArray.append(d);
 
 
   // do something with "key" and "value" variables
 }
   }
 
-
   */
+
   /**roleOptions = [
     {value: 1, label: 1},
     {value: 2, label: 2}.
@@ -436,7 +462,6 @@ export default function FiltersPage() {
                   placeholder="Search..."
                   onChange={e => setSearchInput(e.target.value)}
                 />
-
                 <Filters
                   options={sortOptions}
                   onChange={setSortType}
@@ -447,6 +472,17 @@ export default function FiltersPage() {
                     },
                   ]}
                 />
+                {arrayOfFiltersInfo &&
+                  arrayOfFiltersInfo.map((categoryName, options) => (
+                    <Filters
+                      isMulti={true}
+                      title={categoryName}
+                      options={options}
+                      values={role}
+                      onChange={handleChange(setRole)}
+                    />
+                  ))}
+                {/*
                 <Filters
                   isMulti={true}
                   title="role"
@@ -481,7 +517,7 @@ export default function FiltersPage() {
                   values={other}
                   onChange={setOther}
                   isMulti={true}
-                />
+                /> */}
               </div>
             </div>
           </div>
