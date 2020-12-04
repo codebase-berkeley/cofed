@@ -65,7 +65,8 @@ export default function FiltersPage() {
 
     //get the tags to put in the filters dropdown
     const tags = await axios.get('/api/tags');
-    setDropDownOptions(tags.data);
+    console.logs(tags.data);
+    // setDropDownOptions(tags.data);
   }
 
   React.useEffect(() => {
