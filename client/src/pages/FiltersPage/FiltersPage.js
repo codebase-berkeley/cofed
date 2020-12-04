@@ -38,6 +38,7 @@ export default function FiltersPage() {
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
+  //tags.data= [{1: [1,2,3,4,5],}, {2: [6,7,8]}]
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -45,28 +46,29 @@ export default function FiltersPage() {
   }
 
   async function fetchInitialData() {
-    try {
-      const res = await axios.get('/api/coops');
-      setCoops(res.data);
-      if (res.data.length !== 0) {
-        setCoopShown(res.data[0]);
-      }
-    } catch (err) {
-      setUser(null);
-    }
+    // try {
+    // //   const res = await axios.get('/api/coops');
+    // //   setCoops(res.data);
+    // //   if (res.data.length !== 0) {
+    // //     setCoopShown(res.data[0]);
+    // //   }
+    // // } catch (err) {
+    // //   setUser(null);
+    // // }
 
-    //get the toggle star info
-    const starred = await axios.get('/api/getStarred');
-    //set the query data as the starred coops
-    let starredIds = starred.data.map(e => {
-      return e.starred_coop_id;
-    });
-    setStarredCoops(starredIds);
+    // //get the toggle star info
+    // const starred = await axios.get('/api/getStarred');
+    // //set the query data as the starred coops
+    // let starredIds = starred.data.map(e => {
+    //   return e.starred_coop_id;
+    // });
+    // setStarredCoops(starredIds);
 
     //get the tags to put in the filters dropdown
     const tags = await axios.get('/api/tags');
-    console.logs(tags.data);
-    // setDropDownOptions(tags.data);
+    console.log(tags.data);
+    //tags.data= [{1: [1,2,3,4,5],}, {2: [6,7,8]}]
+    setDropDownOptions(tags.data);
   }
 
   React.useEffect(() => {
@@ -276,6 +278,59 @@ export default function FiltersPage() {
     };
     return dict;
   }
+
+  //THING TO HOLD THE DATA
+  //An array of dictionarys where reach dictionary has a name and a arrayOfOptions
+  // [{name: roleOptions, arrayOfOptions:valueLabelDicts}
+  //   name: raceOptions, arrayOfOptions:valueLabelDicts}]
+
+  //tags.data = [{1: [1,2,3,4,5]}, {2: [6,7,8]}] =
+  /* for dict in tags.data {
+
+      for(let category_id in dict) {
+        arrayOfTagIds = dict[category_id]
+        arrayOfTagIds.map(makeDictionary) --> but each "tag" needs to be a dictionary with a name and id, NOT JUST A NUMBER
+
+
+  // do something with "key" and "value" variables
+}
+  }
+
+
+  */
+  /**roleOptions = [
+    {value: 1, label: 1},
+    {value: 2, label: 2}.
+    {value: 3, label: 3}.
+    {value: 4, label: 4}.
+    {value: 5, label: 5}.
+]
+  raceOptions = [
+    {value: 6, label: 6},
+    {value: 7, label: 7}.
+    {value: 8, label: 8}.
+]
+**/
+
+  /**
+ *    <Filters
+          isMulti={true}
+          title="role"
+          options={roleOptions}
+          values={role}
+          onChange={handleChange(setRole)}
+        />
+
+      <Filters
+          isMulti={true}
+          title="role"
+          options={raceOptions}
+          values={role}
+          onChange={handleChange(setRole)}
+        />
+ */
+
+  function DropDownOptionsToRoleOptions() {}
 
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
 

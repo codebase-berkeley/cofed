@@ -30,19 +30,23 @@ router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
     const commandForTags =
-      //SELECT categories.id, array_agg(tags.id) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;
-      'SELECT categories, ARRAY() FROM categories, tags, coop_tags GROUP BY categories HAVING categories.id = category_id AND tag_id = id';
+      'SELECT categories.id, array_agg(tags.id) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;';
     const values = [id];
 
     //ADD CATEGORIES HERE YES //
     const queryTags = await db.query(commandForTags, values);
+    //queryTags.rows = [{0: [1,2,3,4,5],}, {1: [6,7,8]}]
+    // res.send(queryTags.rows);
+
+    //figure out how to translate the tag id's into names
+
     const listOfTags = getArrayOfTags(queryTags);
 
     const command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
     const query = await db.query(command, values);
 
     if (query.rows.length >= 1) {
-      query.rows[0]['tags'] = listOfTags;
+      query.rows[0]['tags'] = queryTags.rows;
       res.send(query.rows[0]);
     } else {
       res.status(404).send({ error: `coop ${id} not found` });
