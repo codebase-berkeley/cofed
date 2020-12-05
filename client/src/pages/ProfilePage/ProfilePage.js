@@ -23,12 +23,19 @@ export default function ProfilePage() {
   const [fbLink, setFbLink] = React.useState(null);
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
-  const [profilePicture, setProfilePicture] = React.useState(null);
+
+  let initialImage = getImage()
+  let encoding = "'data:image/jpeg;base64," + encode(initialImage.Body) + "'"
+  const [profilePicture, setProfilePicture] = React.useState(encoding);
+  
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
-  // const [imageObject, setImage] = React.useState(null);
+  const [imageFile, setImageFile] = React.useState(null);
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
+  
+  let AWS = require('aws-sdk');
+  let s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
   function setProfileVariables(coop) {
     setCoop(coop);
@@ -85,34 +92,37 @@ export default function ProfilePage() {
     setPicModalOpen(true);
   };
 
+  //retrieve the photo from the dropzone and set the imageFile state
+  function retrievePhoto(img) {
+    setImageFile(img);
+  }
+
   const handlePicModalClose = () => {
     setPicModalOpen(false);
     //retrieve the image from modal
-    // let image = await getImage();
-    // let encoding = "'data:image/jpeg;base64," + encode(image.Body) + "'"
-    //set the image to image returned
-    // setProfilePicture(encoding);
+    let image = imageFile
+    let encoding = "'data:image/jpeg;base64," + encode(image.Body) + "'"
+    //set the image url to the imageFile encoding
+    setProfilePicture(encoding);
   };
 
-  // let s3 = new AWS.S3();
-
   //retreive the image via s3 object
-  // async function getImage() {
-  //   const data = s3
-  //     .getObject({
-  //       Bucket: 'companyimages',
-  //       Key: 'your stored image',
-  //     })
-  //     .promise();
-  //   return data;
-  // }
+  async function getImage() {
+    const data = s3
+      .getObject({
+        Bucket: 'companyimages',
+        Key: 'your stored image',
+      })
+      .promise();
+    return data;
+  }
 
   //encode the image
-  // function encode(data){
-  //   let buf = Buffer.from(data);
-  //   let base64 = buf.toString('base64');
-  //   return base64
-  //   }
+  function encode(data){
+    let buf = Buffer.from(data);
+    let base64 = buf.toString('base64');
+    return base64
+    }
 
   const [tagsRole, setTagsRole] = React.useState(tags);
   const [tagsLocation, setTagsLocation] = React.useState([]);
@@ -184,7 +194,9 @@ export default function ProfilePage() {
   const picModalBody = (
     <div className="modal-body">
       <div className="modal-header">Select Profile Picture</div>
-      <Dropzone />
+      <Dropzone 
+        handleImage={retrievePhoto}
+      />
       <button
         onClick={handlePicModalClose}
         className="profile-edit-tags-modal-button"
@@ -335,6 +347,7 @@ export default function ProfilePage() {
   }
 
   async function putData() {
+    //include image_file to add to s3 object
     const data = {
       coop_name: name,
       addr: address,
@@ -350,6 +363,7 @@ export default function ProfilePage() {
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
+      image_file: imageFile,
     };
     await axios.put('/api/coop', data);
     setProfileVariables(data);
@@ -359,22 +373,6 @@ export default function ProfilePage() {
   if (!coop) {
     return <div>Loading...</div>;
   }
-
-  /*   function setProfileVariables(coop) {
-    setCoop(coop);
-    setAddress(coop['addr']);
-    setPhone(coop['phone_number']);
-    setTags(coop['tags']);
-    setMission(coop['mission_statement']);
-    setDescription(coop['description_text']);
-    setFbLink(coop['fb_link']);
-    setInstaLink(coop['insta_link']);
-    setEmail(coop['email']);
-    setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
-    setName(coop['coop_name']);
-    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
-  } */
 
   return (
     <Profile

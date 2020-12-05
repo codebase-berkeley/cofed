@@ -1,11 +1,13 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
 const AWS = require('aws-sdk');
 const PORT = 3200;
 // Create S3 service object
-// s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
@@ -181,6 +183,7 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     tags,
     latitude,
     longitude,
+    image_file,
   } = req.body;
 
   const updateQueryText =
@@ -203,6 +206,25 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     longitude,
   ];
   try {
+    //HANDLE IMAGE UPLOADING TO S3
+    let uploadParams = {Bucket: process.argv[2], Key: '', Body: ''}; 
+    let fileStream = fs.createReadStream(image_file);
+    fileStream.on('error', function(err) {
+      console.log('File Error', err);
+    });
+    //set the upload attributes
+    uploadParams.Body = fileStream;
+    uploadParams.Key = path.basename(file);
+    //upload to s3
+    s3.upload (uploadParams, function (err, data) {
+      if (err) {
+        console.log("Error", err);
+      } if (data) {
+        console.log("Upload Success", data.Location);
+      }
+    });
+
+    //HANDLE TAG UPDATES
     await db.query('BEGIN');
     await db.query(updateQueryText, updateQueryValues);
 

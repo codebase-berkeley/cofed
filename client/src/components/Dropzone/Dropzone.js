@@ -3,6 +3,9 @@ import { useDropzone } from 'react-dropzone';
 import './Dropzone.css';
 
 export default function Dropzone(props) {
+  //get the callback to store the photo on profile page
+  const storeImage = props.retrievePhoto;
+
   const thumb = {
     display: 'inline-flex',
     borderRadius: 2,
@@ -42,6 +45,8 @@ export default function Dropzone(props) {
           })
         )
       );
+      //pass files to the profile page
+      storeImage(acceptedFiles);
     },
   });
 
