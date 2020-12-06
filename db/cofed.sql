@@ -66,7 +66,10 @@ VALUES
         'test'),
     ('test2@gmail.com', 'password2', 'Test2', '123456789',
         'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
-        'test2');
+        'test2'),
+    ('test3@gmail.com', 'password3', 'Test3', '123456789',
+        'Berkeley, CA3', 37.8715, -123.2730, 'test.com', 'test3', 'test3', 'test3', 'test3',
+        'test3');
 
 INSERT INTO categories
     (category_name)
@@ -95,7 +98,13 @@ VALUES
     (1, 2),
     (1, 3),
     (1, 6),
-    (1, 7);
+    (1, 7),
+    (2, 1),
+    (2, 4),
+    (2, 5),
+    (3, 2),
+    (3, 3),
+    (3, 7);
 
 
     

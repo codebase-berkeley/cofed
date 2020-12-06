@@ -21,11 +21,6 @@ export default function FiltersPage() {
       label: 'sort: alphabetical',
     },
   ]);
-  const [location, setLocation] = React.useState([]);
-  const [role, setRole] = React.useState([]);
-  const [race, setRace] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
-  const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState(null);
@@ -37,10 +32,10 @@ export default function FiltersPage() {
   const [coops, setCoops] = React.useState([]);
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
-  const [dropDownOptions, setDropDownOptions] = React.useState([]);
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
   const [allTags, setAllTags] = React.useState([]);
   //an array of tags, where each tag has a name, id, and category
+  //tags to filter by
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -72,7 +67,6 @@ export default function FiltersPage() {
     const modTag = tags.data.map(getCategoryInfo);
     // console.log(modTag);
     // setArrayOfFiltersInfo(d);
-    setDropDownOptions(tags.data);
     setCategoriesAndTags(modTag);
     console.log(modTag);
     // modTag[0][2]['dummyFunction']();
@@ -113,6 +107,7 @@ export default function FiltersPage() {
         value: name,
         label: name,
         id: id,
+        categoryName: categoryName,
       };
       return dict;
     }
@@ -120,10 +115,9 @@ export default function FiltersPage() {
     const dict = {
       categoryName: categoryName,
       options: options,
-      dummyFunction: x => console.log(dict['options']),
-      setterFunction: newOptions => (dict['values'] = newOptions),
+      // dummyFunction: x => console.log(dict['options']),
+      getDict: _ => dict,
     };
-    // function (args) {
 
     return dict;
   }
@@ -318,66 +312,16 @@ export default function FiltersPage() {
     setSelectedIndex(index);
   }
 
+  //REMEBER TO DO THIS
   function reset() {
-    setRole([]);
-    setLocation([]);
-    setRace([]);
-    setProducts([]);
-    setOther([]);
+    // setRole([]);
+    // setLocation([]);
+    // setRace([]);
+    // setProducts([]);
+    // setOther([]);
     fetchAllCoops();
   }
 
-  function makeDictionary(tag) {
-    const dict = {
-      value: tag.tag_name,
-      label: tag.tag_name,
-      id: tag.id,
-    };
-    return dict;
-  }
-
-  function DropDownOptionsToRoleOptions() {}
-
-  const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
-
-  const locationOptions = [
-    { value: 'Alabama', label: 'Alabama' },
-    { value: 'Alaska', label: 'Alaska' },
-    { value: 'Arizona', label: 'Arizona' },
-    { value: 'Arkansas', label: 'Arkansas' },
-    { value: 'California', label: 'California' },
-    { value: 'Colorado', label: 'Colorado' },
-    { value: 'Connecticut', label: 'Connecticut' },
-    { value: 'Delaware', label: 'Delaware' },
-    { value: 'District of Columbia', label: 'District of Columbia' },
-    { value: 'Florida', label: 'Florida' },
-    { value: 'Georgia', label: 'Georgia' },
-    { value: 'Hawaii', label: 'Hawaii' },
-    { value: 'Idaho', label: 'Idaho' },
-  ];
-  const raceOptions = [
-    { value: 'black', label: 'Black-owned' },
-    { value: 'native', label: 'Native-owned' },
-    { value: 'asian', label: 'Asian-owned' },
-    { value: 'pacificIslander', label: 'Pacific Islander-owned' },
-    { value: 'hispanicOrLatinx', label: 'Hispanic or Latinx-owned' },
-  ];
-  const productOptions = [
-    { value: 'fruits', label: 'Fruits' },
-    { value: 'vegetables', label: 'Vegetables' },
-    { value: 'natural', label: 'Natural Goods' },
-    { value: 'wholefoods', label: 'Wholefoods' },
-    { value: 'dairy', label: 'Dairy' },
-    { value: 'brew', label: 'Brew' },
-    { value: 'fish', label: 'Fish' },
-    { value: 'meats', label: 'Meats' },
-  ];
-  const otherOptions = [
-    { value: 'nonGMO', label: 'Verified Non-GMO' },
-    { value: 'startup', label: 'Startup' },
-    { value: 'queer', label: 'Queer-owned' },
-    { value: 'nonprofit', label: 'Non-profit' },
-  ];
   const sortOptions = [
     { value: 'alphabetical', label: 'sort: alphabetical' },
     { value: 'distance', label: 'sort: distance' },
@@ -388,10 +332,38 @@ export default function FiltersPage() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
-  function handleChange(setter) {
+  function handleChange(getCategoryDict) {
     async function onChange(event) {
       setSelectedIndex(null);
-      setter(event);
+      const dict = getCategoryDict();
+      dict['values'] = event;
+      const categoryName = dict['categoryName'];
+
+      const x = allTags.filter(tag => tag.categoryName != categoryName);
+      console.log(x);
+
+      // for (let k in allTags) {
+      //   var tag = allTags[k];
+      //   // console.log(categoryName);
+      //   console.log(k);
+      //   console.log(tag);
+      //   if (tag.categoryName != categoryName) {
+      //     console.log('this tag is spared');
+      //   } else {
+      //     // setAllTags(allTags.splice(k, 1));
+      //     console.log('REMOVE THIS TAG');
+      //   }
+      //   console.log('next tag!');
+      // }
+
+      // setAllTags(tempTags);
+      event.map(tag => x.push(tag));
+      // event.map(tag => allTags.push(tag));
+
+      console.log('final result');
+      console.log(x);
+      setAllTags(x);
+
       if (event === null || event.length === 0) {
         //NOT valid
         fetchAllCoops();
@@ -462,7 +434,7 @@ export default function FiltersPage() {
                       title={categoryInfo.categoryName}
                       options={categoryInfo.options}
                       values={categoryInfo.values}
-                      onChange={handleChange(categoryInfo.setterFunction)}
+                      onChange={handleChange(categoryInfo.getDict)}
                       key={categoryInfo}
                     />
                   ))}
