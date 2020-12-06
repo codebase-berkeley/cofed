@@ -68,7 +68,7 @@ export default function FiltersPage() {
     // console.log(modTag);
     // setArrayOfFiltersInfo(d);
     setCategoriesAndTags(modTag);
-    console.log(modTag);
+    // console.log(modTag);
     // modTag[0][2]['dummyFunction']();
     // modTag[0][2]['setterFunction']('CHANGED!');
     // modTag[0][2]['dummyFunction']();
@@ -85,7 +85,6 @@ export default function FiltersPage() {
       // .replace('(', '')
       .split('"');
 
-    console.log(ArrTagData);
     var options = [];
 
     //parse through the ArrTagData
@@ -96,7 +95,6 @@ export default function FiltersPage() {
         const splitTagData = tagData.split(',');
         const id = parseInt(splitTagData[0].replace('(', ''));
         const name = splitTagData[1];
-        console.log(id + '   ' + name);
 
         options.push(makeCategoryOptions(id, name));
       }
@@ -115,8 +113,8 @@ export default function FiltersPage() {
     const dict = {
       categoryName: categoryName,
       options: options,
-      // dummyFunction: x => console.log(dict['options']),
       getDict: _ => dict,
+      reset: _ => (dict['values'] = null),
     };
 
     return dict;
@@ -312,13 +310,9 @@ export default function FiltersPage() {
     setSelectedIndex(index);
   }
 
-  //REMEBER TO DO THIS
   function reset() {
-    // setRole([]);
-    // setLocation([]);
-    // setRace([]);
-    // setProducts([]);
-    // setOther([]);
+    setAllTags([]);
+    categoriesAndTags.map(categoryInfo => categoryInfo.reset(true));
     fetchAllCoops();
   }
 
@@ -347,7 +341,6 @@ export default function FiltersPage() {
         event.map(tag => tempAllTags.push(tag));
       }
       setAllTags(tempAllTags);
-      console.log(tempAllTags);
 
       if (tempAllTags === null || tempAllTags.length === 0) {
         //NOT valid
