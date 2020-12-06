@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Card.css';
 import Tag from '../Tag/Tag';
@@ -10,6 +10,8 @@ export default function CardComponent(props) {
   const cardContainerClass = classNames('card-container', {
     'card-selected': props.selected,
   });
+
+  const [profilePic, setProfilePic] = React.useState('eric_dust.png');
 
   function renderStar() {
     if (props.starred) {
@@ -23,7 +25,12 @@ export default function CardComponent(props) {
     <div onClick={props.onClick}>
       <div className={cardContainerClass}>
         <div className="card-pic-text-container">
-          <img className="card-profile-pic" src={props.profile_pic} />
+          <img
+            className="card-profile-pic"
+            src={
+              /* 'https://cofed.s3-us-west-1.amazonaws.com/' + profilePic */ props.profile_pic
+            }
+          />
           <div className="card-name-container">
             <div className="card-name-star-wrapper">
               <div className="card-co-op-name">{props.name}</div>

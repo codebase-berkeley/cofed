@@ -7,7 +7,45 @@ const format = require('pg-format');
 const AWS = require('aws-sdk');
 const PORT = 3200;
 // Create S3 service object
-s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
+s3 = new AWS.S3();
+
+router.get('/getProfilePic', (req, res) => {
+  AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  });
+  let s3 = new AWS.S3();
+  async function getImage() {
+    const data = s3
+      .getObject({
+        Bucket: 'cofed',
+        Key: 'eric_dust.png',
+      })
+      .promise();
+    return data;
+  }
+  getImage()
+    .then(img => {
+      let image =
+        "<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + '/>';
+      let startHTML = '<html><body></body>';
+      let endHTML = '</body></html>';
+      let html = startHTML + image + endHTML;
+      res.send(html);
+    })
+    .catch(e => {
+      res.send(e);
+    });
+  function encode(data) {
+    let buf = Buffer.from(data);
+    let base64 = buf.toString('base64');
+    return base64;
+  }
+});
 
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
@@ -207,20 +245,22 @@ router.put('/coop', isAuthenticated, async (req, res) => {
   ];
   try {
     //HANDLE IMAGE UPLOADING TO S3
-    let uploadParams = {Bucket: process.argv[2], Key: '', Body: ''}; 
-    let fileStream = fs.createReadStream(image_file);
-    fileStream.on('error', function(err) {
+    let uploadParams = { Bucket: process.argv[2], Key: '', Body: '' };
+    let fileStream = fs.createReadStream(image_file[0].path);
+    fileStream.on('error', function (err) {
       console.log('File Error', err);
     });
     //set the upload attributes
     uploadParams.Body = fileStream;
-    uploadParams.Key = path.basename(file);
+    uploadParams.Key = path.basename(image_file[0].path);
     //upload to s3
-    s3.upload (uploadParams, function (err, data) {
+
+    s3.upload(uploadParams, function (err, data) {
       if (err) {
-        console.log("Error", err);
-      } if (data) {
-        console.log("Upload Success", data.Location);
+        console.log('Error', err);
+      }
+      if (data) {
+        console.log('Upload Success', data.Location);
       }
     });
 

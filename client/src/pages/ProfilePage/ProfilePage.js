@@ -24,18 +24,20 @@ export default function ProfilePage() {
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
 
-  let initialImage = getImage()
-  let encoding = "'data:image/jpeg;base64," + encode(initialImage.Body) + "'"
-  const [profilePicture, setProfilePicture] = React.useState(encoding);
-  
+  /*   let initialImage = getImage();
+  let encoding = "'data:image/jpeg;base64," + encode(initialImage.Body) + "'"; */
+  const [profilePicture, setProfilePicture] = React.useState(
+    /* encoding */ null
+  );
+
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
   const [imageFile, setImageFile] = React.useState(null);
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
-  
-  let AWS = require('aws-sdk');
-  let s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+
+  /*   let AWS = require('aws-sdk');
+  let s3 = new AWS.S3({ apiVersion: '2006-03-01' }); */
 
   function setProfileVariables(coop) {
     setCoop(coop);
@@ -97,32 +99,22 @@ export default function ProfilePage() {
     setImageFile(img);
   }
 
-  const handlePicModalClose = () => {
+  const handlePicModalClose = async () => {
     setPicModalOpen(false);
-    //retrieve the image from modal
-    let image = imageFile
-    let encoding = "'data:image/jpeg;base64," + encode(image.Body) + "'"
+    //encode the image to a url
+    let image64 = await toBase64(imageFile);
     //set the image url to the imageFile encoding
-    setProfilePicture(encoding);
+    setProfilePicture(image64);
   };
 
-  //retreive the image via s3 object
-  async function getImage() {
-    const data = s3
-      .getObject({
-        Bucket: 'companyimages',
-        Key: 'your stored image',
-      })
-      .promise();
-    return data;
-  }
-
   //encode the image
-  function encode(data){
-    let buf = Buffer.from(data);
-    let base64 = buf.toString('base64');
-    return base64
-    }
+  const toBase64 = file =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
 
   const [tagsRole, setTagsRole] = React.useState(tags);
   const [tagsLocation, setTagsLocation] = React.useState([]);
@@ -194,9 +186,7 @@ export default function ProfilePage() {
   const picModalBody = (
     <div className="modal-body">
       <div className="modal-header">Select Profile Picture</div>
-      <Dropzone 
-        handleImage={retrievePhoto}
-      />
+      <Dropzone handleImage={retrievePhoto} />
       <button
         onClick={handlePicModalClose}
         className="profile-edit-tags-modal-button"
