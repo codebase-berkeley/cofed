@@ -38,7 +38,9 @@ export default function FiltersPage() {
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
-  const [arrayOfFiltersInfo, setArrayOfFiltersInfo] = React.useState([]);
+  const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
+  const [allTags, setAllTags] = React.useState([]);
+  //an array of tags, where each tag has a name, id, and category
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -68,11 +70,14 @@ export default function FiltersPage() {
     //tags.data = 0: [{categories: "(1,Role)", array_agg: "{"(1,Cooperative,1)","(2,Distributor,1)","(3,Producer,1)"]
     const tags = await axios.get('/api/tags');
     const modTag = tags.data.map(getCategoryInfo);
-    console.log(modTag);
     // console.log(modTag);
     // setArrayOfFiltersInfo(d);
     setDropDownOptions(tags.data);
-    setArrayOfFiltersInfo(modTag);
+    setCategoriesAndTags(modTag);
+    console.log(modTag);
+    // modTag[0][2]['dummyFunction']();
+    // modTag[0][2]['setterFunction']('CHANGED!');
+    // modTag[0][2]['dummyFunction']();
   }
 
   function getCategoryInfo(categoryWithTags) {
@@ -89,6 +94,8 @@ export default function FiltersPage() {
     console.log(ArrTagData);
     var options = [];
 
+    //parse through the ArrTagData
+    //getting the information about each tag in THIS category
     for (let index in ArrTagData) {
       const tagData = ArrTagData[index];
       if (tagData.length > 2) {
@@ -110,14 +117,15 @@ export default function FiltersPage() {
       return dict;
     }
 
-    // const options = [
-    //   { value: 'alphabetical', label: 'sort: alphabetical' },
-    //   { value: 'distance', label: 'sort: distance' },
-    // ];
+    const dict = {
+      categoryName: categoryName,
+      options: options,
+      dummyFunction: x => console.log(dict['options']),
+      setterFunction: newOptions => (dict['values'] = newOptions),
+    };
+    // function (args) {
 
-    const x = [categoryName, options];
-
-    return x;
+    return dict;
   }
 
   React.useEffect(() => {
@@ -328,66 +336,6 @@ export default function FiltersPage() {
     return dict;
   }
 
-  //THING TO HOLD THE DATA
-  //An array of dictionarys where reach dictionary has a name and a arrayOfOptions
-  //                NameAndOptionsArray
-  // [{name: roleOptions, arrayOfOptions:valueLabelDicts}
-  //   name: raceOptions, arrayOfOptions:valueLabelDicts}]
-
-  //tags.data = 0: [{categories: "(1,Role)", array_agg: "{"(1,Cooperative,1)","(2,Distributor,1)","(3,Producer,1)"]
-
-  //tags.data.map(turnToFilter)
-
-  /* for dict in tags.data {
-
-      for(let category_id in dict) {
-        arrayOfTagIds = dict[category_id]
-        arrayOfTagIds.map(makeDictionary) --> but each "tag" needs to be a dictionary with a name and id, NOT JUST A NUMBER
-        
-        var d = {name: category_id
-                arrayOfOptions: arrayOfTagsIds}
-
-        NameAndOptionsArray.append(d);
-
-
-  // do something with "key" and "value" variables
-}
-  }
-
-  */
-
-  /**roleOptions = [
-    {value: 1, label: 1},
-    {value: 2, label: 2}.
-    {value: 3, label: 3}.
-    {value: 4, label: 4}.
-    {value: 5, label: 5}.
-]
-  raceOptions = [
-    {value: 6, label: 6},
-    {value: 7, label: 7}.
-    {value: 8, label: 8}.
-]
-**/
-
-  /**
- *    <Filters
-          isMulti={true}
-          title="role"
-          options={roleOptions}
-          values={role}
-          onChange={handleChange(setRole)}
-        />
-
-      <Filters
-          isMulti={true}
-          title="role"
-          options={raceOptions}
-          values={role}
-          onChange={handleChange(setRole)}
-        />
- */
-
   function DropDownOptionsToRoleOptions() {}
 
   const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
@@ -445,10 +393,13 @@ export default function FiltersPage() {
       setSelectedIndex(null);
       setter(event);
       if (event === null || event.length === 0) {
+        //NOT valid
         fetchAllCoops();
       } else {
         const params = {
-          tags: event.map(newArray => newArray.id),
+          //we need to access every single array of tags, not just
+          //the event that is passed in
+          tags: event.map(tag => tag.id),
         };
 
         const res = await axios.get('/api/filteredCoops', {
@@ -504,14 +455,14 @@ export default function FiltersPage() {
                     },
                   ]}
                 />
-                {arrayOfFiltersInfo &&
-                  arrayOfFiltersInfo.map(categoryInfo => (
+                {categoriesAndTags &&
+                  categoriesAndTags.map(categoryInfo => (
                     <Filters
                       isMulti={true}
-                      title={categoryInfo[0]}
-                      options={categoryInfo[1]}
-                      values={role}
-                      onChange={handleChange(setRole)}
+                      title={categoryInfo.categoryName}
+                      options={categoryInfo.options}
+                      values={categoryInfo.values}
+                      onChange={handleChange(categoryInfo.setterFunction)}
                       key={categoryInfo}
                     />
                   ))}
