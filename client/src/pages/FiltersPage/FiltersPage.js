@@ -339,39 +339,24 @@ export default function FiltersPage() {
       dict['values'] = event;
       const categoryName = dict['categoryName'];
 
-      const x = allTags.filter(tag => tag.categoryName != categoryName);
-      console.log(x);
+      const tempAllTags = allTags.filter(
+        tag => tag.categoryName != categoryName
+      );
 
-      // for (let k in allTags) {
-      //   var tag = allTags[k];
-      //   // console.log(categoryName);
-      //   console.log(k);
-      //   console.log(tag);
-      //   if (tag.categoryName != categoryName) {
-      //     console.log('this tag is spared');
-      //   } else {
-      //     // setAllTags(allTags.splice(k, 1));
-      //     console.log('REMOVE THIS TAG');
-      //   }
-      //   console.log('next tag!');
-      // }
+      if (event != null) {
+        event.map(tag => tempAllTags.push(tag));
+      }
+      setAllTags(tempAllTags);
+      console.log(tempAllTags);
 
-      // setAllTags(tempTags);
-      event.map(tag => x.push(tag));
-      // event.map(tag => allTags.push(tag));
-
-      console.log('final result');
-      console.log(x);
-      setAllTags(x);
-
-      if (event === null || event.length === 0) {
+      if (tempAllTags === null || tempAllTags.length === 0) {
         //NOT valid
         fetchAllCoops();
       } else {
         const params = {
           //we need to access every single array of tags, not just
           //the event that is passed in
-          tags: event.map(tag => tag.id),
+          tags: tempAllTags.map(tag => tag.id),
         };
 
         const res = await axios.get('/api/filteredCoops', {
