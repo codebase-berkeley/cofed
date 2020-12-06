@@ -81,11 +81,43 @@ export default function FiltersPage() {
       .replace('(', '')
       .split(',')[1];
 
-    const options = [
-      { value: 'alphabetical', label: 'sort: alphabetical' },
-      { value: 'distance', label: 'sort: distance' },
-    ];
-    return [categoryName, options];
+    const ArrTagData = categoryWithTags['array_agg']
+      // .replace(')', '')
+      // .replace('(', '')
+      .split('"');
+
+    console.log(ArrTagData);
+    var options = [];
+
+    for (let index in ArrTagData) {
+      const tagData = ArrTagData[index];
+      if (tagData.length > 2) {
+        const splitTagData = tagData.split(',');
+        const id = parseInt(splitTagData[0].replace('(', ''));
+        const name = splitTagData[1];
+        console.log(id + '   ' + name);
+
+        options.push(makeCategoryOptions(id, name));
+      }
+    }
+
+    function makeCategoryOptions(id, name) {
+      const dict = {
+        value: name,
+        label: name,
+        id: id,
+      };
+      return dict;
+    }
+
+    // const options = [
+    //   { value: 'alphabetical', label: 'sort: alphabetical' },
+    //   { value: 'distance', label: 'sort: distance' },
+    // ];
+
+    const x = [categoryName, options];
+
+    return x;
   }
 
   React.useEffect(() => {
@@ -473,13 +505,14 @@ export default function FiltersPage() {
                   ]}
                 />
                 {arrayOfFiltersInfo &&
-                  arrayOfFiltersInfo.map((categoryName, options) => (
+                  arrayOfFiltersInfo.map(categoryInfo => (
                     <Filters
                       isMulti={true}
-                      title={categoryName}
-                      options={options}
+                      title={categoryInfo[0]}
+                      options={categoryInfo[1]}
                       values={role}
                       onChange={handleChange(setRole)}
+                      key={categoryInfo}
                     />
                   ))}
                 {/*
