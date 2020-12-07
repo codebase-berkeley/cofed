@@ -31,6 +31,7 @@ export default function ProfilePage() {
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
 
   function setProfileVariables(coop) {
+    console.log('hello');
     setCoop(coop);
     setAddress(coop['addr']);
     setPhone(coop['phone_number']);
@@ -43,7 +44,6 @@ export default function ProfilePage() {
     setWebsite(coop['website']);
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
-    setTagsRole(coop['tags'].map(tagNameToDropDownOption));
   }
 
   React.useEffect(() => {
@@ -51,7 +51,7 @@ export default function ProfilePage() {
       console.log('fetch data!');
       try {
         setProfileVariables(user);
-
+        console.log(user);
         // const allTags = await axios.get('/api/tags');
         // setDropDownOptions(allTags.data);
         const allTags = await axios.get('/api/tags');
@@ -150,19 +150,10 @@ export default function ProfilePage() {
       }
     }
     console.log(allTags);
-    // setTags(x);
 
     if (allTags) setTags(allTags);
     else setTags([]);
-    // if (tagsRole) setTags(tagsRole.map(dictValue));
-    // else setTags([]);
   };
-
-  const [tagsRole, setTagsRole] = React.useState(tags);
-  const [tagsLocation, setTagsLocation] = React.useState([]);
-  const [tagsRace, setTagsRace] = React.useState([]);
-  const locationOptions = {};
-  const raceOptions = {};
 
   function tagQueryToDropDownOption(tag) {
     const dict = {
@@ -219,9 +210,10 @@ export default function ProfilePage() {
           {renderContactInputs()}
           <div className="profile-tags-container">
             {tags &&
-              tags.map((text, index) => (
-                <Tag key={index} text={text} index={index} />
-              ))}
+              tags.map(
+                (text, index) => <Tag key={index} text={text} index={index} />
+                // console.log(text, index)
+              )}
             <button onClick={handleOpen} className="profile-edit-tags-button">
               Edit tags
             </button>
@@ -352,6 +344,7 @@ export default function ProfilePage() {
       longitude: latLng['lng'],
       tags: tags,
     };
+    console.log(tags);
     await axios.put('/api/coop', data);
     setProfileVariables(data);
     setUser(data);
@@ -379,7 +372,7 @@ export default function ProfilePage() {
 
   return (
     <Profile
-      coop={coop}
+      coop={user}
       renderEdit={renderEdit}
       putData={putData}
       allowEdit={true}

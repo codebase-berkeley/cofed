@@ -36,7 +36,7 @@ router.get('/coop', isAuthenticated, async (req, res) => {
     const query = await db.query(command, values);
 
     if (query.rows.length >= 1) {
-      query.rows[0]['tags'] = queryTags.rows;
+      query.rows[0]['tags'] = queryTags.rows.map(dict => dict['tag_name']);
       res.send(query.rows[0]);
     } else {
       res.status(404).send({ error: `coop ${id} not found` });
