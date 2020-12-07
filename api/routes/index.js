@@ -13,39 +13,42 @@ AWS.config.update({
 });
 s3 = new AWS.S3();
 
-router.get('/getProfilePic', (req, res) => {
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  });
-  let s3 = new AWS.S3();
-  async function getImage() {
-    const data = s3
-      .getObject({
-        Bucket: 'cofed',
-        Key: 'eric_dust.png',
-      })
-      .promise();
-    return data;
-  }
-  getImage()
-    .then(img => {
-      let image =
-        "<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + '/>';
-      let startHTML = '<html><body></body>';
-      let endHTML = '</body></html>';
-      let html = startHTML + image + endHTML;
-      res.send(html);
-    })
-    .catch(e => {
-      res.send(e);
-    });
-  function encode(data) {
-    let buf = Buffer.from(data);
-    let base64 = buf.toString('base64');
-    return base64;
-  }
-});
+// router.get('/getProfilePic', (req, res) => {
+//   const { path } = req.body
+//   async function getImage() {
+//     const data = s3
+//       .getObject({
+//         Bucket: 'cofed',
+//         Key: {path},
+//       })
+//       .promise();
+//     return data;
+//   }
+//   getImage()
+//     .then(async img => {
+//       let image = encode(img)//await toBase64(img)
+//         //"src='data:image/jpeg;base64," + encode(img.Body) + "'";
+//       // let startHTML = '<html><body></body>';
+//       // let endHTML = '</body></html>';
+//       // let html = startHTML + image + endHTML;
+//       res.send(image);//html);
+//     })
+//     .catch(e => {
+//       res.send(e);
+//     });
+//   function encode(data) {
+//     let buf = Buffer.from(data);
+//     let base64 = buf.toString('base64');
+//     return base64;
+//   }
+//   // const toBase64 = file =>
+//   //   new Promise((resolve, reject) => {
+//   //     const reader = new FileReader();
+//   //     reader.readAsDataURL(file[0]);
+//   //     reader.onload = () => resolve(reader.result);
+//   //     reader.onerror = error => reject(error);
+//   //   });
+// });
 
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
@@ -244,20 +247,21 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     longitude,
   ];
   try {
-    //HANDLE IMAGE UPLOADING TO S3
+    /* //HANDLE IMAGE UPLOADING TO S3
+    let type = image_file.type
+    //'image/jpeg'
     let uploadParams = { 
       Bucket: 'cofed', 
       Key: '', 
-      Body: '' 
+      Body: '',
+      ContentType: type,
+      ContentEncoding: 'base64',
+      ContentDisposition: 'inline',
+      ACL: 'public-read',
+
     };
-    console.log("PATH = " + image_file[0].path)
-    // let fileStream = fs.createReadStream(image_file[0].path);
-    // fileStream.on('error', function (err) {
-    //   console.log('File Error', err);
-    // });
-    //set the upload attributes
-    console.log("FILE = ")
     console.log(image_file)
+    //set the upload attributes
     uploadParams.Body = image_file[0].preview;
     uploadParams.Key = path.basename(image_file[0].path);
     
@@ -269,7 +273,7 @@ router.put('/coop', isAuthenticated, async (req, res) => {
       if (data) {
         console.log('Upload Success', data.Location);
       }
-    });
+    }); */
 
     //HANDLE TAG UPDATES
     await db.query('BEGIN');
@@ -295,6 +299,31 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     await db.query('ROLLBACK');
     console.log(err.stack);
   }
+});
+
+
+router.post('/upload', async (req, res) => {
+  const { imageFile } = req.files;
+  //const { name, unitID } = req.body;
+
+  // the RETURNING id is used for dynamically rendering the lesson box after uploading
+  let type = imageFile.type
+  const params = {
+    ACL: 'public-read',
+    Bucket: process.env.S3_BUCKET,
+    Body: imageFile.data,
+    ContentType: type,
+    Key: path.basename(imageFile[0].path),
+  };
+
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.log('Error in callback');
+      console.log(err);
+    }
+    console.log('Success!');
+    console.log(data);
+  });
 });
 
 module.exports = router;

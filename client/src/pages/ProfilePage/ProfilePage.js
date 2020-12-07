@@ -23,21 +23,13 @@ export default function ProfilePage() {
   const [fbLink, setFbLink] = React.useState(null);
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
-
-  /*   let initialImage = getImage();
-  let encoding = "'data:image/jpeg;base64," + encode(initialImage.Body) + "'"; */
-  const [profilePicture, setProfilePicture] = React.useState(
-    /* encoding */ null
-  );
+  const [profilePicture, setProfilePicture] = React.useState(null);
 
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
   const [imageFile, setImageFile] = React.useState(null);
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
-
-  /*   let AWS = require('aws-sdk');
-  let s3 = new AWS.S3({ apiVersion: '2006-03-01' }); */
 
   function setProfileVariables(coop) {
     setCoop(coop);
@@ -103,8 +95,11 @@ export default function ProfilePage() {
     setPicModalOpen(false);
     //encode the image to a url
     let image64 = await toBase64(imageFile);
+    // let image = name + imageFile.path;
     //set the image url to the imageFile encoding
-    setProfilePicture(image64);
+
+    //setProfilePicture(image64); 
+    setProfilePicture('https://cofed.s3-us-west-1.amazonaws.com/' + imageFile[0].path); 
   };
 
   //encode the image
@@ -257,7 +252,7 @@ export default function ProfilePage() {
         <input
           className="profile-small-input"
           type="text"
-          placeholder="Enter facebok link:"
+          placeholder="Enter facebook link:"
           value={fbLink}
           onChange={e => setFbLink(e.target.value)}
         />
@@ -353,9 +348,14 @@ export default function ProfilePage() {
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
-      image_file: imageFile,
+      
     };
+    //image_file: imageFile,
     await axios.put('/api/coop', data);
+    
+    const file = new FormData();
+    file.append('imageFile', imageFile);
+    await axios.post('/api/upload', {body: {file}})
     setProfileVariables(data);
     setUser(data);
   }

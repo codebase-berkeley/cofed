@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import './Card.css';
 import Tag from '../Tag/Tag';
 import classNames from 'classnames';
@@ -11,7 +12,17 @@ export default function CardComponent(props) {
     'card-selected': props.selected,
   });
 
-  const [profilePic, setProfilePic] = React.useState('eric_dust.png');
+  const [profilePic, setProfilePic] = React.useState(props.profile_pic);
+  // getProfilePhoto();
+
+  // async function getProfilePhoto() {
+  //   const profilePic = await axios.get('/api/getProfilePic', data: {
+  //     path: {props.profile_pic}
+  //   })
+  //   setProfilePic(profilePic)
+  // }
+  console.log("PROFILE_PIC = ")
+  console.log(props.profile_pic)
 
   function renderStar() {
     if (props.starred) {
@@ -27,9 +38,7 @@ export default function CardComponent(props) {
         <div className="card-pic-text-container">
           <img
             className="card-profile-pic"
-            src={
-              /* 'https://cofed.s3-us-west-1.amazonaws.com/' + profilePic */ props.profile_pic
-            }
+            src={profilePic}
           />
           <div className="card-name-container">
             <div className="card-name-star-wrapper">

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import './Dropzone.css';
-import axios from 'axios';
 
 export default function Dropzone(props) {
   //get the callback to store the photo on profile page
@@ -70,7 +69,7 @@ export default function Dropzone(props) {
   return (
     <section className="dropzone-container">
       <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
+        <input name="key" {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
       </div>

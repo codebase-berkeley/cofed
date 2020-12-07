@@ -138,7 +138,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile={coop.profile_pic}
+                profile_pic={coop.profile_pic}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
@@ -158,7 +158,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile={coop.profile_pic}
+                profile_pic={coop.profile_pic}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
