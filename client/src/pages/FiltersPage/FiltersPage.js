@@ -43,26 +43,25 @@ export default function FiltersPage() {
   }
 
   async function fetchInitialData() {
-    // try {
-    // //   const res = await axios.get('/api/coops');
-    // //   setCoops(res.data);
-    // //   if (res.data.length !== 0) {
-    // //     setCoopShown(res.data[0]);
-    // //   }
-    // // } catch (err) {
-    // //   setUser(null);
-    // // }
+    try {
+      const res = await axios.get('/api/coops');
+      setCoops(res.data);
+      if (res.data.length !== 0) {
+        setCoopShown(res.data[0]);
+      }
+    } catch (err) {
+      setUser(null);
+    }
 
-    // //get the toggle star info
-    // const starred = await axios.get('/api/getStarred');
-    // //set the query data as the starred coops
-    // let starredIds = starred.data.map(e => {
-    //   return e.starred_coop_id;
-    // });
-    // setStarredCoops(starredIds);
+    //get the toggle star info
+    const starred = await axios.get('/api/getStarred');
+    //set the query data as the starred coops
+    let starredIds = starred.data.map(e => {
+      return e.starred_coop_id;
+    });
+    setStarredCoops(starredIds);
 
     //get the tags to put in the filters dropdown
-    //tags.data = 0: [{categories: "(1,Role)", array_agg: "{"(1,Cooperative,1)","(2,Distributor,1)","(3,Producer,1)"]
     const tags = await axios.get('/api/tags');
     const modTag = tags.data.map(getCategoryInfo);
     // console.log(modTag);
@@ -78,11 +77,13 @@ export default function FiltersPage() {
     const categoryName = categoryWithTags['categories']
       .replace(')', '')
       .replace('(', '')
-      .split(',')[1];
+      .split(',')[1]
+      .replaceAll('"', '');
 
     const ArrTagData = categoryWithTags['array_agg']
       // .replace(')', '')
       // .replace('(', '')
+      .replaceAll('\\"', '')
       .split('"');
 
     var options = [];
@@ -90,7 +91,9 @@ export default function FiltersPage() {
     //parse through the ArrTagData
     //getting the information about each tag in THIS category
     for (let index in ArrTagData) {
-      const tagData = ArrTagData[index];
+      var tagData = ArrTagData[index];
+      console.log(tagData);
+
       if (tagData.length > 2) {
         const splitTagData = tagData.split(',');
         const id = parseInt(splitTagData[0].replace('(', ''));

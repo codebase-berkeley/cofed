@@ -74,9 +74,9 @@ VALUES
 INSERT INTO categories
     (category_name)
 VALUES
-    ('Role'),
-    ('Race'),
-    ('Supply Chain');
+    ('Organization Structure'),
+    ('Products'),
+    ('Coop Size');
 
 INSERT INTO tags
     (tag_name, category_id)
@@ -86,9 +86,13 @@ VALUES
     ('Producer' , 1),
     ('Community', 1),
     ('Delivery', 1),
-    ('Black' , 2),
-    ('Asain', 2),
-    ('Latino' , 2);
+    ('Medicinal Fungi' , 2),
+    ('Animal Products', 2),
+    ('Herbs' , 2),
+    ('Spices' , 2),
+    ('1-10', 3),
+    ('10-50', 3),
+    ('50-100', 3);
 
 
 INSERT INTO coop_tags
