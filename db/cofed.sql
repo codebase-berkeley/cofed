@@ -69,6 +69,12 @@ VALUES
         'test2'),
     ('test3@gmail.com', 'password3', 'Test3', '123456789',
         'Berkeley, CA3', 37.8715, -123.2730, 'test.com', 'test3', 'test3', 'test3', 'test3',
+        'test3'),
+    ('test4@gmail.com', 'password4', 'Test4', '123456789',
+        'Berkeley, CA2', 37.8715, -123.2730, 'test.com', 'test2', 'test2', 'test2', 'test2',
+        'test2'),
+    ('test5@gmail.com', 'password5', 'Test5', '123456789',
+        'Berkeley, CA3', 37.8715, -123.2730, 'test.com', 'test3', 'test3', 'test3', 'test3',
         'test3');
 
 INSERT INTO categories
@@ -103,12 +109,21 @@ VALUES
     (1, 3),
     (1, 6),
     (1, 7),
+    (1, 12),
     (2, 1),
     (2, 4),
     (2, 5),
     (3, 2),
     (3, 3),
-    (3, 7);
+    (3, 7),
+    (4, 2),
+    (4, 3),
+    (4, 7),
+    (4, 11),
+    (5, 2),
+    (5, 4),
+    (5, 8),
+    (5, 10);
 
 
     

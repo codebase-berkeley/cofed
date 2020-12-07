@@ -60,7 +60,7 @@ export default function ProfilePage() {
   let selectLocation = async address => {
     setAddress(address);
     const results = await geocodeByAddress(address);
-    if (results.length != 0) {
+    if (results.length !== 0) {
       const coords = await getLatLng(results[0]);
       setLatLng(coords);
     }

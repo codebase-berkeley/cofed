@@ -61,16 +61,9 @@ export default function FiltersPage() {
     });
     setStarredCoops(starredIds);
 
-    //get the tags to put in the filters dropdown
     const tags = await axios.get('/api/tags');
     const modTag = tags.data.map(getCategoryInfo);
-    // console.log(modTag);
-    // setArrayOfFiltersInfo(d);
     setCategoriesAndTags(modTag);
-    // console.log(modTag);
-    // modTag[0][2]['dummyFunction']();
-    // modTag[0][2]['setterFunction']('CHANGED!');
-    // modTag[0][2]['dummyFunction']();
   }
 
   function getCategoryInfo(categoryWithTags) {
@@ -81,8 +74,6 @@ export default function FiltersPage() {
       .replaceAll('"', '');
 
     const ArrTagData = categoryWithTags['array_agg']
-      // .replace(')', '')
-      // .replace('(', '')
       .replaceAll('\\"', '')
       .split('"');
 
@@ -419,42 +410,6 @@ export default function FiltersPage() {
                       key={categoryInfo}
                     />
                   ))}
-                {/*
-                <Filters
-                  isMulti={true}
-                  title="role"
-                  options={roleOptions}
-                  values={role}
-                  onChange={handleChange(setRole)}
-                />
-                <Filters
-                  title="location"
-                  options={locationOptions}
-                  values={location}
-                  onChange={setLocation}
-                  isMulti={true}
-                />
-                <Filters
-                  title="race"
-                  options={raceOptions}
-                  values={race}
-                  onChange={setRace}
-                  isMulti={true}
-                />
-                <Filters
-                  title="products"
-                  options={productOptions}
-                  values={products}
-                  onChange={setProducts}
-                  isMulti={true}
-                />
-                <Filters
-                  title="other"
-                  options={otherOptions}
-                  values={other}
-                  onChange={setOther}
-                  isMulti={true}
-                /> */}
               </div>
             </div>
           </div>
