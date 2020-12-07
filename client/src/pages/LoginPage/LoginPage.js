@@ -1,12 +1,14 @@
 import CofedLogo from '../../assets/CoFEDlogo.png';
 import GoogleLogo from '../../assets/GoogleLogo.png';
 import React from 'react';
+import PropTypes from 'prop-types';
 import './LoginPage.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../Context';
+const queryString = require('query-string');
 
-export default function LoginPage() {
+export default function LoginPage(props) {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
   const { setUser } = React.useContext(UserContext);
@@ -16,6 +18,21 @@ export default function LoginPage() {
     setEmailInput('');
     setPwInput('');
   }
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const parsed = queryString.parse(props.location.search);
+      if (parsed.success) {
+        try {
+          const res = await axios.get('/api/coop');
+          setUser(res.data);
+        } catch (err) {
+          console.log('user not found');
+        }
+      }
+    }
+    fetchData();
+  }, []);
 
   async function verify() {
     try {
@@ -79,7 +96,7 @@ export default function LoginPage() {
         <br /> — OR — <br />
       </div>
       <div className="googleButton">
-        <a href="#">
+        <a href="http://localhost:8000/auth/google" target="blank">
           <button className="loginPageButton" type="button">
             <img src={GoogleLogo} />
             Login via Google
@@ -94,3 +111,7 @@ export default function LoginPage() {
     </div>
   );
 }
+
+LoginPage.propTypes = {
+  location: PropTypes.object,
+};

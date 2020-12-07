@@ -13,7 +13,7 @@ import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
 
 export default function FiltersPage() {
-  const { setUser } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
   const [listMode, setListMode] = React.useState(true);
   const [sortType, setSortType] = React.useState([
     {
@@ -221,7 +221,7 @@ export default function FiltersPage() {
 
   function findMapCenter(coops) {
     if (coops.length > 0) {
-      return [coops[0].latitude, coops[0].longitude];
+      return [user.latitude, user.longitude];
     } else {
       return [39.8283, -98.5795]; // this is the center of the US
     }
