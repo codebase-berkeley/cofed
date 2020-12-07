@@ -28,6 +28,8 @@ export default function ProfilePage() {
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
+  const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
+
   function setProfileVariables(coop) {
     setCoop(coop);
     setAddress(coop['addr']);
@@ -46,16 +48,78 @@ export default function ProfilePage() {
 
   React.useEffect(() => {
     async function fetchData() {
+      console.log('fetch data!');
       try {
         setProfileVariables(user);
+
+        // const allTags = await axios.get('/api/tags');
+        // setDropDownOptions(allTags.data);
         const allTags = await axios.get('/api/tags');
-        setDropDownOptions(allTags.data);
+
+        const modTag = allTags.data.map(getCategoryInfo);
+        setCategoriesAndTags(modTag);
       } catch (err) {
         console.log(err);
       }
     }
     fetchData();
   }, []);
+
+  function getCategoryInfo(categoryWithTags) {
+    const categoryName = categoryWithTags['categories']
+      .replace(')', '')
+      .replace('(', '')
+      .split(',')[1]
+      .replaceAll('"', '');
+
+    const ArrTagData = categoryWithTags['array_agg']
+      .replaceAll('\\"', '')
+      .split('"');
+
+    var options = [];
+
+    //parse through the ArrTagData
+    //getting the information about each tag in THIS category
+    for (let index in ArrTagData) {
+      var tagData = ArrTagData[index];
+      // console.log(tagData);
+
+      if (tagData.length > 2) {
+        const splitTagData = tagData.split(',');
+        const id = parseInt(splitTagData[0].replace('(', ''));
+        const name = splitTagData[1];
+
+        options.push(makeCategoryOptions(id, name));
+      }
+    }
+
+    function makeCategoryOptions(id, name) {
+      const dict = {
+        value: name,
+        label: name,
+        id: id,
+        categoryName: categoryName,
+      };
+      return dict;
+    }
+
+    const dict = {
+      categoryName: categoryName,
+      options: options,
+      getDict: _ => dict,
+      reset: _ => (dict['values'] = null),
+    };
+
+    return dict;
+  }
+
+  function handleFilterChange(getCategoryDict) {
+    async function onChange(event) {
+      const dict = getCategoryDict();
+      dict['values'] = event;
+    }
+    return onChange;
+  }
 
   let selectLocation = async address => {
     setAddress(address);
@@ -73,8 +137,25 @@ export default function ProfilePage() {
 
   const handleClose = () => {
     setOpen(false);
-    if (tagsRole) setTags(tagsRole.map(dictValue));
+
+    var allTags = [];
+
+    const x = categoriesAndTags.map(categoryInfo => categoryInfo.values);
+    //an array of array of dictionaries
+    for (let k in x) {
+      var arrOfDict = x[k];
+      for (let index in arrOfDict) {
+        const dict = arrOfDict[index];
+        allTags.push(dict['value']);
+      }
+    }
+    console.log(allTags);
+    // setTags(x);
+
+    if (allTags) setTags(allTags);
     else setTags([]);
+    // if (tagsRole) setTags(tagsRole.map(dictValue));
+    // else setTags([]);
   };
 
   const [tagsRole, setTagsRole] = React.useState(tags);
@@ -112,27 +193,17 @@ export default function ProfilePage() {
 
       <div className="profile-edit-tags-dropdowns">
         <div className="profile-filter-scroll">
-          <Filters
-            title="role"
-            options={roleOptions}
-            values={tagsRole}
-            onChange={setTagsRole}
-            isMulti={true}
-          />
-          <Filters
-            title="location"
-            options={locationOptions}
-            values={tagsLocation}
-            onChange={setTagsLocation}
-            isMulti={true}
-          />
-          <Filters
-            title="race"
-            options={raceOptions}
-            values={tagsRace}
-            onChange={setTagsRace}
-            isMulti={true}
-          />
+          {categoriesAndTags &&
+            categoriesAndTags.map(categoryInfo => (
+              <Filters
+                isMulti={true}
+                title={categoryInfo.categoryName}
+                options={categoryInfo.options}
+                values={categoryInfo.values}
+                onChange={handleFilterChange(categoryInfo.getDict)}
+                key={categoryInfo}
+              />
+            ))}
         </div>
       </div>
       <button onClick={handleClose} className="profile-edit-tags-modal-button">

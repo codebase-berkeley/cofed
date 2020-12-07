@@ -34,8 +34,6 @@ export default function FiltersPage() {
   const [coopShown, setCoopShown] = React.useState([]);
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
   const [allTags, setAllTags] = React.useState([]);
-  //an array of tags, where each tag has a name, id, and category
-  //tags to filter by
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -83,8 +81,6 @@ export default function FiltersPage() {
     //getting the information about each tag in THIS category
     for (let index in ArrTagData) {
       var tagData = ArrTagData[index];
-      console.log(tagData);
-
       if (tagData.length > 2) {
         const splitTagData = tagData.split(',');
         const id = parseInt(splitTagData[0].replace('(', ''));
