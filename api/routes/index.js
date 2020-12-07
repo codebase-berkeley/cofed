@@ -245,16 +245,23 @@ router.put('/coop', isAuthenticated, async (req, res) => {
   ];
   try {
     //HANDLE IMAGE UPLOADING TO S3
-    let uploadParams = { Bucket: process.argv[2], Key: '', Body: '' };
-    let fileStream = fs.createReadStream(image_file[0].path);
-    fileStream.on('error', function (err) {
-      console.log('File Error', err);
-    });
+    let uploadParams = { 
+      Bucket: 'cofed', 
+      Key: '', 
+      Body: '' 
+    };
+    console.log("PATH = " + image_file[0].path)
+    // let fileStream = fs.createReadStream(image_file[0].path);
+    // fileStream.on('error', function (err) {
+    //   console.log('File Error', err);
+    // });
     //set the upload attributes
-    uploadParams.Body = fileStream;
+    console.log("FILE = ")
+    console.log(image_file)
+    uploadParams.Body = image_file[0].preview;
     uploadParams.Key = path.basename(image_file[0].path);
+    
     //upload to s3
-
     s3.upload(uploadParams, function (err, data) {
       if (err) {
         console.log('Error', err);
