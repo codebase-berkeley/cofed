@@ -26,36 +26,14 @@ export default function ProfilePage() {
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
 
-  const [dropDownOptions, setDropDownOptions] = React.useState([]);
-
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
-
-  function setProfileVariables(coop) {
-    console.log('hello');
-    setCoop(coop);
-    setAddress(coop['addr']);
-    setPhone(coop['phone_number']);
-    setTags(coop['tags']);
-    setMission(coop['mission_statement']);
-    setDescription(coop['description_text']);
-    setFbLink(coop['fb_link']);
-    setInstaLink(coop['insta_link']);
-    setEmail(coop['email']);
-    setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
-    setName(coop['coop_name']);
-  }
 
   React.useEffect(() => {
     async function fetchData() {
-      console.log('fetch data!');
       try {
         setProfileVariables(user);
-        console.log(user);
-        // const allTags = await axios.get('/api/tags');
-        // setDropDownOptions(allTags.data);
-        const allTags = await axios.get('/api/tags');
 
+        const allTags = await axios.get('/api/tags');
         const modTag = allTags.data.map(getCategoryInfo);
         setCategoriesAndTags(modTag);
       } catch (err) {
@@ -65,6 +43,7 @@ export default function ProfilePage() {
     fetchData();
   }, []);
 
+  //**Sets the drop down options for each category */
   function getCategoryInfo(categoryWithTags) {
     const categoryName = categoryWithTags['categories']
       .replace(')', '')
@@ -82,7 +61,6 @@ export default function ProfilePage() {
     //getting the information about each tag in THIS category
     for (let index in ArrTagData) {
       var tagData = ArrTagData[index];
-      // console.log(tagData);
 
       if (tagData.length > 2) {
         const splitTagData = tagData.split(',');
@@ -90,6 +68,18 @@ export default function ProfilePage() {
         const name = splitTagData[1];
 
         options.push(makeCategoryOptions(id, name));
+      }
+    }
+
+    //set the default values in dict
+    var values = [];
+    for (var t in user['tags']) {
+      const tagName = user['tags'][t];
+      for (var o in options) {
+        const tagOption = options[o];
+        if (tagName === tagOption['value']) {
+          values.push(tagOption);
+        }
       }
     }
 
@@ -107,7 +97,7 @@ export default function ProfilePage() {
       categoryName: categoryName,
       options: options,
       getDict: _ => dict,
-      reset: _ => (dict['values'] = null),
+      values: values,
     };
 
     return dict;
@@ -116,7 +106,25 @@ export default function ProfilePage() {
   function handleFilterChange(getCategoryDict) {
     async function onChange(event) {
       const dict = getCategoryDict();
-      dict['values'] = event;
+
+      var tempCategoriesAndTags = [];
+
+      for (var c in categoriesAndTags) {
+        var category = categoriesAndTags[c];
+        if (category['categoryName'] === dict['categoryName']) {
+          const dict = {
+            categoryName: category['categoryName'],
+            options: category['options'],
+            getDict: _ => dict,
+            values: event,
+          };
+          tempCategoriesAndTags.push(dict);
+        } else {
+          tempCategoriesAndTags.push(category);
+        }
+      }
+
+      setCategoriesAndTags(tempCategoriesAndTags);
     }
     return onChange;
   }
@@ -141,7 +149,7 @@ export default function ProfilePage() {
     var allTags = [];
 
     const x = categoriesAndTags.map(categoryInfo => categoryInfo.values);
-    //an array of array of dictionaries
+
     for (let k in x) {
       var arrOfDict = x[k];
       for (let index in arrOfDict) {
@@ -149,34 +157,10 @@ export default function ProfilePage() {
         allTags.push(dict['value']);
       }
     }
-    console.log(allTags);
 
     if (allTags) setTags(allTags);
     else setTags([]);
   };
-
-  function tagQueryToDropDownOption(tag) {
-    const dict = {
-      value: tag.tag_name,
-      label: tag.tag_name,
-      id: tag.id,
-    };
-    return dict;
-  }
-
-  function tagNameToDropDownOption(tag) {
-    const dict = {
-      value: tag,
-      label: tag,
-    };
-    return dict;
-  }
-
-  function dictValue(dict) {
-    return dict['value'];
-  }
-
-  const roleOptions = dropDownOptions.map(tagQueryToDropDownOption);
 
   const body = (
     <div className="modal-body">
@@ -210,10 +194,9 @@ export default function ProfilePage() {
           {renderContactInputs()}
           <div className="profile-tags-container">
             {tags &&
-              tags.map(
-                (text, index) => <Tag key={index} text={text} index={index} />
-                // console.log(text, index)
-              )}
+              tags.map((text, index) => (
+                <Tag key={index} text={text} index={index} />
+              ))}
             <button onClick={handleOpen} className="profile-edit-tags-button">
               Edit tags
             </button>
@@ -344,7 +327,6 @@ export default function ProfilePage() {
       longitude: latLng['lng'],
       tags: tags,
     };
-    console.log(tags);
     await axios.put('/api/coop', data);
     setProfileVariables(data);
     setUser(data);
