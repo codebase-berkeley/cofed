@@ -15,14 +15,6 @@ function isAuthenticated(req, res, next) {
   }
 }
 
-/** Returns an array of tags given a SQL query
- * map through an array, grab just the values of each dictionary,
- * and flatten the resulting array
- */
-function getArrayOfTags(query) {
-  return query.rows.map(Object.values).flat();
-}
-
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
