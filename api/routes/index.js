@@ -11,7 +11,7 @@ function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    res.status(404).send({ error: `user not logged in` });
+    res.status(401).send({ error: `user not logged in` });
   }
 }
 

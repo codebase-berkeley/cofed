@@ -38,6 +38,19 @@ router.post(
   })
 );
 
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('http://localhost:3000/login/?success=true');
+  }
+);
+
 router.post('/logout', async (req, res) => {
   req.logout();
   res.send('Logged Out');
