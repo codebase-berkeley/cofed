@@ -8,6 +8,10 @@ import Filters from '../../components/Filter/Filter';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { UserContext } from '../../Context';
+import {
+  initializeCategoryOptions,
+  setDefaultCategoryOptions,
+} from '../../tagCategoryHelper';
 
 export default function ProfilePage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -34,7 +38,10 @@ export default function ProfilePage() {
         setProfileVariables(user);
 
         const allTags = await axios.get('/api/tags');
-        const modTag = allTags.data.map(getCategoryInfo);
+
+        const modTag = allTags.data.map(initializeCategoryOptions);
+        setDefaultCategoryOptions(user['tags'], modTag);
+
         setCategoriesAndTags(modTag);
       } catch (err) {
         console.log(err);
@@ -43,82 +50,23 @@ export default function ProfilePage() {
     fetchData();
   }, []);
 
-  //**Sets the drop down options for each category */
-  function getCategoryInfo(categoryWithTags) {
-    const categoryName = categoryWithTags['categories']
-      .replace(')', '')
-      .replace('(', '')
-      .split(',')[1]
-      .replaceAll('"', '');
-
-    const ArrTagData = categoryWithTags['array_agg']
-      .replaceAll('\\"', '')
-      .split('"');
-
-    var options = [];
-
-    //parse through the ArrTagData
-    //getting the information about each tag in THIS category
-    for (let index in ArrTagData) {
-      var tagData = ArrTagData[index];
-
-      if (tagData.length > 2) {
-        const splitTagData = tagData.split(',');
-        const id = parseInt(splitTagData[0].replace('(', ''));
-        const name = splitTagData[1];
-
-        options.push(makeCategoryOptions(id, name));
-      }
-    }
-
-    //set the default values in dict
-    var values = [];
-    for (var t in user['tags']) {
-      const tagName = user['tags'][t];
-      for (var o in options) {
-        const tagOption = options[o];
-        if (tagName === tagOption['value']) {
-          values.push(tagOption);
-        }
-      }
-    }
-
-    function makeCategoryOptions(id, name) {
-      const dict = {
-        value: name,
-        label: name,
-        id: id,
-        categoryName: categoryName,
-      };
-      return dict;
-    }
-
-    const dict = {
-      categoryName: categoryName,
-      options: options,
-      getDict: _ => dict,
-      values: values,
-    };
-
-    return dict;
-  }
-
-  function handleFilterChange(getCategoryDict) {
+  function handleFilterChange(getCategory) {
     async function onChange(event) {
-      const dict = getCategoryDict();
+      const categoryChanged = getCategory();
 
       var tempCategoriesAndTags = [];
 
       for (var c in categoriesAndTags) {
         var category = categoriesAndTags[c];
-        if (category['categoryName'] === dict['categoryName']) {
-          const dict = {
+        if (category['categoryName'] === categoryChanged['categoryName']) {
+          const categoryChanged = {
             categoryName: category['categoryName'],
             options: category['options'],
-            getDict: _ => dict,
+            getCategory: _ => categoryChanged,
             values: event,
           };
-          tempCategoriesAndTags.push(dict);
+
+          tempCategoriesAndTags.push(categoryChanged);
         } else {
           tempCategoriesAndTags.push(category);
         }
@@ -148,13 +96,15 @@ export default function ProfilePage() {
 
     var allTags = [];
 
-    const x = categoriesAndTags.map(categoryInfo => categoryInfo.values);
+    const modalTags = categoriesAndTags.map(
+      categoryInfo => categoryInfo.values
+    );
 
-    for (let k in x) {
-      var arrOfDict = x[k];
-      for (let index in arrOfDict) {
-        const dict = arrOfDict[index];
-        allTags.push(dict['value']);
+    for (let ct in modalTags) {
+      var categoryTags = modalTags[ct];
+      for (let t in categoryTags) {
+        const tag = categoryTags[t];
+        allTags.push(tag['value']);
       }
     }
 
@@ -175,7 +125,7 @@ export default function ProfilePage() {
                 title={categoryInfo.categoryName}
                 options={categoryInfo.options}
                 values={categoryInfo.values}
-                onChange={handleFilterChange(categoryInfo.getDict)}
+                onChange={handleFilterChange(categoryInfo.getCategory)}
                 key={categoryInfo}
               />
             ))}

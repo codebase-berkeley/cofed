@@ -1,5 +1,3 @@
-import React from 'react';
-
 //**Sets the drop down options for each category */
 export function initializeCategoryOptions(categoryWithTagsQuery) {
   const categoryName = categoryWithTagsQuery['categories']
@@ -48,7 +46,7 @@ function makeCategoryOptions(id, name, categoryName) {
   return categoryOptions;
 }
 
-function setDefaultCategoryOptions(tags, categories) {
+export function setDefaultCategoryOptions(tags, categories) {
   for (var c in categories) {
     var values = [];
 
