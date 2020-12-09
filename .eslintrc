@@ -1,5 +1,6 @@
 {
   "extends": [
+    "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended"
@@ -23,6 +24,8 @@
       "warn",
       { "args": "none", "argsIgnorePattern": "req|res|next|val" }
     ],
+    "no-var": "error",
+    "eqeqeq": ["error", "smart"],
     "prettier/prettier": ["error"]
   },
   "settings": {

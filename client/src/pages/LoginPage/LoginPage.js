@@ -32,7 +32,7 @@ export default function LoginPage(props) {
       }
     }
     fetchData();
-  }, []);
+  }, [props.location.search, setUser]);
 
   async function verify() {
     try {

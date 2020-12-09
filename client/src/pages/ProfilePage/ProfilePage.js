@@ -28,7 +28,7 @@ export default function ProfilePage() {
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
-  function setProfileVariables(coop) {
+  const setProfileVariables = React.useCallback(coop => {
     setCoop(coop);
     setAddress(coop['addr']);
     setPhone(coop['phone_number']);
@@ -41,8 +41,9 @@ export default function ProfilePage() {
     setWebsite(coop['website']);
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
+    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
     setTagsRole(coop['tags'].map(tagNameToDropDownOption));
-  }
+  }, []);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -55,12 +56,12 @@ export default function ProfilePage() {
       }
     }
     fetchData();
-  }, []);
+  }, [setProfileVariables, user]);
 
   let selectLocation = async address => {
     setAddress(address);
     const results = await geocodeByAddress(address);
-    if (results.length != 0) {
+    if (results.length !== 0) {
       const coords = await getLatLng(results[0]);
       setLatLng(coords);
     }
@@ -276,7 +277,6 @@ export default function ProfilePage() {
       website: website,
       email: email,
       profile_pic: profilePicture,
-      addr: address,
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
@@ -288,22 +288,6 @@ export default function ProfilePage() {
 
   if (!coop) {
     return <div>Loading...</div>;
-  }
-
-  function setProfileVariables(coop) {
-    setCoop(coop);
-    setAddress(coop['addr']);
-    setPhone(coop['phone_number']);
-    setTags(coop['tags']);
-    setMission(coop['mission_statement']);
-    setDescription(coop['description_text']);
-    setFbLink(coop['fb_link']);
-    setInstaLink(coop['insta_link']);
-    setEmail(coop['email']);
-    setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
-    setName(coop['coop_name']);
-    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }
 
   return (

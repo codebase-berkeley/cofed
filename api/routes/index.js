@@ -203,7 +203,7 @@ router.put('/coop', isAuthenticated, async (req, res) => {
 
     await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
 
-    var namesToIds = await db.query(
+    let namesToIds = await db.query(
       'SELECT id from tags WHERE tag_name = ANY ($1)',
       [tags]
     );
