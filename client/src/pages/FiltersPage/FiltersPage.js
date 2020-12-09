@@ -11,6 +11,7 @@ import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
+import { initializeCategoryOptions } from '../../tagCategoryHelper';
 
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -60,54 +61,8 @@ export default function FiltersPage() {
     setStarredCoops(starredIds);
 
     const tags = await axios.get('/api/tags');
-    const modTag = tags.data.map(getCategoryInfo);
+    const modTag = tags.data.map(initializeCategoryOptions);
     setCategoriesAndTags(modTag);
-  }
-
-  function getCategoryInfo(categoryWithTags) {
-    const categoryName = categoryWithTags['categories']
-      .replace(')', '')
-      .replace('(', '')
-      .split(',')[1]
-      .replaceAll('"', '');
-
-    const ArrTagData = categoryWithTags['array_agg']
-      .replaceAll('\\"', '')
-      .split('"');
-
-    var options = [];
-
-    //parse through the ArrTagData
-    //getting the information about each tag in THIS category
-    for (let index in ArrTagData) {
-      var tagData = ArrTagData[index];
-      if (tagData.length > 2) {
-        const splitTagData = tagData.split(',');
-        const id = parseInt(splitTagData[0].replace('(', ''));
-        const name = splitTagData[1];
-
-        options.push(makeCategoryOptions(id, name));
-      }
-    }
-
-    function makeCategoryOptions(id, name) {
-      const dict = {
-        value: name,
-        label: name,
-        id: id,
-        categoryName: categoryName,
-      };
-      return dict;
-    }
-
-    const dict = {
-      categoryName: categoryName,
-      options: options,
-      getDict: _ => dict,
-      reset: _ => (dict['values'] = null),
-    };
-
-    return dict;
   }
 
   React.useEffect(() => {
@@ -319,12 +274,11 @@ export default function FiltersPage() {
   function handleChange(getCategoryDict) {
     async function onChange(event) {
       setSelectedIndex(null);
-      const dict = getCategoryDict();
-      dict['values'] = event;
-      const categoryName = dict['categoryName'];
-
+      const category = getCategoryDict();
+      category['values'] = event;
+      const categoryName = category['categoryName'];
       const tempAllTags = allTags.filter(
-        tag => tag.categoryName != categoryName
+        tag => tag.categoryName !== categoryName
       );
 
       if (event != null) {
@@ -402,7 +356,7 @@ export default function FiltersPage() {
                       title={categoryInfo.categoryName}
                       options={categoryInfo.options}
                       values={categoryInfo.values}
-                      onChange={handleChange(categoryInfo.getDict)}
+                      onChange={handleChange(categoryInfo.getCategory)}
                       key={categoryInfo}
                     />
                   ))}
