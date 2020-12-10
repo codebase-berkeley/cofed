@@ -9,12 +9,16 @@ import Filters from '../../components/Filter/Filter';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { UserContext } from '../../Context';
+import Dropzone from '../../components/Dropzone/Dropzone';
+import path from 'path';
 import {
   initializeCategoryOptions,
   setDefaultCategoryOptions,
-} from '../../tagCategoryHelper';
+  createS3Url,
+} from '../../Helpers';
 
 export default function ProfilePage() {
+  const key = 'imageFile';
   const { user, setUser } = React.useContext(UserContext);
 
   const [coop, setCoop] = React.useState(null);
@@ -28,8 +32,10 @@ export default function ProfilePage() {
   const [website, setWebsite] = React.useState(null);
   const [email, setEmail] = React.useState(null);
   const [profilePicture, setProfilePicture] = React.useState(null);
+
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
+  const [imageFile, setImageFile] = React.useState(null);
 
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
 
@@ -44,7 +50,7 @@ export default function ProfilePage() {
     setInstaLink(coop['insta_link']);
     setEmail(coop['email']);
     setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
+    setProfilePicture(createS3Url(coop['profile_pic']));
     setName(coop['coop_name']);
     setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }, []);
@@ -103,33 +109,56 @@ export default function ProfilePage() {
     }
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const [tagsModalOpen, setTagsModalOpen] = React.useState(false);
+  const handleTagsModalOpen = () => {
+    setTagsModalOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-
-    let allTags = [];
-
-    const modalTags = categoriesAndTags.map(
-      categoryInfo => categoryInfo.values
-    );
-
-    for (let ct in modalTags) {
-      let categoryTags = modalTags[ct];
-      for (let t in categoryTags) {
-        const tag = categoryTags[t];
-        allTags.push(tag['value']);
-      }
+  const handleTagsModalClose = () => {
+    setTagsModalOpen(false);
+    if (allTags) {
+      setTags(allTags);
+    } else {
+      setTags([]);
     }
-
-    if (allTags) setTags(allTags);
-    else setTags([]);
   };
 
-  const body = (
+  const [picModalOpen, setPicModalOpen] = React.useState(false);
+  const handlePicModalOpen = () => {
+    setPicModalOpen(true);
+  };
+
+  const handlePicModalClose = async () => {
+    setPicModalOpen(false);
+
+    if (imageFile) {
+      let image64 = await toBase64(imageFile);
+      setProfilePicture(image64);
+    }
+  };
+
+  //encode the image
+  const toBase64 = file =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
+  let allTags = [];
+
+  const modalTags = categoriesAndTags.map(categoryInfo => categoryInfo.values);
+
+  for (let ct in modalTags) {
+    let categoryTags = modalTags[ct];
+    for (let t in categoryTags) {
+      const tag = categoryTags[t];
+      allTags.push(tag['value']);
+    }
+  }
+
+  const tagsModalBody = (
     <div className="modal-body">
       <div className="modal-header">Select Tags</div>
 
@@ -148,10 +177,30 @@ export default function ProfilePage() {
             ))}
         </div>
       </div>
-      <button onClick={handleClose} className="profile-edit-tags-modal-button">
+      <button
+        onClick={handleTagsModalClose}
+        className="profile-edit-tags-modal-button"
+      >
         Confirm
       </button>
     </div>
+  );
+
+  const picModalBody = (
+    <form className="modal-body" encType="multipart/form-data">
+      <div className="modal-header">Select Profile Picture</div>
+      <Dropzone
+        handleImage={setImageFile}
+        inputProps={{ name: key, type: 'file' }}
+      />
+      <button
+        type="button"
+        onClick={handlePicModalClose}
+        className="profile-edit-tags-modal-button"
+      >
+        Confirm
+      </button>
+    </form>
   );
 
   function renderEdit() {
@@ -164,16 +213,19 @@ export default function ProfilePage() {
               tags.map((text, index) => (
                 <Tag key={index} text={text} index={index} />
               ))}
-            <button onClick={handleOpen} className="profile-edit-tags-button">
+            <button
+              onClick={handleTagsModalOpen}
+              className="profile-edit-tags-button"
+            >
               Edit tags
             </button>
             <div className="modal-popup">
               <Modal
                 className="profile-modal-tags"
-                open={open}
-                onClose={handleClose}
+                open={tagsModalOpen}
+                onClose={handleTagsModalClose}
               >
-                {body}
+                {tagsModalBody}
               </Modal>
             </div>
           </div>
@@ -212,7 +264,7 @@ export default function ProfilePage() {
         <input
           className="profile-small-input"
           type="text"
-          placeholder="Enter facebok link:"
+          placeholder="Enter facebook link:"
           value={fbLink}
           onChange={e => setFbLink(e.target.value)}
         />
@@ -232,7 +284,21 @@ export default function ProfilePage() {
       <div className="profile-pic-text-container">
         <div className="profile-pic-container">
           <img className="profile-pic-edit" alt="Image" src={profilePicture} />
-          <img className="profile-edit-pic" alt="Image" src={plusSign} />
+          <img
+            onClick={handlePicModalOpen}
+            className="profile-edit-pic"
+            alt="Image"
+            src={plusSign}
+          />
+        </div>
+        <div className="modal-popup">
+          <Modal
+            className="profile-modal-tags"
+            open={picModalOpen}
+            onClose={handlePicModalClose}
+          >
+            {picModalBody}
+          </Modal>
         </div>
         <div className="profile-edit-profile-text-container">
           <input
@@ -278,9 +344,12 @@ export default function ProfilePage() {
   }
 
   async function putData() {
-    const data = {
+    const newProfilePath = imageFile
+      ? path.join(name, imageFile[0].path)
+      : coop.profile_pic;
+    //include image_file to add to s3 object
+    const coop_data = {
       coop_name: name,
-      addr: address,
       phone_number: phone,
       mission_statement: mission,
       description_text: description,
@@ -288,14 +357,29 @@ export default function ProfilePage() {
       fb_link: fbLink,
       website: website,
       email: email,
-      profile_pic: profilePicture,
+      profile_pic: newProfilePath,
+      addr: address,
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
     };
-    await axios.put('/api/coop', data);
-    setProfileVariables(data);
-    setUser(data);
+
+    await axios.put('/api/coop', coop_data);
+    if (imageFile) {
+      const data = new FormData();
+      data.append('imageFile', imageFile[0]);
+      data.append('coop', name);
+
+      await axios.post('/api/upload', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    }
+
+    setProfilePicture(createS3Url(newProfilePath));
+    setUser(coop_data);
+    setProfileVariables(coop_data);
   }
 
   if (!coop) {

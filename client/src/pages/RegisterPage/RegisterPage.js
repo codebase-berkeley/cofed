@@ -31,6 +31,7 @@ export default function RegisterPage() {
         password: passwordInput,
         latitude: latLng['lat'],
         longitude: latLng['lng'],
+        profile_pic: 'user_default.png',
       });
     } catch (err) {
       alert('could not register account');

@@ -2,6 +2,18 @@ const express = require('express');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
+const AWS = require('aws-sdk');
+const bluebird = require('bluebird');
+// Create S3 service object
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
+
+/** configure AWS to work with promises */
+AWS.config.setPromisesDependency(bluebird);
+const s3 = new AWS.S3();
+
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
   'latitude, longitude, website, mission_statement, ' +
@@ -182,6 +194,7 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     longitude,
   ];
   try {
+    //HANDLE TAG UPDATES
     await db.query('BEGIN');
     await db.query(updateQueryText, updateQueryValues);
 
@@ -205,6 +218,34 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     await db.query('ROLLBACK');
     console.log(err.stack);
   }
+});
+
+router.post('/upload', async (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    console.log('No files were uploaded.');
+  }
+
+  const { imageFile } = req.files;
+  const { coop } = req.body;
+
+  // the RETURNING id is used for dynamically rendering the lesson box after uploading
+  let type = imageFile.mimetype;
+  let key = coop + '/' + imageFile.name;
+  const params = {
+    ACL: 'public-read',
+    Bucket: process.env.S3_BUCKET,
+    Body: imageFile.data,
+    ContentType: type,
+    Key: key,
+  };
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.log('Error in callback');
+      console.log(err);
+    }
+
+    res.send('Success!');
+  });
 });
 
 module.exports = router;

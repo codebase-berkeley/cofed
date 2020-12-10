@@ -137,6 +137,7 @@
   width: 123px;
   height: 120px;
   margin: 10px;
+  object-fit: cover;
 }
 .profile-pic-edit {
   border-radius: 1000px;
@@ -144,6 +145,7 @@
   height: 120px;
   margin: 10px;
   opacity: 0.3;
+  object-fit: cover;
 }
 
 .profile-pic-container {

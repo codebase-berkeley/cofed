@@ -12,7 +12,7 @@ import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
-import { initializeCategoryOptions } from '../../tagCategoryHelper';
+import { initializeCategoryOptions, createS3Url } from '../../Helpers';
 
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -169,7 +169,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile={coop.profile_pic}
+                profile_pic={createS3Url(coop.profile_pic)}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
@@ -189,7 +189,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile={coop.profile_pic}
+                profile_pic={createS3Url(coop.profile_pic)}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
