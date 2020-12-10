@@ -84,10 +84,7 @@ export default function FiltersPage() {
   function sortByDistance(coop1, coop2) {
     const distCoop1 = distance(coop1);
     const distCoop2 = distance(coop2);
-    if (distCoop1 === distCoop2) {
-      return 0;
-    }
-    return distCoop1 > distCoop2 ? 1 : -1;
+    return distCoop1 - distCoop2;
   }
 
   //code from GeoDataSource

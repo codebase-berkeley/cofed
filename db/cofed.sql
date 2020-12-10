@@ -85,5 +85,4 @@ VALUES
     ('Advocacy', 4),
     ('Education', 4),
     ('Food Services', 4),
-    ('Purchasing and Acquisition', 4);
-    
+    ('Purchasing and Acquisition', 4); 
