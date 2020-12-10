@@ -55,7 +55,9 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function (req, res) {
-    res.redirect('http://localhost:3000/');
+    const redirectPath =
+      process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3000/';
+    res.redirect(redirectPath);
   }
 );
 

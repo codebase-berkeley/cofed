@@ -36,7 +36,6 @@ export default function Profile(props) {
   }
 
   function renderContent() {
-    // if (loading) return <Progress />;
     if (props.allowView && props.allowEdit) {
       if (editMode) {
         return props.renderEdit();
