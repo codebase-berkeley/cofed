@@ -26,32 +26,24 @@ function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    res.status(404).send({ error: `user not logged in` });
+    res.status(401).send({ error: `user not logged in` });
   }
 }
 
-/** Returns an array of tags given a SQL query
- * map through an array, grab just the values of each dictionary,
- * and flatten the resulting array
- */
-function getArrayOfTags(query) {
-  return query.rows.map(Object.values).flat();
-}
 router.get('/coop', isAuthenticated, async (req, res) => {
   try {
     const id = req.user.id;
     const commandForTags =
       'SELECT tag_name FROM coop_tags JOIN tags ON coop_tags.tag_id = tags.id WHERE coop_tags.coop_id = $1';
-    const values = [id];
 
+    const values = [id];
     const queryTags = await db.query(commandForTags, values);
-    const listOfTags = getArrayOfTags(queryTags);
 
     const command = 'SELECT ' + coop_fields + ' FROM coops WHERE id = $1';
     const query = await db.query(command, values);
 
     if (query.rows.length >= 1) {
-      query.rows[0]['tags'] = listOfTags;
+      query.rows[0]['tags'] = queryTags.rows.map(dict => dict['tag_name']);
       res.send(query.rows[0]);
     } else {
       res.status(404).send({ error: `coop ${id} not found` });
@@ -64,14 +56,16 @@ router.get('/coop', isAuthenticated, async (req, res) => {
 //retrieving ALL tags in our tags table and returning a list
 router.get('/tags', async (req, res) => {
   try {
-    const query = await db.query(`SELECT * FROM tags;`);
+    const query = await db.query(
+      `SELECT categories, array_agg(tags) FROM categories, tags WHERE tags.category_id = categories.id GROUP BY categories.id;`
+    );
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
   }
 });
 
-//retrieve all coops with their tag
+// //retrieve all coops with their tag
 router.get('/coops', isAuthenticated, async (req, res) => {
   try {
     const query = await db.query(
@@ -109,16 +103,6 @@ router.get('/filteredCoops', async (req, res) => {
              @> $1;`,
       [tagParams]
     );
-    res.send(query.rows);
-  } catch (error) {
-    console.log(error.stack);
-  }
-});
-
-//retrieving ALL tags in our tags table and returning a list
-router.get('/tags', async (req, res) => {
-  try {
-    const query = await db.query(`SELECT * FROM tags;`);
     res.send(query.rows);
   } catch (error) {
     console.log(error.stack);
@@ -219,7 +203,7 @@ router.put('/coop', isAuthenticated, async (req, res) => {
 
     await db.query('DELETE FROM coop_tags WHERE coop_id = $1', [coopId]);
 
-    var namesToIds = await db.query(
+    let namesToIds = await db.query(
       'SELECT id from tags WHERE tag_name = ANY ($1)',
       [tags]
     );

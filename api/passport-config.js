@@ -1,5 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const db = require('../db/index');
 const bcrypt = require('bcrypt');
 
@@ -24,6 +27,57 @@ passport.deserializeUser(async function (id, done) {
     return done(err);
   }
 });
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: 'http://localhost:8000/auth/google/callback',
+    },
+    async function (token, tokenSecret, profile, done) {
+      let email = profile.emails[0].value;
+      let name = profile.displayName;
+      let query = await db.query(
+        `SELECT id
+          FROM coops
+          WHERE email = $1;`,
+        [email]
+      );
+      if (query.rows.length > 0) {
+        const user = query.rows[0];
+        return done(null, user.id);
+      } else {
+        await db.query(
+          'INSERT INTO coops (email, coop_name, addr, ' +
+            'phone_number, mission_statement, description_text,' +
+            'insta_link, fb_link, website, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+          [
+            email,
+            '[' + name + "'s Coop]",
+            '[Insert address]',
+            '[Insert Phone Number]',
+            '[Insert Mission Statement]',
+            '[Insert Description]',
+            '[Insert Instagram Link]',
+            '[Insert Facebook Link]',
+            '[Insert Website]',
+            37.8712,
+            -122.2601, // defaults to Berkeley!
+          ]
+        );
+        const query = await db.query(
+          `SELECT id
+            FROM coops
+            WHERE email = $1;`,
+          [email]
+        );
+        const user = query.rows[0];
+        return done(null, user.id);
+      }
+    }
+  )
+);
 
 passport.use(
   new LocalStrategy(async function (username, password, done) {

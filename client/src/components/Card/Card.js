@@ -42,15 +42,15 @@ export default function CardComponent(props) {
       </div>
     </div>
   );
-
-  CardComponent.propTypes = {
-    onClick: PropTypes.func,
-    location: PropTypes.string,
-    name: PropTypes.string,
-    profile: PropTypes.string,
-    tags: PropTypes.array,
-    selected: PropTypes.bool,
-    starred: PropTypes.bool,
-    profile_pic: PropTypes.string,
-  };
 }
+
+CardComponent.propTypes = {
+  onClick: PropTypes.func,
+  location: PropTypes.string,
+  name: PropTypes.string,
+  profile: PropTypes.string,
+  tags: PropTypes.array,
+  selected: PropTypes.bool,
+  starred: PropTypes.bool,
+  profile_pic: PropTypes.string,
+};

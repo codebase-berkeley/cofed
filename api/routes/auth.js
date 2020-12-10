@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
       `SELECT id FROM coops WHERE email = $1;`,
       [email]
     );
-    if (emailQuery.rows.length == 0) {
+    if (emailQuery.rows.length === 0) {
       let hashedPass = await bcrypt.hash(password, SALT_FACTOR);
       const insert_query = await db.query(
         `INSERT INTO coops (email, hashed_pass, coop_name, addr, latitude, longitude)
@@ -36,6 +36,19 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/',
   })
+);
+
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('http://localhost:3000/');
+  }
 );
 
 router.post('/logout', async (req, res) => {

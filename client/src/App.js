@@ -4,11 +4,25 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { UserContext } from './Context';
+import axios from 'axios';
 import React from 'react';
 import './App.css';
 
 function App() {
   const [user, setUser] = React.useState();
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await axios.get('/api/coop');
+        setUser(res.data);
+      } catch (err) {
+        console.log('user not found');
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
