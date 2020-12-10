@@ -87,11 +87,6 @@ export default function LoginPage(props) {
           </button>
         </a>{' '}
       </div>
-      <div className="forgetPass">
-        <a href="#" target="_blank">
-          Forgot Password?
-        </a>
-      </div>
     </div>
   );
 }
