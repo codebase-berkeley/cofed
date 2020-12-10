@@ -90,14 +90,6 @@ export default function FiltersPage() {
     return distCoop1 > distCoop2 ? 1 : -1;
   }
 
-  function getDistanceToUser(coop) {
-    const otherLat = coop['latitude'];
-    const otherLon = coop['longitude'];
-    const myLat = user['latitude'];
-    const myLon = user['longitude'];
-    return Math.sqrt((myLat - otherLat) ** 2 + (myLon - otherLon) ** 2);
-  }
-
   function distance(coop) {
     const otherLat = coop['latitude'];
     const otherLon = coop['longitude'];
