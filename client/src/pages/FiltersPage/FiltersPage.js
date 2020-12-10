@@ -41,33 +41,32 @@ export default function FiltersPage() {
     setCoops(res.data);
   }
 
-  async function fetchInitialData() {
-    try {
-      const res = await axios.get('/api/coops');
-      setCoops(res.data);
-      if (res.data.length !== 0) {
-        setCoopShown(res.data[0]);
-      }
-    } catch (err) {
-      setUser(null);
-    }
-
-    //get the toggle star info
-    const starred = await axios.get('/api/getStarred');
-    //set the query data as the starred coops
-    let starredIds = starred.data.map(e => {
-      return e.starred_coop_id;
-    });
-    setStarredCoops(starredIds);
-
-    const tags = await axios.get('/api/tags');
-    const modTag = tags.data.map(initializeCategoryOptions);
-    setCategoriesAndTags(modTag);
-  }
-
   React.useEffect(() => {
+    async function fetchInitialData() {
+      try {
+        const res = await axios.get('/api/coops');
+        setCoops(res.data);
+        if (res.data.length !== 0) {
+          setCoopShown(res.data[0]);
+        }
+      } catch (err) {
+        setUser(null);
+      }
+
+      const tags = await axios.get('/api/tags');
+      const modTag = tags.data.map(initializeCategoryOptions);
+      setCategoriesAndTags(modTag);
+
+      //get the toggle star info
+      const starred = await axios.get('/api/getStarred');
+      //set the query data as the starred coops
+      let starredIds = starred.data.map(e => {
+        return e.starred_coop_id;
+      });
+      setStarredCoops(starredIds);
+    }
     fetchInitialData();
-  }, []);
+  }, [setUser]);
 
   if (!coops) {
     return <div>Loading...</div>;

@@ -32,6 +32,22 @@ export default function ProfilePage() {
 
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
 
+  const setProfileVariables = React.useCallback(coop => {
+    setCoop(coop);
+    setAddress(coop['addr']);
+    setPhone(coop['phone_number']);
+    setTags(coop['tags']);
+    setMission(coop['mission_statement']);
+    setDescription(coop['description_text']);
+    setFbLink(coop['fb_link']);
+    setInstaLink(coop['insta_link']);
+    setEmail(coop['email']);
+    setWebsite(coop['website']);
+    setProfilePicture(coop['profile_pic']);
+    setName(coop['coop_name']);
+    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
+  }, []);
+
   React.useEffect(() => {
     async function fetchData() {
       try {
@@ -48,16 +64,16 @@ export default function ProfilePage() {
       }
     }
     fetchData();
-  }, []);
+  }, [setProfileVariables, user]);
 
   function handleFilterChange(getCategory) {
     async function onChange(event) {
       const categoryChanged = getCategory();
 
-      var tempCategoriesAndTags = [];
+      let tempCategoriesAndTags = [];
 
-      for (var c in categoriesAndTags) {
-        var category = categoriesAndTags[c];
+      for (let c in categoriesAndTags) {
+        let category = categoriesAndTags[c];
         if (category['categoryName'] === categoryChanged['categoryName']) {
           const categoryChanged = {
             categoryName: category['categoryName'],
@@ -94,14 +110,14 @@ export default function ProfilePage() {
   const handleClose = () => {
     setOpen(false);
 
-    var allTags = [];
+    let allTags = [];
 
     const modalTags = categoriesAndTags.map(
       categoryInfo => categoryInfo.values
     );
 
     for (let ct in modalTags) {
-      var categoryTags = modalTags[ct];
+      let categoryTags = modalTags[ct];
       for (let t in categoryTags) {
         const tag = categoryTags[t];
         allTags.push(tag['value']);
@@ -272,7 +288,6 @@ export default function ProfilePage() {
       website: website,
       email: email,
       profile_pic: profilePicture,
-      addr: address,
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
@@ -284,22 +299,6 @@ export default function ProfilePage() {
 
   if (!coop) {
     return <div>Loading...</div>;
-  }
-
-  function setProfileVariables(coop) {
-    setCoop(coop);
-    setAddress(coop['addr']);
-    setPhone(coop['phone_number']);
-    setTags(coop['tags']);
-    setMission(coop['mission_statement']);
-    setDescription(coop['description_text']);
-    setFbLink(coop['fb_link']);
-    setInstaLink(coop['insta_link']);
-    setEmail(coop['email']);
-    setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
-    setName(coop['coop_name']);
-    setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }
 
   return (
