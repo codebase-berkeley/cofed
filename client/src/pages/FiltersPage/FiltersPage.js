@@ -16,12 +16,7 @@ import { initializeCategoryOptions } from '../../tagCategoryHelper';
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
   const [listMode, setListMode] = React.useState(true);
-  const [sortType, setSortType] = React.useState([
-    {
-      value: 'alphabetical',
-      label: 'sort: alphabetical',
-    },
-  ]);
+  const [sortType, setSortType] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState(null);
@@ -87,8 +82,8 @@ export default function FiltersPage() {
   }
 
   function sortByDistance(coop1, coop2) {
-    const distCoop1 = getDistanceToUser(coop1);
-    const distCoop2 = getDistanceToUser(coop2);
+    const distCoop1 = distance(coop1);
+    const distCoop2 = distance(coop2);
     if (distCoop1 === distCoop2) {
       return 0;
     }
@@ -101,6 +96,32 @@ export default function FiltersPage() {
     const myLat = user['latitude'];
     const myLon = user['longitude'];
     return Math.sqrt((myLat - otherLat) ** 2 + (myLon - otherLon) ** 2);
+  }
+
+  function distance(coop) {
+    const otherLat = coop['latitude'];
+    const otherLon = coop['longitude'];
+    const myLat = user['latitude'];
+    const myLon = user['longitude'];
+
+    if (myLat === otherLat && myLon === otherLon) {
+      return 0;
+    } else {
+      let radlat1 = (Math.PI * myLat) / 180;
+      let radlat2 = (Math.PI * otherLat) / 180;
+      let theta = myLon - otherLon;
+      let radtheta = (Math.PI * theta) / 180;
+      let dist =
+        Math.sin(radlat1) * Math.sin(radlat2) +
+        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515;
+      return dist;
+    }
   }
 
   function searchCoops(coop) {
@@ -357,16 +378,7 @@ export default function FiltersPage() {
                   placeholder="Search..."
                   onChange={e => setSearchInput(e.target.value)}
                 />
-                <Filters
-                  options={sortOptions}
-                  onChange={setSortType}
-                  defaultValue={[
-                    {
-                      value: 'alphabetical',
-                      label: 'alphabetical',
-                    },
-                  ]}
-                />
+                <Filters options={sortOptions} onChange={setSortType} />
                 {categoriesAndTags &&
                   categoriesAndTags.map(categoryInfo => (
                     <Filters
