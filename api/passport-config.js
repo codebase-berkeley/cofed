@@ -51,7 +51,7 @@ passport.use(
         await db.query(
           'INSERT INTO coops (email, coop_name, addr, ' +
             'phone_number, mission_statement, description_text,' +
-            'insta_link, fb_link, website, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+            'insta_link, fb_link, website, latitude, longitude, profile_pic) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
           [
             email,
             '[' + name + "'s Coop]",
@@ -64,6 +64,7 @@ passport.use(
             '[Insert Website]',
             37.8712,
             -122.2601, // defaults to Berkeley!
+            'user_default.png',
           ]
         );
         const query = await db.query(

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import PropTypes from 'prop-types';
 import './Dropzone.css';
 
 export default function Dropzone(props) {
@@ -70,7 +71,7 @@ export default function Dropzone(props) {
     <section className="dropzone-container">
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
         <em>Images may take a while to appear</em>
       </div>
@@ -81,3 +82,7 @@ export default function Dropzone(props) {
     </section>
   );
 }
+
+Dropzone.propTypes = {
+  handleImage: PropTypes.func,
+};

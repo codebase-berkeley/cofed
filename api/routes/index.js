@@ -1,12 +1,9 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
 const AWS = require('aws-sdk');
 const bluebird = require('bluebird');
-const PORT = 3200;
 // Create S3 service object
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -15,7 +12,7 @@ AWS.config.update({
 
 /** configure AWS to work with promises */
 AWS.config.setPromisesDependency(bluebird);
-s3 = new AWS.S3();
+const s3 = new AWS.S3();
 
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +

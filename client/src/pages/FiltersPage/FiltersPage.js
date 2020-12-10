@@ -11,7 +11,10 @@ import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
-import { initializeCategoryOptions } from '../../tagCategoryHelper';
+import {
+  initializeCategoryOptions,
+  createS3Url,
+} from '../../tagCategoryHelper';
 
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -134,12 +137,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile_pic={
-                  'https://' +
-                  /* process.env.S3_BUCKET */ 'cofed' +
-                  '.s3-us-west-1.amazonaws.com/' +
-                  coop.profile_pic
-                }
+                profile_pic={createS3Url(coop.profile_pic)}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
@@ -159,12 +157,7 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile_pic={
-                  'https://' +
-                  // process.env.S3_BUCKET +
-                  'cofed.s3-us-west-1.amazonaws.com/' +
-                  coop.profile_pic
-                }
+                profile_pic={createS3Url(coop.profile_pic)}
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}

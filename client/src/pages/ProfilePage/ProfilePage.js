@@ -9,9 +9,11 @@ import LocationSearchInput from '../../components/Autocomplete/LocationSearchInp
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { UserContext } from '../../Context';
 import Dropzone from '../../components/Dropzone/Dropzone';
+import path from 'path';
 import {
   initializeCategoryOptions,
   setDefaultCategoryOptions,
+  createS3Url,
 } from '../../tagCategoryHelper';
 
 export default function ProfilePage() {
@@ -47,7 +49,7 @@ export default function ProfilePage() {
     setInstaLink(coop['insta_link']);
     setEmail(coop['email']);
     setWebsite(coop['website']);
-    setProfilePicture(coop['profile_pic']);
+    setProfilePicture(createS3Url(coop['profile_pic']));
     setName(coop['coop_name']);
     setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }, []);
@@ -184,7 +186,7 @@ export default function ProfilePage() {
   );
 
   const picModalBody = (
-    <form className="modal-body" enctype="multipart/form-data">
+    <form className="modal-body" encType="multipart/form-data">
       <div className="modal-header">Select Profile Picture</div>
       <Dropzone
         handleImage={setImageFile}
@@ -280,16 +282,7 @@ export default function ProfilePage() {
     return (
       <div className="profile-pic-text-container">
         <div className="profile-pic-container">
-          <img
-            className="profile-pic-edit"
-            alt="Image"
-            src={
-              'https://' +
-              'cofed' +
-              '.s3-us-west-1.amazonaws.com/' +
-              profilePicture
-            }
-          />
+          <img className="profile-pic-edit" alt="Image" src={profilePicture} />
           <img
             onClick={handlePicModalOpen}
             className="profile-edit-pic"
@@ -350,9 +343,10 @@ export default function ProfilePage() {
   }
 
   async function putData() {
-    if (imageFile) {
-      setProfilePicture(name + '/' + imageFile[0].path);
-    }
+    const newProfilePath = imageFile
+      ? path.join(name, imageFile[0].path)
+      : coop.profile_pic;
+    setProfilePicture(createS3Url(newProfilePath));
     //include image_file to add to s3 object
     const coop_data = {
       coop_name: name,
@@ -363,15 +357,12 @@ export default function ProfilePage() {
       fb_link: fbLink,
       website: website,
       email: email,
-      profile_pic: profilePicture,
+      profile_pic: newProfilePath,
       addr: address,
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
     };
-
-    setUser(coop_data);
-    setProfileVariables(coop_data);
 
     await axios.put('/api/coop', coop_data);
     if (imageFile) {
@@ -385,6 +376,9 @@ export default function ProfilePage() {
         },
       });
     }
+
+    setUser(coop_data);
+    setProfileVariables(coop_data);
   }
 
   if (!coop) {

@@ -65,3 +65,7 @@ export function setDefaultCategoryOptions(tags, categories) {
     category['values'] = values;
   }
 }
+
+export function createS3Url(profilePath) {
+  return `https://cofed.s3-us-west-1.amazonaws.com/${profilePath}`;
+}

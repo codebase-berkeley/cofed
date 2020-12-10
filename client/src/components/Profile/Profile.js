@@ -9,6 +9,7 @@ import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
 import starred from '../../assets/starred.svg';
 import unstarred from '../../assets/unstarred.svg';
+import { createS3Url } from '../../tagCategoryHelper';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
@@ -141,12 +142,7 @@ export default function Profile(props) {
       <div className="profile-pic-text-container">
         <img
           className="profile-pic"
-          src={
-            'https://' +
-            // process.env.S3_BUCKET +
-            'cofed.s3-us-west-1.amazonaws.com/' +
-            props.coop.profile_pic
-          }
+          src={createS3Url(props.coop.profile_pic)}
         />
         <div className="profile-text-container">
           <div className="card-name-star-wrapper">
