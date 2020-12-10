@@ -6,6 +6,7 @@ import { UserContext } from '../../Context';
 import Card from '../../components/Card/Card';
 import Filters from '../../components/Filter/Filter';
 import NavBar from '../../components/Navbar/Navbar';
+import Progress from '../../components/Progress/Progress';
 import React from 'react';
 import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
@@ -67,7 +68,11 @@ export default function FiltersPage() {
   }, [setUser]);
 
   if (!coops) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Progress />
+      </div>
+    );
   }
 
   function findSortType() {
