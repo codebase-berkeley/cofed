@@ -10,12 +10,12 @@ export function initializeCategoryOptions(categoryWithTagsQuery) {
     .replaceAll('\\"', '')
     .split('"');
 
-  var options = [];
+  let options = [];
 
   //parse through the ArrTagData
   //getting the information about each tag in THIS category
   for (let index in ArrTagData) {
-    var tagData = ArrTagData[index];
+    let tagData = ArrTagData[index];
 
     if (tagData.length > 2) {
       const splitTagData = tagData.split(',');
@@ -47,15 +47,15 @@ function makeCategoryOptions(id, name, categoryName) {
 }
 
 export function setDefaultCategoryOptions(tags, categories) {
-  for (var c in categories) {
-    var values = [];
+  for (let c in categories) {
+    let values = [];
 
-    var category = categories[c];
+    let category = categories[c];
     const categoryOptions = category['options'];
 
-    for (var t in tags) {
+    for (let t in tags) {
       const tagName = tags[t];
-      for (var o in categoryOptions) {
+      for (let o in categoryOptions) {
         const tagOption = categoryOptions[o];
         if (tagName === tagOption['value']) {
           values.push(tagOption);

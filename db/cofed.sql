@@ -87,5 +87,3 @@ VALUES
     ('Food Services', 4),
     ('Purchasing and Acquisition', 4);
     
-
-    
