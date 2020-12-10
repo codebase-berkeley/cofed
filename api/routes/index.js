@@ -4,14 +4,22 @@ const path = require('path');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
+const fileUpload = require('express-fileupload');
+const app = express();
 const AWS = require('aws-sdk');
+const bluebird = require('bluebird');
 const PORT = 3200;
 // Create S3 service object
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
+
+/** configure AWS to work with promises */
+AWS.config.setPromisesDependency(bluebird);
 s3 = new AWS.S3();
+
+app.use(fileUpload());
 
 // router.get('/getProfilePic', (req, res) => {
 //   const { path } = req.body
@@ -301,13 +309,21 @@ router.put('/coop', isAuthenticated, async (req, res) => {
   }
 });
 
-
 router.post('/upload', async (req, res) => {
+  console.log('REQ === ');
+  console.log(req.keys());
+  if (!req.files || Object.keys(req.files).length === 0) {
+    console.log('No files were uploaded.');
+  }
+  console.log('req.files:', req.files);
   const { imageFile } = req.files;
-  //const { name, unitID } = req.body;
+  //const { name, unitID } = req.body; hi isbee i wrote some stuffs can u share server
+
+  console.log('IMAGE FILE ========');
+  console.log(imageFile);
 
   // the RETURNING id is used for dynamically rendering the lesson box after uploading
-  let type = imageFile.type
+  let type = imageFile.type;
   const params = {
     ACL: 'public-read',
     Bucket: process.env.S3_BUCKET,

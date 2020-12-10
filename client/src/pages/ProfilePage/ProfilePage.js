@@ -11,6 +11,7 @@ import { UserContext } from '../../Context';
 import Dropzone from '../../components/Dropzone/Dropzone';
 
 export default function ProfilePage() {
+  const key = 'imageFile';
   const { user, setUser } = React.useContext(UserContext);
 
   const [coop, setCoop] = React.useState(null);
@@ -98,8 +99,10 @@ export default function ProfilePage() {
     // let image = name + imageFile.path;
     //set the image url to the imageFile encoding
 
-    //setProfilePicture(image64); 
-    setProfilePicture('https://cofed.s3-us-west-1.amazonaws.com/' + imageFile[0].path); 
+    //setProfilePicture(image64);
+    setProfilePicture(
+      'https://cofed.s3-us-west-1.amazonaws.com/' + imageFile[0].path
+    );
   };
 
   //encode the image
@@ -179,16 +182,20 @@ export default function ProfilePage() {
   );
 
   const picModalBody = (
-    <div className="modal-body">
+    <form className="modal-body" enctype="multipart/form-data">
       <div className="modal-header">Select Profile Picture</div>
-      <Dropzone handleImage={retrievePhoto} />
+      <Dropzone
+        handleImage={retrievePhoto}
+        inputProps={{ name: key, type: 'file' }}
+      />
       <button
+        type="button"
         onClick={handlePicModalClose}
         className="profile-edit-tags-modal-button"
       >
         Confirm
       </button>
-    </div>
+    </form>
   );
 
   function renderEdit() {
@@ -333,7 +340,7 @@ export default function ProfilePage() {
 
   async function putData() {
     //include image_file to add to s3 object
-    const data = {
+    const coop_data = {
       coop_name: name,
       addr: address,
       phone_number: phone,
@@ -348,16 +355,24 @@ export default function ProfilePage() {
       latitude: latLng['lat'],
       longitude: latLng['lng'],
       tags: tags,
-      
     };
     //image_file: imageFile,
-    await axios.put('/api/coop', data);
-    
-    const file = new FormData();
-    file.append('imageFile', imageFile);
-    await axios.post('/api/upload', {body: {file}})
-    setProfileVariables(data);
-    setUser(data);
+    await axios.put('/api/coop', coop_data);
+
+    const data = new FormData();
+    data.append('imageFile', imageFile[0]);
+    data.append('test', 3);
+    console.log(imageFile[0]);
+    for (var pair of data.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
+    await axios.post('/api/upload', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    setProfileVariables(coop_data);
+    setUser(coop_data);
   }
 
   if (!coop) {

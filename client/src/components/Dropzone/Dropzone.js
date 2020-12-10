@@ -69,7 +69,7 @@ export default function Dropzone(props) {
   return (
     <section className="dropzone-container">
       <div {...getRootProps({ className: 'dropzone' })}>
-        <input name="key" {...getInputProps()} />
+        <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
       </div>
