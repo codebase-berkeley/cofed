@@ -10,9 +10,11 @@ import { Link } from 'react-router-dom';
 import starred from '../../assets/starred.svg';
 import unstarred from '../../assets/unstarred.svg';
 import { createS3Url } from '../../Helpers';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   if (props.allowEdit) {
     return (
@@ -34,6 +36,7 @@ export default function Profile(props) {
   }
 
   function renderContent() {
+    // if (loading) return <Progress />;
     if (props.allowView && props.allowEdit) {
       if (editMode) {
         return props.renderEdit();
@@ -47,10 +50,12 @@ export default function Profile(props) {
     }
   }
 
-  function toggleEdit() {
+  async function toggleEdit() {
     if (editMode) {
-      props.putData();
+      setLoading(true);
+      await props.putData();
     }
+    setLoading(false);
     setEditMode(!editMode);
   }
 
@@ -59,9 +64,10 @@ export default function Profile(props) {
       const buttonClass = editMode
         ? 'profile-save-button'
         : 'profile-edit-button';
+      const progress = <CircularProgress size={10} />;
       return (
-        <button className={buttonClass} onClick={toggleEdit}>
-          {editMode ? 'Save' : 'Edit'}
+        <button className={buttonClass} onClick={toggleEdit} disabled={loading}>
+          {loading ? progress : editMode ? 'Save' : 'Edit'}
         </button>
       );
     } else if (!props.allowView && props.allowEdit) {

@@ -347,7 +347,6 @@ export default function ProfilePage() {
     const newProfilePath = imageFile
       ? path.join(name, imageFile[0].path)
       : coop.profile_pic;
-    setProfilePicture(createS3Url(newProfilePath));
     //include image_file to add to s3 object
     const coop_data = {
       coop_name: name,
@@ -378,6 +377,7 @@ export default function ProfilePage() {
       });
     }
 
+    setProfilePicture(createS3Url(newProfilePath));
     setUser(coop_data);
     setProfileVariables(coop_data);
   }
