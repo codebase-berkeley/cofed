@@ -6,7 +6,6 @@ import './LoginPage.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../Context';
-const queryString = require('query-string');
 
 export default function LoginPage(props) {
   const [emailInput, setEmailInput] = React.useState('');
@@ -18,21 +17,6 @@ export default function LoginPage(props) {
     setEmailInput('');
     setPwInput('');
   }
-
-  React.useEffect(() => {
-    async function fetchData() {
-      const parsed = queryString.parse(props.location.search);
-      if (parsed.success) {
-        try {
-          const res = await axios.get('/api/coop');
-          setUser(res.data);
-        } catch (err) {
-          console.log('user not found');
-        }
-      }
-    }
-    fetchData();
-  }, [props.location.search, setUser]);
 
   async function verify() {
     try {

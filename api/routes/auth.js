@@ -47,7 +47,7 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function (req, res) {
-    res.redirect('http://localhost:3000/login/?success=true');
+    res.redirect('http://localhost:3000/');
   }
 );
 
