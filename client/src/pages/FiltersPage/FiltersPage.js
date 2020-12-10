@@ -12,10 +12,7 @@ import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
-import {
-  initializeCategoryOptions,
-  createS3Url,
-} from '../../tagCategoryHelper';
+import { initializeCategoryOptions, createS3Url } from '../../Helpers';
 
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);

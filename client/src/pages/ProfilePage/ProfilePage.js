@@ -15,7 +15,7 @@ import {
   initializeCategoryOptions,
   setDefaultCategoryOptions,
   createS3Url,
-} from '../../tagCategoryHelper';
+} from '../../Helpers';
 
 export default function ProfilePage() {
   const key = 'imageFile';

@@ -9,7 +9,7 @@ import logo from '../../assets/CoFEDlogo.png';
 import { Link } from 'react-router-dom';
 import starred from '../../assets/starred.svg';
 import unstarred from '../../assets/unstarred.svg';
-import { createS3Url } from '../../tagCategoryHelper';
+import { createS3Url } from '../../Helpers';
 
 export default function Profile(props) {
   const [editMode, setEditMode] = React.useState(false);
