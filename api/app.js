@@ -3,6 +3,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const passport = require('passport');
 // const aws = require('aws-sdk');
+const fileUpload = require('express-fileupload');
 const session = require('express-session');
 require('dotenv').config();
 
@@ -12,6 +13,8 @@ const port = 8000;
 // Body-parser setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(fileUpload());
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

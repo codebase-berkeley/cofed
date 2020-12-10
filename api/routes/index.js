@@ -4,8 +4,6 @@ const path = require('path');
 const db = require('../../db/index');
 const router = express.Router();
 const format = require('pg-format');
-const fileUpload = require('express-fileupload');
-const app = express();
 const AWS = require('aws-sdk');
 const bluebird = require('bluebird');
 const PORT = 3200;
@@ -18,45 +16,6 @@ AWS.config.update({
 /** configure AWS to work with promises */
 AWS.config.setPromisesDependency(bluebird);
 s3 = new AWS.S3();
-
-app.use(fileUpload());
-
-// router.get('/getProfilePic', (req, res) => {
-//   const { path } = req.body
-//   async function getImage() {
-//     const data = s3
-//       .getObject({
-//         Bucket: 'cofed',
-//         Key: {path},
-//       })
-//       .promise();
-//     return data;
-//   }
-//   getImage()
-//     .then(async img => {
-//       let image = encode(img)//await toBase64(img)
-//         //"src='data:image/jpeg;base64," + encode(img.Body) + "'";
-//       // let startHTML = '<html><body></body>';
-//       // let endHTML = '</body></html>';
-//       // let html = startHTML + image + endHTML;
-//       res.send(image);//html);
-//     })
-//     .catch(e => {
-//       res.send(e);
-//     });
-//   function encode(data) {
-//     let buf = Buffer.from(data);
-//     let base64 = buf.toString('base64');
-//     return base64;
-//   }
-//   // const toBase64 = file =>
-//   //   new Promise((resolve, reject) => {
-//   //     const reader = new FileReader();
-//   //     reader.readAsDataURL(file[0]);
-//   //     reader.onload = () => resolve(reader.result);
-//   //     reader.onerror = error => reject(error);
-//   //   });
-// });
 
 const coop_fields =
   'id, email, hashed_pass, coop_name, phone_number, addr, ' +
@@ -310,28 +269,28 @@ router.put('/coop', isAuthenticated, async (req, res) => {
 });
 
 router.post('/upload', async (req, res) => {
-  console.log('REQ === ');
-  console.log(req.keys());
   if (!req.files || Object.keys(req.files).length === 0) {
     console.log('No files were uploaded.');
   }
-  console.log('req.files:', req.files);
-  const { imageFile } = req.files;
-  //const { name, unitID } = req.body; hi isbee i wrote some stuffs can u share server
 
-  console.log('IMAGE FILE ========');
-  console.log(imageFile);
+  console.log('BODYYYYYYYYYY');
+  console.log(req.body);
+  const { imageFile } = req.files;
+  const { coop } = req.body;
 
   // the RETURNING id is used for dynamically rendering the lesson box after uploading
-  let type = imageFile.type;
+  let type = imageFile.mimetype;
+  console.log(imageFile);
+  let key = coop + '/' + imageFile.name;
+  console.log(coop);
   const params = {
     ACL: 'public-read',
     Bucket: process.env.S3_BUCKET,
     Body: imageFile.data,
     ContentType: type,
-    Key: path.basename(imageFile[0].path),
+    Key: key,
   };
-
+  //path.basename(imageFile[0].path)
   s3.upload(params, (err, data) => {
     if (err) {
       console.log('Error in callback');

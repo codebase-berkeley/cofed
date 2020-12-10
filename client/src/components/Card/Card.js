@@ -12,18 +12,6 @@ export default function CardComponent(props) {
     'card-selected': props.selected,
   });
 
-  const [profilePic, setProfilePic] = React.useState(props.profile_pic);
-  // getProfilePhoto();
-
-  // async function getProfilePhoto() {
-  //   const profilePic = await axios.get('/api/getProfilePic', data: {
-  //     path: {props.profile_pic}
-  //   })
-  //   setProfilePic(profilePic)
-  // }
-  console.log("PROFILE_PIC = ")
-  console.log(props.profile_pic)
-
   function renderStar() {
     if (props.starred) {
       return <img className="card-starred" src={starredImage} />;
@@ -36,10 +24,7 @@ export default function CardComponent(props) {
     <div onClick={props.onClick}>
       <div className={cardContainerClass}>
         <div className="card-pic-text-container">
-          <img
-            className="card-profile-pic"
-            src={profilePic}
-          />
+          <img className="card-profile-pic" src={props.profile_pic} />
           <div className="card-name-container">
             <div className="card-name-star-wrapper">
               <div className="card-co-op-name">{props.name}</div>

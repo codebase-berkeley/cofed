@@ -139,7 +139,15 @@ export default function Profile(props) {
   function renderContact() {
     return (
       <div className="profile-pic-text-container">
-        <img className="profile-pic" src={props.coop.profile_pic} />
+        <img
+          className="profile-pic"
+          src={
+            'https://' +
+            // process.env.S3_BUCKET +
+            'cofed.s3-us-west-1.amazonaws.com/' +
+            props.coop.profile_pic
+          }
+        />
         <div className="profile-text-container">
           <div className="card-name-star-wrapper">
             <b className="profile-co-op-name">{props.coop.coop_name}</b>

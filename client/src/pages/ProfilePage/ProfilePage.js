@@ -29,6 +29,7 @@ export default function ProfilePage() {
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
   const [imageFile, setImageFile] = React.useState(null);
+  // const [profileURL, setProfileURL] = React.useState(null);
 
   const [dropDownOptions, setDropDownOptions] = React.useState([]);
 
@@ -95,14 +96,14 @@ export default function ProfilePage() {
   const handlePicModalClose = async () => {
     setPicModalOpen(false);
     //encode the image to a url
-    let image64 = await toBase64(imageFile);
-    // let image = name + imageFile.path;
-    //set the image url to the imageFile encoding
+    if (imageFile) {
+      let image64 = await toBase64(imageFile);
+      // let image = name + imageFile.path;
+      //set the image url to the imageFile encoding
 
-    //setProfilePicture(image64);
-    setProfilePicture(
-      'https://cofed.s3-us-west-1.amazonaws.com/' + imageFile[0].path
-    );
+      //setProfilePicture(image64);
+      setProfilePicture(name + '/' + imageFile[0].path);
+    }
   };
 
   //encode the image
@@ -278,7 +279,16 @@ export default function ProfilePage() {
     return (
       <div className="profile-pic-text-container">
         <div className="profile-pic-container">
-          <img className="profile-pic-edit" alt="Image" src={profilePicture} />
+          <img
+            className="profile-pic-edit"
+            alt="Image"
+            src={
+              'https://' +
+              /* process.env.S3_BUCKET */ 'cofed' +
+              '.s3-us-west-1.amazonaws.com/' +
+              profilePicture
+            }
+          />
           <img
             onClick={handlePicModalOpen}
             className="profile-edit-pic"
@@ -358,19 +368,18 @@ export default function ProfilePage() {
     };
     //image_file: imageFile,
     await axios.put('/api/coop', coop_data);
+    if (imageFile) {
+      const data = new FormData();
+      data.append('imageFile', imageFile[0]);
+      data.append('coop', name);
 
-    const data = new FormData();
-    data.append('imageFile', imageFile[0]);
-    data.append('test', 3);
-    console.log(imageFile[0]);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
+      await axios.post('/api/upload', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     }
-    await axios.post('/api/upload', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+
     setProfileVariables(coop_data);
     setUser(coop_data);
   }

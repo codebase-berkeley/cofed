@@ -138,7 +138,12 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile_pic={coop.profile_pic}
+                profile_pic={
+                  'https://' +
+                  /* process.env.S3_BUCKET */ 'cofed' +
+                  '.s3-us-west-1.amazonaws.com/' +
+                  coop.profile_pic
+                }
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
@@ -158,7 +163,12 @@ export default function FiltersPage() {
             .map((coop, index) => (
               <Card
                 key={index}
-                profile_pic={coop.profile_pic}
+                profile_pic={
+                  'https://' +
+                  // process.env.S3_BUCKET +
+                  'cofed.s3-us-west-1.amazonaws.com/' +
+                  coop.profile_pic
+                }
                 name={coop.coop_name}
                 location={coop.addr}
                 tags={coop.tags}
