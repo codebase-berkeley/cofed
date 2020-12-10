@@ -137,6 +137,7 @@ export default function Profile(props) {
   }
 
   function renderContact() {
+    console.log(props.coop.profile_pic);
     return (
       <div className="profile-pic-text-container">
         <img

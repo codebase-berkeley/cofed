@@ -191,7 +191,6 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     tags,
     latitude,
     longitude,
-    image_file,
   } = req.body;
 
   const updateQueryText =
@@ -214,34 +213,6 @@ router.put('/coop', isAuthenticated, async (req, res) => {
     longitude,
   ];
   try {
-    /* //HANDLE IMAGE UPLOADING TO S3
-    let type = image_file.type
-    //'image/jpeg'
-    let uploadParams = { 
-      Bucket: 'cofed', 
-      Key: '', 
-      Body: '',
-      ContentType: type,
-      ContentEncoding: 'base64',
-      ContentDisposition: 'inline',
-      ACL: 'public-read',
-
-    };
-    console.log(image_file)
-    //set the upload attributes
-    uploadParams.Body = image_file[0].preview;
-    uploadParams.Key = path.basename(image_file[0].path);
-    
-    //upload to s3
-    s3.upload(uploadParams, function (err, data) {
-      if (err) {
-        console.log('Error', err);
-      }
-      if (data) {
-        console.log('Upload Success', data.Location);
-      }
-    }); */
-
     //HANDLE TAG UPDATES
     await db.query('BEGIN');
     await db.query(updateQueryText, updateQueryValues);
@@ -273,8 +244,6 @@ router.post('/upload', async (req, res) => {
     console.log('No files were uploaded.');
   }
 
-  console.log('BODYYYYYYYYYY');
-  console.log(req.body);
   const { imageFile } = req.files;
   const { coop } = req.body;
 

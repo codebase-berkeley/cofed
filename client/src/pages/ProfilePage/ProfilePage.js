@@ -349,6 +349,8 @@ export default function ProfilePage() {
   }
 
   async function putData() {
+    setProfilePicture(name + '/' + imageFile[0].path);
+    console.log('PATH ======= ' + name + '/' + imageFile[0].path);
     //include image_file to add to s3 object
     const coop_data = {
       coop_name: name,
@@ -360,7 +362,7 @@ export default function ProfilePage() {
       fb_link: fbLink,
       website: website,
       email: email,
-      profile_pic: profilePicture,
+      profile_pic: name + '/' + imageFile[0].path,
       addr: address,
       latitude: latLng['lat'],
       longitude: latLng['lng'],
