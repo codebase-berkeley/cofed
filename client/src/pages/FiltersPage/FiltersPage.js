@@ -19,12 +19,7 @@ import {
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
   const [listMode, setListMode] = React.useState(true);
-  const [sortType, setSortType] = React.useState([
-    {
-      value: 'alphabetical',
-      label: 'sort: alphabetical',
-    },
-  ]);
+  const [sortType, setSortType] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState(null);
@@ -79,12 +74,47 @@ export default function FiltersPage() {
     if (sortType['value'] === 'alphabetical') {
       return sortAlphabetically;
     } else if (sortType['value'] === 'distance') {
-      return sortAlphabetically; // replace with 'sortLocation' once location option is configured
+      return sortByDistance;
     }
   }
 
   function sortAlphabetically(coop1, coop2) {
-    return coop1['coop_name'] > coop2['coop_name'] ? 1 : -1;
+    return coop1['coop_name'].toLowerCase() > coop2['coop_name'].toLowerCase()
+      ? 1
+      : -1;
+  }
+
+  function sortByDistance(coop1, coop2) {
+    const distCoop1 = distance(coop1);
+    const distCoop2 = distance(coop2);
+    return distCoop1 - distCoop2;
+  }
+
+  //code from GeoDataSource
+  function distance(coop) {
+    const otherLat = coop['latitude'];
+    const otherLon = coop['longitude'];
+    const myLat = user['latitude'];
+    const myLon = user['longitude'];
+
+    if (myLat === otherLat && myLon === otherLon) {
+      return 0;
+    } else {
+      let radlat1 = (Math.PI * myLat) / 180;
+      let radlat2 = (Math.PI * otherLat) / 180;
+      let theta = myLon - otherLon;
+      let radtheta = (Math.PI * theta) / 180;
+      let dist =
+        Math.sin(radlat1) * Math.sin(radlat2) +
+        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.1515;
+      return dist;
+    }
   }
 
   function searchCoops(coop) {
@@ -341,16 +371,7 @@ export default function FiltersPage() {
                   placeholder="Search..."
                   onChange={e => setSearchInput(e.target.value)}
                 />
-                <Filters
-                  options={sortOptions}
-                  onChange={setSortType}
-                  defaultValue={[
-                    {
-                      value: 'alphabetical',
-                      label: 'alphabetical',
-                    },
-                  ]}
-                />
+                <Filters options={sortOptions} onChange={setSortType} />
                 {categoriesAndTags &&
                   categoriesAndTags.map(categoryInfo => (
                     <Filters
