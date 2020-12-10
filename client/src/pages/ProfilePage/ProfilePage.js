@@ -4,6 +4,7 @@ import Profile from '../../components/Profile/Profile';
 import plusSign from '../../assets/plus-sign.svg';
 import axios from 'axios';
 import { Modal } from '@material-ui/core';
+import Progress from '../../components/Progress/Progress';
 import Filters from '../../components/Filter/Filter';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
@@ -298,7 +299,7 @@ export default function ProfilePage() {
   }
 
   if (!coop) {
-    return <div>Loading...</div>;
+    return <Progress />;
   }
 
   return (
