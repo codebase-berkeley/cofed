@@ -90,6 +90,7 @@ export default function FiltersPage() {
     return distCoop1 > distCoop2 ? 1 : -1;
   }
 
+  //code from GeoDataSource
   function distance(coop) {
     const otherLat = coop['latitude'];
     const otherLon = coop['longitude'];
