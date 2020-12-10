@@ -2,7 +2,6 @@ const express = require('express');
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const passport = require('passport');
-// const aws = require('aws-sdk');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
 require('dotenv').config();
