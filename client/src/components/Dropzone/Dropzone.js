@@ -72,6 +72,7 @@ export default function Dropzone(props) {
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
+        <em>Images may take a while to appear</em>
       </div>
       <aside>
         {thumbs}

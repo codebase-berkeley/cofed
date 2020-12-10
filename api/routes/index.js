@@ -233,9 +233,7 @@ router.post('/upload', async (req, res) => {
 
   // the RETURNING id is used for dynamically rendering the lesson box after uploading
   let type = imageFile.mimetype;
-  console.log(imageFile);
   let key = coop + '/' + imageFile.name;
-  console.log(coop);
   const params = {
     ACL: 'public-read',
     Bucket: process.env.S3_BUCKET,
@@ -243,14 +241,13 @@ router.post('/upload', async (req, res) => {
     ContentType: type,
     Key: key,
   };
-  //path.basename(imageFile[0].path)
   s3.upload(params, (err, data) => {
     if (err) {
       console.log('Error in callback');
       console.log(err);
     }
-    console.log('Success!');
-    console.log(data);
+
+    res.send('Success!');
   });
 });
 

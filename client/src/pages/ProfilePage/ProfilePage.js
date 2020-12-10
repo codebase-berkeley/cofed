@@ -33,7 +33,6 @@ export default function ProfilePage() {
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
   const [imageFile, setImageFile] = React.useState(null);
-  // const [profileURL, setProfileURL] = React.useState(null);
 
   const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
 
@@ -50,7 +49,6 @@ export default function ProfilePage() {
     setWebsite(coop['website']);
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
-    setTagsRole(coop['tags'].map(tagNameToDropDownOption));
     setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
   }, []);
 
@@ -115,8 +113,11 @@ export default function ProfilePage() {
 
   const handleTagsModalClose = () => {
     setTagsModalOpen(false);
-    if (tagsRole) setTags(tagsRole.map(dictValue));
-    else setTags([]);
+    if (allTags) {
+      setTags(allTags);
+    } else {
+      setTags([]);
+    }
   };
 
   const [picModalOpen, setPicModalOpen] = React.useState(false);
@@ -124,21 +125,12 @@ export default function ProfilePage() {
     setPicModalOpen(true);
   };
 
-  //retrieve the photo from the dropzone and set the imageFile state
-  function retrievePhoto(img) {
-    setImageFile(img);
-  }
-
   const handlePicModalClose = async () => {
     setPicModalOpen(false);
-    //encode the image to a url
+
     if (imageFile) {
       let image64 = await toBase64(imageFile);
-      // let image = name + imageFile.path;
-      //set the image url to the imageFile encoding
-
-      //setProfilePicture(image64);
-      setProfilePicture(name + '/' + imageFile[0].path);
+      setProfilePicture(image64);
     }
   };
 
@@ -151,17 +143,9 @@ export default function ProfilePage() {
       reader.onerror = error => reject(error);
     });
 
-  const [tagsRole, setTagsRole] = React.useState(tags);
-  const [tagsLocation, setTagsLocation] = React.useState([]);
-  const [tagsRace, setTagsRace] = React.useState([]);
-  const locationOptions = {};
-  const raceOptions = {};
-
   let allTags = [];
 
-  const modalTags = categoriesAndTags.map(
-    categoryInfo => categoryInfo.values
-  );
+  const modalTags = categoriesAndTags.map(categoryInfo => categoryInfo.values);
 
   for (let ct in modalTags) {
     let categoryTags = modalTags[ct];
@@ -171,252 +155,249 @@ export default function ProfilePage() {
     }
   }
 
-  if (allTags) setTags(allTags);
-  else setTags([]);
-};
+  const tagsModalBody = (
+    <div className="modal-body">
+      <div className="modal-header">Select Tags</div>
 
-const tagsModalBody = (
-  <div className="modal-body">
-    <div className="modal-header">Select Tags</div>
-
-    <div className="profile-edit-tags-dropdowns">
-      <div className="profile-filter-scroll">
-        {categoriesAndTags &&
-          categoriesAndTags.map(categoryInfo => (
-            <Filters
-              isMulti={true}
-              title={categoryInfo.categoryName}
-              options={categoryInfo.options}
-              values={categoryInfo.values}
-              onChange={handleFilterChange(categoryInfo.getCategory)}
-              key={categoryInfo}
-            />
-          ))}
-      </div>
-    </div>
-    <button
-      onClick={handleTagsModalClose}
-      className="profile-edit-tags-modal-button"
-    >
-      Confirm
-      </button>
-  </div>
-);
-
-const picModalBody = (
-  <form className="modal-body" enctype="multipart/form-data">
-    <div className="modal-header">Select Profile Picture</div>
-    <Dropzone
-      handleImage={retrievePhoto}
-      inputProps={{ name: key, type: 'file' }}
-    />
-    <button
-      type="button"
-      onClick={handlePicModalClose}
-      className="profile-edit-tags-modal-button"
-    >
-      Confirm
-      </button>
-  </form>
-);
-
-function renderEdit() {
-  return (
-    <>
-      <div className="profile-text-tags-container">
-        {renderContactInputs()}
-        <div className="profile-tags-container">
-          {tags &&
-            tags.map((text, index) => (
-              <Tag key={index} text={text} index={index} />
+      <div className="profile-edit-tags-dropdowns">
+        <div className="profile-filter-scroll">
+          {categoriesAndTags &&
+            categoriesAndTags.map(categoryInfo => (
+              <Filters
+                isMulti={true}
+                title={categoryInfo.categoryName}
+                options={categoryInfo.options}
+                values={categoryInfo.values}
+                onChange={handleFilterChange(categoryInfo.getCategory)}
+                key={categoryInfo}
+              />
             ))}
-          <button
-            onClick={handleTagsModalOpen}
-            className="profile-edit-tags-button"
-          >
-            Edit tags
-            </button>
-          <div className="modal-popup">
-            <Modal
-              className="profile-modal-tags"
-              open={tagsModalOpen}
-              onClose={handleTagsModalClose}
-            >
-              {tagsModalBody}
-            </Modal>
-          </div>
         </div>
       </div>
-      <div className="profile-descriptions">
-        <div className="create-profile-hr"></div>
-        <div className="profile-header">Mission Statement</div>
-        <textarea
-          className="profile-mission-input"
-          type="text"
-          placeholder="Enter mission statement:"
-          maxLength="350"
-          value={mission}
-          onChange={e => setMission(e.target.value)}
-        />
-        <div className="create-profile-hr"></div>
-        <div className="profile-header">Description</div>
-        <textarea
-          className="profile-description-input"
-          type="text"
-          placeholder="Enter description:"
-          maxLength="1000"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        />
-        <div className="create-profile-hr"></div>
-      </div>
-      {renderEditSocials()}
-    </>
-  );
-}
-
-function renderEditSocials() {
-  return (
-    <div className="profile-socials-div">
-      <input
-        className="profile-small-input"
-        type="text"
-        placeholder="Enter facebook link:"
-        value={fbLink}
-        onChange={e => setFbLink(e.target.value)}
-      />
-      <input
-        className="profile-small-input"
-        type="text"
-        placeholder="Enter instagram link:"
-        value={instaLink}
-        onChange={e => setInstaLink(e.target.value)}
-      />
+      <button
+        onClick={handleTagsModalClose}
+        className="profile-edit-tags-modal-button"
+      >
+        Confirm
+      </button>
     </div>
   );
-}
 
-function renderContactInputs() {
-  return (
-    <div className="profile-pic-text-container">
-      <div className="profile-pic-container">
-        <img
-          className="profile-pic-edit"
-          alt="Image"
-          src={
-            'https://' +
-              /* process.env.S3_BUCKET */ 'cofed' +
-            '.s3-us-west-1.amazonaws.com/' +
-            profilePicture
-          }
-        />
-        <img
-          onClick={handlePicModalOpen}
-          className="profile-edit-pic"
-          alt="Image"
-          src={plusSign}
-        />
-      </div>
-      <div className="modal-popup">
-        <Modal
-          className="profile-modal-tags"
-          open={picModalOpen}
-          onClose={handlePicModalClose}
-        >
-          {picModalBody}
-        </Modal>
-      </div>
-      <div className="profile-edit-profile-text-container">
-        <input
-          className="profile-name-input"
-          type="text"
-          placeholder="Enter name:"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-        <LocationSearchInput
-          size="small"
-          value={address}
-          onChange={e => setAddress(e.target.value)}
-          handleSelect={selectLocation}
-        />
-
-        <input
-          className="profile-small-input"
-          type="text"
-          placeholder="Enter website link:"
-          value={website}
-          onChange={e => setWebsite(e.target.value)}
-        />
-
-        <input
-          className="profile-small-input"
-          type="text"
-          placeholder="Enter email address:"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-
-        <input
-          className="profile-small-input"
-          type="text"
-          placeholder="Enter phone number:"
-          value={phone}
-          onChange={e => setPhone(e.target.value)}
-        />
-      </div>
-    </div>
+  const picModalBody = (
+    <form className="modal-body" enctype="multipart/form-data">
+      <div className="modal-header">Select Profile Picture</div>
+      <Dropzone
+        handleImage={setImageFile}
+        inputProps={{ name: key, type: 'file' }}
+      />
+      <button
+        type="button"
+        onClick={handlePicModalClose}
+        className="profile-edit-tags-modal-button"
+      >
+        Confirm
+      </button>
+    </form>
   );
-}
 
-async function putData() {
-  setProfilePicture(name + '/' + imageFile[0].path);
-  console.log('PATH ======= ' + name + '/' + imageFile[0].path);
-  //include image_file to add to s3 object
-  const coop_data = {
-    coop_name: name,
-    phone_number: phone,
-    mission_statement: mission,
-    description_text: description,
-    insta_link: instaLink,
-    fb_link: fbLink,
-    website: website,
-    email: email,
-    profile_pic: name + '/' + imageFile[0].path,
-    addr: address,
-    latitude: latLng['lat'],
-    longitude: latLng['lng'],
-    tags: tags,
-  };
-  //image_file: imageFile,
-  await axios.put('/api/coop', coop_data);
-  if (imageFile) {
-    const data = new FormData();
-    data.append('imageFile', imageFile[0]);
-    data.append('coop', name);
-
-    await axios.post('/api/upload', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+  function renderEdit() {
+    return (
+      <>
+        <div className="profile-text-tags-container">
+          {renderContactInputs()}
+          <div className="profile-tags-container">
+            {tags &&
+              tags.map((text, index) => (
+                <Tag key={index} text={text} index={index} />
+              ))}
+            <button
+              onClick={handleTagsModalOpen}
+              className="profile-edit-tags-button"
+            >
+              Edit tags
+            </button>
+            <div className="modal-popup">
+              <Modal
+                className="profile-modal-tags"
+                open={tagsModalOpen}
+                onClose={handleTagsModalClose}
+              >
+                {tagsModalBody}
+              </Modal>
+            </div>
+          </div>
+        </div>
+        <div className="profile-descriptions">
+          <div className="create-profile-hr"></div>
+          <div className="profile-header">Mission Statement</div>
+          <textarea
+            className="profile-mission-input"
+            type="text"
+            placeholder="Enter mission statement:"
+            maxLength="350"
+            value={mission}
+            onChange={e => setMission(e.target.value)}
+          />
+          <div className="create-profile-hr"></div>
+          <div className="profile-header">Description</div>
+          <textarea
+            className="profile-description-input"
+            type="text"
+            placeholder="Enter description:"
+            maxLength="1000"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+          <div className="create-profile-hr"></div>
+        </div>
+        {renderEditSocials()}
+      </>
+    );
   }
 
-  setProfileVariables(coop_data);
-  setUser(coop_data);
-}
+  function renderEditSocials() {
+    return (
+      <div className="profile-socials-div">
+        <input
+          className="profile-small-input"
+          type="text"
+          placeholder="Enter facebook link:"
+          value={fbLink}
+          onChange={e => setFbLink(e.target.value)}
+        />
+        <input
+          className="profile-small-input"
+          type="text"
+          placeholder="Enter instagram link:"
+          value={instaLink}
+          onChange={e => setInstaLink(e.target.value)}
+        />
+      </div>
+    );
+  }
 
-if (!coop) {
-  return <div>Loading...</div>;
-}
+  function renderContactInputs() {
+    return (
+      <div className="profile-pic-text-container">
+        <div className="profile-pic-container">
+          <img
+            className="profile-pic-edit"
+            alt="Image"
+            src={
+              'https://' +
+              'cofed' +
+              '.s3-us-west-1.amazonaws.com/' +
+              profilePicture
+            }
+          />
+          <img
+            onClick={handlePicModalOpen}
+            className="profile-edit-pic"
+            alt="Image"
+            src={plusSign}
+          />
+        </div>
+        <div className="modal-popup">
+          <Modal
+            className="profile-modal-tags"
+            open={picModalOpen}
+            onClose={handlePicModalClose}
+          >
+            {picModalBody}
+          </Modal>
+        </div>
+        <div className="profile-edit-profile-text-container">
+          <input
+            className="profile-name-input"
+            type="text"
+            placeholder="Enter name:"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          <LocationSearchInput
+            size="small"
+            value={address}
+            onChange={e => setAddress(e.target.value)}
+            handleSelect={selectLocation}
+          />
 
-return (
-  <Profile
-    coop={user}
-    renderEdit={renderEdit}
-    putData={putData}
-    allowEdit={true}
-    allowView={true}
-  />
-);
+          <input
+            className="profile-small-input"
+            type="text"
+            placeholder="Enter website link:"
+            value={website}
+            onChange={e => setWebsite(e.target.value)}
+          />
+
+          <input
+            className="profile-small-input"
+            type="text"
+            placeholder="Enter email address:"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+
+          <input
+            className="profile-small-input"
+            type="text"
+            placeholder="Enter phone number:"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  async function putData() {
+    if (imageFile) {
+      setProfilePicture(name + '/' + imageFile[0].path);
+    }
+    //include image_file to add to s3 object
+    const coop_data = {
+      coop_name: name,
+      phone_number: phone,
+      mission_statement: mission,
+      description_text: description,
+      insta_link: instaLink,
+      fb_link: fbLink,
+      website: website,
+      email: email,
+      profile_pic: profilePicture,
+      addr: address,
+      latitude: latLng['lat'],
+      longitude: latLng['lng'],
+      tags: tags,
+    };
+
+    setUser(coop_data);
+    setProfileVariables(coop_data);
+
+    await axios.put('/api/coop', coop_data);
+    if (imageFile) {
+      const data = new FormData();
+      data.append('imageFile', imageFile[0]);
+      data.append('coop', name);
+
+      await axios.post('/api/upload', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    }
+  }
+
+  if (!coop) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <Profile
+      coop={user}
+      renderEdit={renderEdit}
+      putData={putData}
+      allowEdit={true}
+      allowView={true}
+    />
+  );
 }
