@@ -76,12 +76,31 @@ export default function FiltersPage() {
     if (sortType['value'] === 'alphabetical') {
       return sortAlphabetically;
     } else if (sortType['value'] === 'distance') {
-      return sortAlphabetically; // replace with 'sortLocation' once location option is configured
+      return sortByDistance;
     }
   }
 
   function sortAlphabetically(coop1, coop2) {
-    return coop1['coop_name'] > coop2['coop_name'] ? 1 : -1;
+    return coop1['coop_name'].toLowerCase() > coop2['coop_name'].toLowerCase()
+      ? 1
+      : -1;
+  }
+
+  function sortByDistance(coop1, coop2) {
+    const distCoop1 = getDistanceToUser(coop1);
+    const distCoop2 = getDistanceToUser(coop2);
+    if (distCoop1 === distCoop2) {
+      return 0;
+    }
+    return distCoop1 > distCoop2 ? 1 : -1;
+  }
+
+  function getDistanceToUser(coop) {
+    const otherLat = coop['latitude'];
+    const otherLon = coop['longitude'];
+    const myLat = user['latitude'];
+    const myLon = user['longitude'];
+    return Math.sqrt((myLat - otherLat) ** 2 + (myLon - otherLon) ** 2);
   }
 
   function searchCoops(coop) {
