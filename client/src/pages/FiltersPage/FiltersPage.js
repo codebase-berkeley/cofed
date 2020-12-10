@@ -11,6 +11,7 @@ import Profile from '../../components/Profile/Profile';
 import Map from 'pigeon-maps';
 import Marker from 'pigeon-marker';
 import Toggle from 'react-toggle';
+import { initializeCategoryOptions } from '../../tagCategoryHelper';
 
 export default function FiltersPage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -21,11 +22,6 @@ export default function FiltersPage() {
       label: 'sort: alphabetical',
     },
   ]);
-  const [location, setLocation] = React.useState([]);
-  const [role, setRole] = React.useState([]);
-  const [race, setRace] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
-  const [other, setOther] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [showStarredOnly, setShowStarredOnly] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState(null);
@@ -37,7 +33,8 @@ export default function FiltersPage() {
   const [coops, setCoops] = React.useState([]);
   const [starredCoops, setStarredCoops] = React.useState([]);
   const [coopShown, setCoopShown] = React.useState([]);
-  const [dropDownOptions, setDropDownOptions] = React.useState([]);
+  const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
+  const [allTags, setAllTags] = React.useState([]);
 
   async function fetchAllCoops() {
     const res = await axios.get('/api/coops');
@@ -56,6 +53,10 @@ export default function FiltersPage() {
         setUser(null);
       }
 
+      const tags = await axios.get('/api/tags');
+      const modTag = tags.data.map(initializeCategoryOptions);
+      setCategoriesAndTags(modTag);
+
       //get the toggle star info
       const starred = await axios.get('/api/getStarred');
       //set the query data as the starred coops
@@ -63,10 +64,6 @@ export default function FiltersPage() {
         return e.starred_coop_id;
       });
       setStarredCoops(starredIds);
-
-      //get the tags to put in the filters dropdown
-      const tags = await axios.get('/api/tags');
-      setDropDownOptions(tags.data);
     }
     fetchInitialData();
   }, [setUser]);
@@ -258,63 +255,11 @@ export default function FiltersPage() {
   }
 
   function reset() {
-    setRole([]);
-    setLocation([]);
-    setRace([]);
-    setProducts([]);
-    setOther([]);
+    setAllTags([]);
+    categoriesAndTags.map(categoryInfo => categoryInfo.reset(true));
     fetchAllCoops();
   }
 
-  function makeDictionary(tag) {
-    const dict = {
-      value: tag.tag_name,
-      label: tag.tag_name,
-      id: tag.id,
-    };
-    return dict;
-  }
-
-  const roleOptions = dropDownOptions.map(tag => makeDictionary(tag));
-
-  const locationOptions = [
-    { value: 'Alabama', label: 'Alabama' },
-    { value: 'Alaska', label: 'Alaska' },
-    { value: 'Arizona', label: 'Arizona' },
-    { value: 'Arkansas', label: 'Arkansas' },
-    { value: 'California', label: 'California' },
-    { value: 'Colorado', label: 'Colorado' },
-    { value: 'Connecticut', label: 'Connecticut' },
-    { value: 'Delaware', label: 'Delaware' },
-    { value: 'District of Columbia', label: 'District of Columbia' },
-    { value: 'Florida', label: 'Florida' },
-    { value: 'Georgia', label: 'Georgia' },
-    { value: 'Hawaii', label: 'Hawaii' },
-    { value: 'Idaho', label: 'Idaho' },
-  ];
-  const raceOptions = [
-    { value: 'black', label: 'Black-owned' },
-    { value: 'native', label: 'Native-owned' },
-    { value: 'asian', label: 'Asian-owned' },
-    { value: 'pacificIslander', label: 'Pacific Islander-owned' },
-    { value: 'hispanicOrLatinx', label: 'Hispanic or Latinx-owned' },
-  ];
-  const productOptions = [
-    { value: 'fruits', label: 'Fruits' },
-    { value: 'vegetables', label: 'Vegetables' },
-    { value: 'natural', label: 'Natural Goods' },
-    { value: 'wholefoods', label: 'Wholefoods' },
-    { value: 'dairy', label: 'Dairy' },
-    { value: 'brew', label: 'Brew' },
-    { value: 'fish', label: 'Fish' },
-    { value: 'meats', label: 'Meats' },
-  ];
-  const otherOptions = [
-    { value: 'nonGMO', label: 'Verified Non-GMO' },
-    { value: 'startup', label: 'Startup' },
-    { value: 'queer', label: 'Queer-owned' },
-    { value: 'nonprofit', label: 'Non-profit' },
-  ];
   const sortOptions = [
     { value: 'alphabetical', label: 'sort: alphabetical' },
     { value: 'distance', label: 'sort: distance' },
@@ -325,15 +270,29 @@ export default function FiltersPage() {
     showStarredOnly ? setShowStarredOnly(false) : setShowStarredOnly(true);
   }
 
-  function handleChange(setter) {
+  function handleChange(getCategoryDict) {
     async function onChange(event) {
       setSelectedIndex(null);
-      setter(event);
-      if (event === null || event.length === 0) {
+      const category = getCategoryDict();
+      category['values'] = event;
+      const categoryName = category['categoryName'];
+      const tempAllTags = allTags.filter(
+        tag => tag.categoryName !== categoryName
+      );
+
+      if (event != null) {
+        event.map(tag => tempAllTags.push(tag));
+      }
+      setAllTags(tempAllTags);
+
+      if (tempAllTags === null || tempAllTags.length === 0) {
+        //NOT valid
         fetchAllCoops();
       } else {
         const params = {
-          tags: event.map(newArray => newArray.id),
+          //we need to access every single array of tags, not just
+          //the event that is passed in
+          tags: tempAllTags.map(tag => tag.id),
         };
 
         const res = await axios.get('/api/filteredCoops', {
@@ -379,7 +338,6 @@ export default function FiltersPage() {
                   placeholder="Search..."
                   onChange={e => setSearchInput(e.target.value)}
                 />
-
                 <Filters
                   options={sortOptions}
                   onChange={setSortType}
@@ -390,41 +348,17 @@ export default function FiltersPage() {
                     },
                   ]}
                 />
-                <Filters
-                  isMulti={true}
-                  title="role"
-                  options={roleOptions}
-                  values={role}
-                  onChange={handleChange(setRole)}
-                />
-                <Filters
-                  title="location"
-                  options={locationOptions}
-                  values={location}
-                  onChange={setLocation}
-                  isMulti={true}
-                />
-                <Filters
-                  title="race"
-                  options={raceOptions}
-                  values={race}
-                  onChange={setRace}
-                  isMulti={true}
-                />
-                <Filters
-                  title="products"
-                  options={productOptions}
-                  values={products}
-                  onChange={setProducts}
-                  isMulti={true}
-                />
-                <Filters
-                  title="other"
-                  options={otherOptions}
-                  values={other}
-                  onChange={setOther}
-                  isMulti={true}
-                />
+                {categoriesAndTags &&
+                  categoriesAndTags.map(categoryInfo => (
+                    <Filters
+                      isMulti={true}
+                      title={categoryInfo.categoryName}
+                      options={categoryInfo.options}
+                      values={categoryInfo.values}
+                      onChange={handleChange(categoryInfo.getCategory)}
+                      key={categoryInfo}
+                    />
+                  ))}
               </div>
             </div>
           </div>

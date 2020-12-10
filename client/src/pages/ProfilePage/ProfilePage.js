@@ -8,6 +8,10 @@ import Filters from '../../components/Filter/Filter';
 import LocationSearchInput from '../../components/Autocomplete/LocationSearchInput';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { UserContext } from '../../Context';
+import {
+  initializeCategoryOptions,
+  setDefaultCategoryOptions,
+} from '../../tagCategoryHelper';
 
 export default function ProfilePage() {
   const { user, setUser } = React.useContext(UserContext);
@@ -26,7 +30,7 @@ export default function ProfilePage() {
   const [latLng, setLatLng] = React.useState(null);
   const [address, setAddress] = React.useState('');
 
-  const [dropDownOptions, setDropDownOptions] = React.useState([]);
+  const [categoriesAndTags, setCategoriesAndTags] = React.useState([]);
 
   const setProfileVariables = React.useCallback(coop => {
     setCoop(coop);
@@ -42,21 +46,52 @@ export default function ProfilePage() {
     setProfilePicture(coop['profile_pic']);
     setName(coop['coop_name']);
     setLatLng({ lat: coop['latitude'], lng: coop['longitude'] });
-    setTagsRole(coop['tags'].map(tagNameToDropDownOption));
   }, []);
 
   React.useEffect(() => {
     async function fetchData() {
       try {
         setProfileVariables(user);
+
         const allTags = await axios.get('/api/tags');
-        setDropDownOptions(allTags.data);
+
+        const modTag = allTags.data.map(initializeCategoryOptions);
+        setDefaultCategoryOptions(user['tags'], modTag);
+
+        setCategoriesAndTags(modTag);
       } catch (err) {
         console.log(err);
       }
     }
     fetchData();
   }, [setProfileVariables, user]);
+
+  function handleFilterChange(getCategory) {
+    async function onChange(event) {
+      const categoryChanged = getCategory();
+
+      let tempCategoriesAndTags = [];
+
+      for (let c in categoriesAndTags) {
+        let category = categoriesAndTags[c];
+        if (category['categoryName'] === categoryChanged['categoryName']) {
+          const categoryChanged = {
+            categoryName: category['categoryName'],
+            options: category['options'],
+            getCategory: _ => categoryChanged,
+            values: event,
+          };
+
+          tempCategoriesAndTags.push(categoryChanged);
+        } else {
+          tempCategoriesAndTags.push(category);
+        }
+      }
+
+      setCategoriesAndTags(tempCategoriesAndTags);
+    }
+    return onChange;
+  }
 
   let selectLocation = async address => {
     setAddress(address);
@@ -74,38 +109,24 @@ export default function ProfilePage() {
 
   const handleClose = () => {
     setOpen(false);
-    if (tagsRole) setTags(tagsRole.map(dictValue));
+
+    let allTags = [];
+
+    const modalTags = categoriesAndTags.map(
+      categoryInfo => categoryInfo.values
+    );
+
+    for (let ct in modalTags) {
+      let categoryTags = modalTags[ct];
+      for (let t in categoryTags) {
+        const tag = categoryTags[t];
+        allTags.push(tag['value']);
+      }
+    }
+
+    if (allTags) setTags(allTags);
     else setTags([]);
   };
-
-  const [tagsRole, setTagsRole] = React.useState(tags);
-  const [tagsLocation, setTagsLocation] = React.useState([]);
-  const [tagsRace, setTagsRace] = React.useState([]);
-  const locationOptions = {};
-  const raceOptions = {};
-
-  function tagQueryToDropDownOption(tag) {
-    const dict = {
-      value: tag.tag_name,
-      label: tag.tag_name,
-      id: tag.id,
-    };
-    return dict;
-  }
-
-  function tagNameToDropDownOption(tag) {
-    const dict = {
-      value: tag,
-      label: tag,
-    };
-    return dict;
-  }
-
-  function dictValue(dict) {
-    return dict['value'];
-  }
-
-  const roleOptions = dropDownOptions.map(tagQueryToDropDownOption);
 
   const body = (
     <div className="modal-body">
@@ -113,27 +134,17 @@ export default function ProfilePage() {
 
       <div className="profile-edit-tags-dropdowns">
         <div className="profile-filter-scroll">
-          <Filters
-            title="role"
-            options={roleOptions}
-            values={tagsRole}
-            onChange={setTagsRole}
-            isMulti={true}
-          />
-          <Filters
-            title="location"
-            options={locationOptions}
-            values={tagsLocation}
-            onChange={setTagsLocation}
-            isMulti={true}
-          />
-          <Filters
-            title="race"
-            options={raceOptions}
-            values={tagsRace}
-            onChange={setTagsRace}
-            isMulti={true}
-          />
+          {categoriesAndTags &&
+            categoriesAndTags.map(categoryInfo => (
+              <Filters
+                isMulti={true}
+                title={categoryInfo.categoryName}
+                options={categoryInfo.options}
+                values={categoryInfo.values}
+                onChange={handleFilterChange(categoryInfo.getCategory)}
+                key={categoryInfo}
+              />
+            ))}
         </div>
       </div>
       <button onClick={handleClose} className="profile-edit-tags-modal-button">
@@ -292,7 +303,7 @@ export default function ProfilePage() {
 
   return (
     <Profile
-      coop={coop}
+      coop={user}
       renderEdit={renderEdit}
       putData={putData}
       allowEdit={true}
