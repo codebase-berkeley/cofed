@@ -39,7 +39,3 @@ export default function NavBar(props) {
     </div>
   );
 }
-
-NavBar.propTypes = {
-  username: PropTypes.string,
-};
