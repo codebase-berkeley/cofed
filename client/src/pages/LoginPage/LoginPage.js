@@ -11,6 +11,10 @@ export default function LoginPage(props) {
   const [emailInput, setEmailInput] = React.useState('');
   const [pwInput, setPwInput] = React.useState('');
   const { setUser } = React.useContext(UserContext);
+  const googleAuthLink =
+    process.env.NODE_ENV === 'production'
+      ? '/auth/google'
+      : 'http://localhost:8000/auth/google';
 
   function handleSubmit() {
     verify();
@@ -80,7 +84,7 @@ export default function LoginPage(props) {
         <br /> — OR — <br />
       </div>
       <div className="googleButton">
-        <a href="http://localhost:8000/auth/google" target="blank">
+        <a href={googleAuthLink} target="blank">
           <button className="loginPageButton" type="button">
             <img src={GoogleLogo} />
             Login via Google

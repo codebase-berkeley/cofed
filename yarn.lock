@@ -267,10 +267,28 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@types/node@*":
+  version "14.14.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.12.tgz#0b1d86f8c40141091285dea02e4940df73bba43f"
+  integrity sha512-ASH8OPHMNlkdjrEdmoILmzFfsJICvhBsFfAum4aKZ/9U4B6M6tTmTPh+f3ttWdD74CEGV5XvXWkbyfSdXaTd7g==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/pg-types@*":
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.5.tgz#1eebbe62b6772fcc75c18957a90f933d155e005b"
+  integrity sha512-L8ogeT6vDzT1vxlW3KITTCt+BVXXVkLXfZ/XNm6UqbcJgxf+KPO7yjWx7dQQE8RW07KopL10x2gNMs41+IkMGQ==
+
+"@types/pg@^7.14.4":
+  version "7.14.7"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.7.tgz#b25532a424f58e70432ac31c77507dfb7b9349a8"
+  integrity sha512-ZnMOUidTP6Lwsb0bxHL6PVIL1lVC2CYNQWlA79kQ6nn0rK1/ynvkyN1wsR9pVZaP4WcCNioKT/2aU5UuLIQy2w==
+  dependencies:
+    "@types/node" "*"
+    "@types/pg-types" "*"
 
 "@types/prop-types@*":
   version "15.7.3"
@@ -909,6 +927,14 @@ configstore@^5.0.1:
     unique-string "^2.0.0"
     write-file-atomic "^3.0.0"
     xdg-basedir "^4.0.0"
+
+connect-pg-simple@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/connect-pg-simple/-/connect-pg-simple-6.2.1.tgz#21c3e7ff6223030afff230621eac53eaae3b1797"
+  integrity sha512-bwDp/gKyRtyz0V5Vxy3SATSxItWBK/wDhaacncC79+q1B1VB8SQ49AlVaQCM+XxmIO29cWX4cvsFj65mD2qrzA==
+  dependencies:
+    "@types/pg" "^7.14.4"
+    pg "^8.2.1"
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
@@ -3151,7 +3177,7 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@^8.4.2:
+pg@^8.2.1, pg@^8.4.2:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/pg/-/pg-8.5.1.tgz#34dcb15f6db4a29c702bf5031ef2e1e25a06a120"
   integrity sha512-9wm3yX9lCfjvA98ybCyw2pADUivyNWT/yIP4ZcDVpMN0og70BUWYEGXPCTAQdGTAqnytfRADb7NERrY1qxhIqw==
