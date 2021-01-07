@@ -41,7 +41,7 @@
     "db": "psql cofed",
     "lint": "eslint --fix client/src api/ db/",
     "lint-check": "eslint client/src api/ db/",
-    "production": "yarn build && NODE_ENV=production nodemon app.js",
+    "prod": "yarn build && NODE_ENV=production node app.js",
     "postinstall": "cd client && yarn install",
     "build": "cd client && yarn build",
     "heroku-postbuild": "yarn install && yarn build"
