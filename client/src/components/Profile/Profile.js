@@ -82,7 +82,7 @@ export default function Profile(props) {
 
   function renderNavbar() {
     if (props.allowView && props.allowEdit) {
-      return <NavBar username="Rad Radishes" />;
+      return <NavBar />;
     } else if (props.allowEdit && !props.allowView) {
       return (
         <div className="navbar">
